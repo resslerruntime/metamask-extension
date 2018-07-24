@@ -201,7 +201,38 @@ describe('MetaMask', function () {
       await delay(regularDelayMs)
     })
 
-    async function retypeSeedPhrase (words, wasReloaded) {
+    async function getWordButtonPairs (seedPhraseButtons, wordButtonPairs = []) {
+        if (seedPhraseButtons.length === 0) {
+          return wordButtonPairs
+        }
+
+        const firstButton = seedPhraseButtons[0]
+        const firstButtonText = await firstButton.getText()
+
+        return await getWordButtonPairs(
+          seedPhraseButtons.slice(1),
+          [ ...wordButtonPairs, { word: firstButtonText, button: firstButton} ]
+        )
+    }
+
+    async function clickAllSeedPhraseWords (words, wordButtonPairs) {
+      if (words.length === 0) {
+        return
+      }
+      const wordToClick = words[0]
+      const indexOfButtonToClick = wordButtonPairs.findIndex(({ word }) => word === wordToClick)
+      const buttonToClick = wordButtonPairs[indexOfButtonToClick].button
+
+      const newWordButtonPairs = wordButtonPairs.slice(0)
+      newWordButtonPairs.splice(indexOfButtonToClick, 1)
+
+      await buttonToClick.click()
+      await delay(tinyDelayMs)
+
+      return await clickAllSeedPhraseWords(words.slice(1), newWordButtonPairs)
+    }
+
+    async function retypeSeedPhrase (words, wasReloaded = false, retries = 0) {
       try {
         if (wasReloaded) {
           const byRevealButton = By.css('.backup-phrase__secret-blocker .backup-phrase__reveal-button')
@@ -215,67 +246,19 @@ describe('MetaMask', function () {
           await delay(regularDelayMs)
         }
 
-        const word0 = await findElement(driver, By.xpath(`//button[contains(text(), '${words[0]}')]`), 10000)
+        const seedPhraseButtons = await findElements(driver, By.css('.backup-phrase__confirm-seed-option'), 10000)
+        assert.equal(seedPhraseButtons.length, 12)
 
-        await word0.click()
-        await delay(tinyDelayMs)
+        const wordButtonPairs = await getWordButtonPairs(seedPhraseButtons)
 
-        const word1 = await findElement(driver, By.xpath(`//button[contains(text(), '${words[1]}')]`), 10000)
-
-        await word1.click()
-        await delay(tinyDelayMs)
-
-        const word2 = await findElement(driver, By.xpath(`//button[contains(text(), '${words[2]}')]`), 10000)
-
-        await word2.click()
-        await delay(tinyDelayMs)
-
-        const word3 = await findElement(driver, By.xpath(`//button[contains(text(), '${words[3]}')]`), 10000)
-
-        await word3.click()
-        await delay(tinyDelayMs)
-
-        const word4 = await findElement(driver, By.xpath(`//button[contains(text(), '${words[4]}')]`), 10000)
-
-        await word4.click()
-        await delay(tinyDelayMs)
-
-        const word5 = await findElement(driver, By.xpath(`//button[contains(text(), '${words[5]}')]`), 10000)
-
-        await word5.click()
-        await delay(tinyDelayMs)
-
-        const word6 = await findElement(driver, By.xpath(`//button[contains(text(), '${words[6]}')]`), 10000)
-
-        await word6.click()
-        await delay(tinyDelayMs)
-
-        const word7 = await findElement(driver, By.xpath(`//button[contains(text(), '${words[7]}')]`), 10000)
-
-        await word7.click()
-        await delay(tinyDelayMs)
-
-        const word8 = await findElement(driver, By.xpath(`//button[contains(text(), '${words[8]}')]`), 10000)
-
-        await word8.click()
-        await delay(tinyDelayMs)
-
-        const word9 = await findElement(driver, By.xpath(`//button[contains(text(), '${words[9]}')]`), 10000)
-
-        await word9.click()
-        await delay(tinyDelayMs)
-
-        const word10 = await findElement(driver, By.xpath(`//button[contains(text(), '${words[10]}')]`), 10000)
-
-        await word10.click()
-        await delay(tinyDelayMs)
-
-        const word11 = await findElement(driver, By.xpath(`//button[contains(text(), '${words[11]}')]`), 10000)
-        await word11.click()
-        await delay(tinyDelayMs)
+        await clickAllSeedPhraseWords(words, wordButtonPairs)
       } catch (e) {
-        await loadExtension(driver, extensionId)
-        await retypeSeedPhrase(words, true)
+        if (retries + 1 === 3) {
+          throw e
+        } else {
+          await loadExtension(driver, extensionId)
+          await retypeSeedPhrase(words, true, retries + 1)
+        }
       }
     }
 
