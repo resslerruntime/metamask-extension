@@ -15,6 +15,7 @@ const {
   verboseReportOnFailure,
   findElement,
   findElements,
+  loadExtension,
 } = require('./helpers')
 
 
@@ -73,38 +74,58 @@ describe('Using MetaMask with an existing account', function () {
   })
 
   describe('New UI setup', async function () {
+    let networkSelector
     it('switches to first tab', async function () {
       const [firstTab] = await driver.getAllWindowHandles()
       await driver.switchTo().window(firstTab)
       await delay(regularDelayMs)
+      try {
+        networkSelector = await findElement(driver, By.css('#network_component'))
+      } catch (e) {
+        await loadExtension(driver, extensionId)
+        await delay(largeDelayMs * 2)
+        networkSelector = await findElement(driver, By.css('#network_component'))
+      }
+      await delay(regularDelayMs)
     })
 
-    it('use the local network', async function () {
-      const networkSelector = await findElement(driver, By.css('#network_component'))
+    it('uses the local network', async function () {
       await networkSelector.click()
       await delay(regularDelayMs)
 
-      const [localhost] = await findElements(driver, By.xpath(`//li[contains(text(), 'Localhost')]`))
+      const networks = await findElements(driver, By.css('.dropdown-menu-item'))
+      const localhost = networks[4]
+      await driver.wait(until.elementTextMatches(localhost, /Localhost/))
       await localhost.click()
       await delay(regularDelayMs)
     })
 
     it('selects the new UI option', async () => {
+      try {
+        const overlay = await findElement(driver, By.css('.full-flex-height'))
+        await driver.wait(until.stalenessOf(overlay))
+      } catch (e) {}
+
       const button = await findElement(driver, By.xpath("//p[contains(text(), 'Try Beta Version')]"))
       await button.click()
       await delay(regularDelayMs)
 
       // Close all other tabs
-      const [oldUi, infoPage, newUi] = await driver.getAllWindowHandles()
-
-      const newUiOrInfoPage = newUi || infoPage
+      const [oldUi, tab1, tab2] = await driver.getAllWindowHandles()
       await driver.switchTo().window(oldUi)
       await driver.close()
-      if (infoPage !== newUiOrInfoPage) {
-        await driver.switchTo().window(infoPage)
+
+      await driver.switchTo().window(tab1)
+      const tab1Url = await driver.getCurrentUrl()
+      if (tab1Url.match(/metamask.io/)) {
+        await driver.switchTo().window(tab1)
         await driver.close()
+        await driver.switchTo().window(tab2)
+      } else if (tab2) {
+        await driver.switchTo().window(tab2)
+        await driver.close()
+        await driver.switchTo().window(tab1)
       }
-      await driver.switchTo().window(newUiOrInfoPage)
       await delay(regularDelayMs)
 
       const continueBtn = await findElement(driver, By.css('.welcome-screen__button'))
