@@ -3,22 +3,22 @@
  * @param {Error} err - error
  * @returns {Error} Error with clean stack trace.
  */
-function cleanErrorStack (err) {
-  var name = err.name
-  name = (name === undefined) ? 'Error' : String(name)
+function cleanErrorStack(err) {
+  var name = err.name;
+  name = name === undefined ? "Error" : String(name);
 
-  var msg = err.message
-  msg = (msg === undefined) ? '' : String(msg)
+  var msg = err.message;
+  msg = msg === undefined ? "" : String(msg);
 
-  if (name === '') {
-    err.stack = err.message
-  } else if (msg === '') {
-    err.stack = err.name
+  if (name === "") {
+    err.stack = err.message;
+  } else if (msg === "") {
+    err.stack = err.name;
   } else {
-    err.stack = err.name + ': ' + err.message
+    err.stack = err.name + ": " + err.message;
   }
 
-  return err
+  return err;
 }
 
-module.exports = cleanErrorStack
+module.exports = cleanErrorStack;

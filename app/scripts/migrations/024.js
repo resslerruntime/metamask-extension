@@ -1,5 +1,4 @@
-
-const version = 24
+const version = 24;
 
 /*
 
@@ -8,34 +7,36 @@ all unapproved transactions
 
 */
 
-const clone = require('clone')
+const clone = require("clone");
 
 module.exports = {
   version,
 
-  migrate: async function (originalVersionedData) {
-    const versionedData = clone(originalVersionedData)
-    versionedData.meta.version = version
-    const state = versionedData.data
-    const newState = transformState(state)
-    versionedData.data = newState
-    return versionedData
-  },
-}
+  migrate: async function(originalVersionedData) {
+    const versionedData = clone(originalVersionedData);
+    versionedData.meta.version = version;
+    const state = versionedData.data;
+    const newState = transformState(state);
+    versionedData.data = newState;
+    return versionedData;
+  }
+};
 
-function transformState (state) {
-  const newState = state
-  if (!newState.TransactionController) return newState
-  const transactions = newState.TransactionController.transactions
-  newState.TransactionController.transactions = transactions.map((txMeta, _, txList) => {
-    if (
-      txMeta.status === 'unapproved' &&
-      txMeta.txParams &&
-      txMeta.txParams.from
+function transformState(state) {
+  const newState = state;
+  if (!newState.TransactionController) return newState;
+  const transactions = newState.TransactionController.transactions;
+  newState.TransactionController.transactions = transactions.map(
+    (txMeta, _, txList) => {
+      if (
+        txMeta.status === "unapproved" &&
+        txMeta.txParams &&
+        txMeta.txParams.from
       ) {
-      txMeta.txParams.from = txMeta.txParams.from.toLowerCase()
+        txMeta.txParams.from = txMeta.txParams.from.toLowerCase();
+      }
+      return txMeta;
     }
-    return txMeta
-  })
-  return newState
+  );
+  return newState;
 }

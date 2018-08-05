@@ -28,16 +28,11 @@
     "unapprovedMsgCount": 0,
     "unapprovedPersonalMsgs": {},
     "unapprovedPersonalMsgCount": 0,
-    "keyringTypes": [
-      "Simple Key Pair",
-      "HD Key Tree"
-    ],
+    "keyringTypes": ["Simple Key Pair", "HD Key Tree"],
     "keyrings": [
       {
         "type": "HD Key Tree",
-        "accounts": [
-          "07284e146926a4facd0ea60598dc4f001ad620f1"
-        ]
+        "accounts": ["07284e146926a4facd0ea60598dc4f001ad620f1"]
       }
     ],
     "selectedAddress": "0x07284e146926a4facd0ea60598dc4f001ad620f1",
@@ -60,7 +55,8 @@
     "accountDetail": {
       "subview": "export",
       "accountExport": "completed",
-      "privateKey": "549c9638ad06432568969accacad4a02f8548cc358085938071745138ec134b7"
+      "privateKey":
+        "549c9638ad06432568969accacad4a02f8548cc358085938071745138ec134b7"
     },
     "transForward": true,
     "isLoading": false,

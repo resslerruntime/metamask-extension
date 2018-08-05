@@ -1,4 +1,5 @@
 start the dual servers (dapp + mascara)
+
 ```
 npm run mascara
 ```
@@ -22,7 +23,6 @@ Test will run in browser, you will have to have these browsers installed:
 - Chrome
 - Firefox
 - Opera
-
 
 ### Deploy:
 

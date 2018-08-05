@@ -1,11 +1,10 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-import PageContainerHeader from './page-container-header'
-import PageContainerFooter from './page-container-footer'
+import PageContainerHeader from "./page-container-header";
+import PageContainerFooter from "./page-container-footer";
 
 export default class PageContainer extends Component {
-
   static propTypes = {
     // PageContainerHeader props
     title: PropTypes.string.isRequired,
@@ -23,10 +22,10 @@ export default class PageContainer extends Component {
     cancelText: PropTypes.string,
     onSubmit: PropTypes.func,
     submitText: PropTypes.string,
-    disabled: PropTypes.bool,
+    disabled: PropTypes.bool
   };
 
-  render () {
+  render() {
     const {
       title,
       subtitle,
@@ -41,8 +40,8 @@ export default class PageContainer extends Component {
       cancelText,
       onSubmit,
       submitText,
-      disabled,
-    } = this.props
+      disabled
+    } = this.props;
 
     return (
       <div className="page-container">
@@ -56,7 +55,7 @@ export default class PageContainer extends Component {
           backButtonString={backButtonString}
         />
         <div className="page-container__content">
-          <ContentComponent { ...contentComponentProps } />
+          <ContentComponent {...contentComponentProps} />
         </div>
         <PageContainerFooter
           onCancel={onCancel}
@@ -66,7 +65,6 @@ export default class PageContainer extends Component {
           disabled={disabled}
         />
       </div>
-    )
+    );
   }
-
 }

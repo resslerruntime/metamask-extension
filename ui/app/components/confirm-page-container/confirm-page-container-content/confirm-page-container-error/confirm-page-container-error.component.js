@@ -1,9 +1,9 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from "react";
+import PropTypes from "prop-types";
 
 const ConfirmPageContainerError = (props, context) => {
-  const { errorMessage, errorKey } = props
-  const error = errorKey ? context.t(errorKey) : errorMessage
+  const { errorMessage, errorKey } = props;
+  const error = errorKey ? context.t(errorKey) : errorMessage;
 
   return (
     <div className="confirm-page-container-error">
@@ -11,18 +11,18 @@ const ConfirmPageContainerError = (props, context) => {
         src="/images/alert-red.svg"
         className="confirm-page-container-error__icon"
       />
-      { `ALERT: ${error}` }
+      {`ALERT: ${error}`}
     </div>
-  )
-}
+  );
+};
 
 ConfirmPageContainerError.propTypes = {
   errorMessage: PropTypes.string,
-  errorKey: PropTypes.string,
-}
+  errorKey: PropTypes.string
+};
 
 ConfirmPageContainerError.contextTypes = {
-  t: PropTypes.func,
-}
+  t: PropTypes.func
+};
 
-export default ConfirmPageContainerError
+export default ConfirmPageContainerError;

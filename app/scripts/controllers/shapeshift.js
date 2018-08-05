@@ -1,29 +1,31 @@
-const ObservableStore = require('obs-store')
-const extend = require('xtend')
-const log = require('loglevel')
+const ObservableStore = require("obs-store");
+const extend = require("xtend");
+const log = require("loglevel");
 
 // every three seconds when an incomplete tx is waiting
-const POLLING_INTERVAL = 3000
+const POLLING_INTERVAL = 3000;
 
 class ShapeshiftController {
-
-    /**
-     * Controller responsible for managing the list of shapeshift transactions. On construction, it initiates a poll
-     * that queries a shapeshift.io API for updates to any pending shapeshift transactions
-     *
-     * @typedef {Object} ShapeshiftController
-     * @param {object} opts Overrides the defaults for the initial state of this.store
-     * @property {array} opts.initState  initializes the the state of the ShapeshiftController. Can contain an
-     * shapeShiftTxList array.
-     * @property {array} shapeShiftTxList An array of ShapeShiftTx objects
-     *
-     */
-  constructor (opts = {}) {
-    const initState = extend({
-      shapeShiftTxList: [],
-    }, opts.initState)
-    this.store = new ObservableStore(initState)
-    this.pollForUpdates()
+  /**
+   * Controller responsible for managing the list of shapeshift transactions. On construction, it initiates a poll
+   * that queries a shapeshift.io API for updates to any pending shapeshift transactions
+   *
+   * @typedef {Object} ShapeshiftController
+   * @param {object} opts Overrides the defaults for the initial state of this.store
+   * @property {array} opts.initState  initializes the the state of the ShapeshiftController. Can contain an
+   * shapeShiftTxList array.
+   * @property {array} shapeShiftTxList An array of ShapeShiftTx objects
+   *
+   */
+  constructor(opts = {}) {
+    const initState = extend(
+      {
+        shapeShiftTxList: []
+      },
+      opts.initState
+    );
+    this.store = new ObservableStore(initState);
+    this.pollForUpdates();
   }
 
   /**
@@ -48,9 +50,9 @@ class ShapeshiftController {
    * @returns {array<ShapeShiftTx>}
    *
    */
-  getShapeShiftTxList () {
-    const shapeShiftTxList = this.store.getState().shapeShiftTxList
-    return shapeShiftTxList
+  getShapeShiftTxList() {
+    const shapeShiftTxList = this.store.getState().shapeShiftTxList;
+    return shapeShiftTxList;
   }
 
   /**
@@ -59,10 +61,12 @@ class ShapeshiftController {
    * @returns {array<ShapeShiftTx>} Only includes ShapeShiftTx which has a response property with a status !== complete
    *
    */
-  getPendingTxs () {
-    const txs = this.getShapeShiftTxList()
-    const pending = txs.filter(tx => tx.response && tx.response.status !== 'complete')
-    return pending
+  getPendingTxs() {
+    const txs = this.getShapeShiftTxList();
+    const pending = txs.filter(
+      tx => tx.response && tx.response.status !== "complete"
+    );
+    return pending;
   }
 
   /**
@@ -74,43 +78,47 @@ class ShapeshiftController {
    * is saved with saveTx.
    *
    */
-  pollForUpdates () {
-    const pendingTxs = this.getPendingTxs()
+  pollForUpdates() {
+    const pendingTxs = this.getPendingTxs();
 
     if (pendingTxs.length === 0) {
-      return
+      return;
     }
 
-    Promise.all(pendingTxs.map((tx) => {
-      return this.updateTx(tx)
-    }))
-    .then((results) => {
-      results.forEach(tx => this.saveTx(tx))
-      this.timeout = setTimeout(this.pollForUpdates.bind(this), POLLING_INTERVAL)
-    })
+    Promise.all(
+      pendingTxs.map(tx => {
+        return this.updateTx(tx);
+      })
+    ).then(results => {
+      results.forEach(tx => this.saveTx(tx));
+      this.timeout = setTimeout(
+        this.pollForUpdates.bind(this),
+        POLLING_INTERVAL
+      );
+    });
   }
 
-    /**
-     * Attempts to update a ShapeShiftTx with data from a shapeshift.io API. Both the response and time properties
-     * can be updated. The response property is updated with every call, but the time property is only updated when
-     * the response status updates to 'complete'. This will occur once the user makes a deposit as the ShapeShiftTx
-     * depositAddress
-     *
-     * @param {ShapeShiftTx} tx The tx to update
-     *
-     */
-  async updateTx (tx) {
+  /**
+   * Attempts to update a ShapeShiftTx with data from a shapeshift.io API. Both the response and time properties
+   * can be updated. The response property is updated with every call, but the time property is only updated when
+   * the response status updates to 'complete'. This will occur once the user makes a deposit as the ShapeShiftTx
+   * depositAddress
+   *
+   * @param {ShapeShiftTx} tx The tx to update
+   *
+   */
+  async updateTx(tx) {
     try {
-      const url = `https://shapeshift.io/txStat/${tx.depositAddress}`
-      const response = await fetch(url)
-      const json = await response.json()
-      tx.response = json
-      if (tx.response.status === 'complete') {
-        tx.time = new Date().getTime()
+      const url = `https://shapeshift.io/txStat/${tx.depositAddress}`;
+      const response = await fetch(url);
+      const json = await response.json();
+      tx.response = json;
+      if (tx.response.status === "complete") {
+        tx.time = new Date().getTime();
       }
-      return tx
+      return tx;
     } catch (err) {
-      log.warn(err)
+      log.warn(err);
     }
   }
 
@@ -121,12 +129,12 @@ class ShapeshiftController {
    * @param {ShapeShiftTx} tx The updated tx to save, if it exists in the current shapeShiftTxList
    *
    */
-  saveTx (tx) {
-    const { shapeShiftTxList } = this.store.getState()
-    const index = shapeShiftTxList.indexOf(tx)
+  saveTx(tx) {
+    const { shapeShiftTxList } = this.store.getState();
+    const index = shapeShiftTxList.indexOf(tx);
     if (index !== -1) {
-      shapeShiftTxList[index] = tx
-      this.store.updateState({ shapeShiftTxList })
+      shapeShiftTxList[index] = tx;
+      this.store.updateState({ shapeShiftTxList });
     }
   }
 
@@ -136,13 +144,13 @@ class ShapeshiftController {
    * @param {ShapeShiftTx} tx The tx to remove
    *
    */
-  removeShapeShiftTx (tx) {
-    const { shapeShiftTxList } = this.store.getState()
-    const index = shapeShiftTxList.indexOf(index)
+  removeShapeShiftTx(tx) {
+    const { shapeShiftTxList } = this.store.getState();
+    const index = shapeShiftTxList.indexOf(index);
     if (index !== -1) {
-      shapeShiftTxList.splice(index, 1)
+      shapeShiftTxList.splice(index, 1);
     }
-    this.updateState({ shapeShiftTxList })
+    this.updateState({ shapeShiftTxList });
   }
 
   /**
@@ -153,28 +161,27 @@ class ShapeshiftController {
    * @param {string} depositType - An abbreviation of the type of crypto currency to be deposited.
    *
    */
-  createShapeShiftTx (depositAddress, depositType) {
-    const state = this.store.getState()
-    let { shapeShiftTxList } = state
+  createShapeShiftTx(depositAddress, depositType) {
+    const state = this.store.getState();
+    let { shapeShiftTxList } = state;
 
     var shapeShiftTx = {
       depositAddress,
       depositType,
-      key: 'shapeshift',
+      key: "shapeshift",
       time: new Date().getTime(),
-      response: {},
-    }
+      response: {}
+    };
 
     if (!shapeShiftTxList) {
-      shapeShiftTxList = [shapeShiftTx]
+      shapeShiftTxList = [shapeShiftTx];
     } else {
-      shapeShiftTxList.push(shapeShiftTx)
+      shapeShiftTxList.push(shapeShiftTx);
     }
 
-    this.store.updateState({ shapeShiftTxList })
-    this.pollForUpdates()
+    this.store.updateState({ shapeShiftTxList });
+    this.pollForUpdates();
   }
-
 }
 
-module.exports = ShapeshiftController
+module.exports = ShapeshiftController;

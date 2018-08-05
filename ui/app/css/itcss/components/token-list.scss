@@ -22,7 +22,8 @@ $wallet-balance-breakpoint-range: "screen and (min-width: #{$break-large}) and (
     max-width: 100%;
   }
 
-  &__token-balance, &__token-symbol {
+  &__token-balance,
+  &__token-symbol {
     font-size: 1.5rem;
     flex: 0 0 auto;
 
@@ -32,7 +33,7 @@ $wallet-balance-breakpoint-range: "screen and (min-width: #{$break-large}) and (
   }
 
   &__fiat-amount {
-    margin-top: .25%;
+    margin-top: 0.25%;
     font-size: 105%;
     width: 100%;
     text-transform: uppercase;
@@ -53,7 +54,7 @@ $wallet-balance-breakpoint-range: "screen and (min-width: #{$break-large}) and (
 
   &__identicon {
     margin-right: 15px;
-    border: '1px solid #dedede';
+    border: "1px solid #dedede";
     min-width: 50px;
 
     @media #{$wallet-balance-breakpoint-range} {

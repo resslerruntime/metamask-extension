@@ -11,4 +11,3 @@ To realize the highest goals achievable for the human race with the twin powers 
 ## Strategy
 
 We provide software for users to manage accounts, for sites to easily propose actions to users, and for users to coherently review actions before approving them. We build on this rapidly evolving set of protocols with the goal of empowering the most people to the greatest degree, and aspire to continuously evolve our offering to pursue that goal.
-

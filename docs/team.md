@@ -75,4 +75,3 @@ Herman is currently leading the Mustekala project, a JavaScript, IPFS-based Ethe
 - Dan Miller (@danjm)
 - David Yoo (@yookd)
 - Whymarrh Whitby (@whymarrh)
-

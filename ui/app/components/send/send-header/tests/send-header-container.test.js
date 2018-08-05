@@ -1,59 +1,54 @@
-import assert from 'assert'
-import proxyquire from 'proxyquire'
-import sinon from 'sinon'
+import assert from "assert";
+import proxyquire from "proxyquire";
+import sinon from "sinon";
 
-let mapStateToProps
-let mapDispatchToProps
+let mapStateToProps;
+let mapDispatchToProps;
 
 const actionSpies = {
-  clearSend: sinon.spy(),
-}
+  clearSend: sinon.spy()
+};
 
-proxyquire('../send-header.container.js', {
-  'react-redux': {
+proxyquire("../send-header.container.js", {
+  "react-redux": {
     connect: (ms, md) => {
-      mapStateToProps = ms
-      mapDispatchToProps = md
-      return () => ({})
-    },
+      mapStateToProps = ms;
+      mapDispatchToProps = md;
+      return () => ({});
+    }
   },
-  '../../../actions': actionSpies,
-  './send-header.selectors': {
-    getTitleKey: (s) => `mockTitleKey:${s}`,
-    getSubtitleParams: (s) => `mockSubtitleParams:${s}`,
-  },
-})
+  "../../../actions": actionSpies,
+  "./send-header.selectors": {
+    getTitleKey: s => `mockTitleKey:${s}`,
+    getSubtitleParams: s => `mockSubtitleParams:${s}`
+  }
+});
 
-describe('send-header container', () => {
+describe("send-header container", () => {
+  describe("mapStateToProps()", () => {
+    it("should map the correct properties to props", () => {
+      assert.deepEqual(mapStateToProps("mockState"), {
+        titleKey: "mockTitleKey:mockState",
+        subtitleParams: "mockSubtitleParams:mockState"
+      });
+    });
+  });
 
-  describe('mapStateToProps()', () => {
-
-    it('should map the correct properties to props', () => {
-      assert.deepEqual(mapStateToProps('mockState'), {
-        titleKey: 'mockTitleKey:mockState',
-        subtitleParams: 'mockSubtitleParams:mockState',
-      })
-    })
-
-  })
-
-  describe('mapDispatchToProps()', () => {
-    let dispatchSpy
-    let mapDispatchToPropsObject
+  describe("mapDispatchToProps()", () => {
+    let dispatchSpy;
+    let mapDispatchToPropsObject;
 
     beforeEach(() => {
-      dispatchSpy = sinon.spy()
-      mapDispatchToPropsObject = mapDispatchToProps(dispatchSpy)
-    })
+      dispatchSpy = sinon.spy();
+      mapDispatchToPropsObject = mapDispatchToProps(dispatchSpy);
+    });
 
-    describe('clearSend()', () => {
-      it('should dispatch an action', () => {
-        mapDispatchToPropsObject.clearSend()
-        assert(dispatchSpy.calledOnce)
-        assert(actionSpies.clearSend.calledOnce)
-      })
-    })
-
-  })
-
-})
+    describe("clearSend()", () => {
+      it("should dispatch an action", () => {
+        mapDispatchToPropsObject.clearSend();
+        assert(dispatchSpy.calledOnce);
+        assert(actionSpies.clearSend.calledOnce);
+      });
+    });
+  });
+});

@@ -63,7 +63,8 @@
     "message": "코인베이스에서 구매"
   },
   "buyCoinbaseExplainer": {
-    "message": "코인베이스에서 비트코인, 이더리움, 라이트코인을 구매하실 수 있습니다."
+    "message":
+      "코인베이스에서 비트코인, 이더리움, 라이트코인을 구매하실 수 있습니다."
   },
   "cancel": {
     "message": "취소"
@@ -149,7 +150,8 @@
   },
   "depositCoin": {
     "message": "아래 주소로 $1를 입금해주세요.",
-    "description": "Tells the user what coin they have selected to deposit with shapeshift"
+    "description":
+      "Tells the user what coin they have selected to deposit with shapeshift"
   },
   "depositEth": {
     "message": "이더 입금"
@@ -167,7 +169,8 @@
     "message": "ShapeShift를 통해 입금하기"
   },
   "depositShapeShiftExplainer": {
-    "message": "다른 암호화폐를 가지고 있으면, 계좌 생성 필요없이, 거래를 하거나 메타마스크 지갑을 통해 이더를 입금할 수 있습니다."
+    "message":
+      "다른 암호화폐를 가지고 있으면, 계좌 생성 필요없이, 거래를 하거나 메타마스크 지갑을 통해 이더를 입금할 수 있습니다."
   },
   "details": {
     "message": "상세"
@@ -179,7 +182,8 @@
     "message": "이더 즉시 입금"
   },
   "directDepositEtherExplainer": {
-    "message": "이더를 이미 보유하고 있다면, 직접 입금을 통해 이더를 즉시 입금하실 수 있습니다."
+    "message":
+      "이더를 이미 보유하고 있다면, 직접 입금을 통해 이더를 즉시 입금하실 수 있습니다."
   },
   "done": {
     "message": "완료"
@@ -266,7 +270,8 @@
   },
   "here": {
     "message": "여기",
-    "description": "as in -click here- for more information (goes with troubleTokenBalances)"
+    "description":
+      "as in -click here- for more information (goes with troubleTokenBalances)"
   },
   "hide": {
     "message": "숨기기"
@@ -295,7 +300,8 @@
   },
   "imported": {
     "message": "가져오기 완료",
-    "description": "status showing that an account has been fully loaded into the keyring"
+    "description":
+      "status showing that an account has been fully loaded into the keyring"
   },
   "infoHelp": {
     "message": "정보 및 도움말"
@@ -358,7 +364,8 @@
   },
   "needImportFile": {
     "message": "가져올 파일을 선택해주세요.",
-    "description": "User is important an account and needs to add a file to continue"
+    "description":
+      "User is important an account and needs to add a file to continue"
   },
   "needImportPassword": {
     "message": "선택 된 파일에 패스워드를 입력해주세요.",
@@ -372,7 +379,8 @@
   },
   "newAccountNumberName": {
     "message": "새 계좌 $1",
-    "description": "Default name of next account to be created on create account screen"
+    "description":
+      "Default name of next account to be created on create account screen"
   },
   "newContract": {
     "message": "새 컨트랙트"
@@ -405,7 +413,8 @@
     "message": "구버전의 UI"
   },
   "oldUIMessage": {
-    "message": "구버전 UI로 변경하셨습니다. 우 상단 드랍다운 메뉴에서 새 UI로 변경하실 수 있습니다."
+    "message":
+      "구버전 UI로 변경하셨습니다. 우 상단 드랍다운 메뉴에서 새 UI로 변경하실 수 있습니다."
   },
   "or": {
     "message": "또는",
@@ -413,11 +422,13 @@
   },
   "passwordMismatch": {
     "message": "패스워드가 일치하지 않습니다.",
-    "description": "in password creation process, the two new password fields did not match"
+    "description":
+      "in password creation process, the two new password fields did not match"
   },
   "passwordShort": {
     "message": "패스워드가 너무 짧습니다.",
-    "description": "in password creation process, the password is not long enough to be secure"
+    "description":
+      "in password creation process, the password is not long enough to be secure"
   },
   "pastePrivateKey": {
     "message": "비밀키를 입력해주세요.",
@@ -434,7 +445,8 @@
     "description": "select this type of file to use to import an account"
   },
   "privateKeyWarning": {
-    "message": " 절대 이 키를 노출하지 마십시오. 비밀키가 노출되면 누구나 당신의 계좌에서 자산을 빼갈 수 있습니다."
+    "message":
+      " 절대 이 키를 노출하지 마십시오. 비밀키가 노출되면 누구나 당신의 계좌에서 자산을 빼갈 수 있습니다."
   },
   "privateNetwork": {
     "message": "프라이빗 네트워크"
@@ -443,7 +455,8 @@
     "message": "QR 코드 보기"
   },
   "readdToken": {
-    "message": "옵션 메뉴에서 “토큰 추가”를 눌러서 추후에 다시 이 토큰을 추가하실 수 있습니다."
+    "message":
+      "옵션 메뉴에서 “토큰 추가”를 눌러서 추후에 다시 이 토큰을 추가하실 수 있습니다."
   },
   "readMore": {
     "message": "더 읽기."
@@ -477,7 +490,8 @@
   },
   "sampleAccountName": {
     "message": "예) 나의 새 계좌",
-    "description": "Help user understand concept of adding a human-readable name to their account"
+    "description":
+      "Help user understand concept of adding a human-readable name to their account"
   },
   "save": {
     "message": "저장"
@@ -517,7 +531,8 @@
     "message": "서명 메시지"
   },
   "signNotice": {
-    "message": "이 메시지에 대한 서명은 위험할 수 있습니다.\n 완전히 신뢰할 수 있는 사이트에서만 서명해주세요.\n 안전을 위해 추후의 버전에서는 삭제될 기능입니다. "
+    "message":
+      "이 메시지에 대한 서명은 위험할 수 있습니다.\n 완전히 신뢰할 수 있는 사이트에서만 서명해주세요.\n 안전을 위해 추후의 버전에서는 삭제될 기능입니다. "
   },
   "sigRequest": {
     "message": "서명 요청"
@@ -560,7 +575,8 @@
     "message": "전송"
   },
   "troubleTokenBalances": {
-    "message": "토큰 잔액을 가져오는데에 문제가 생겼습니다. (여기)서 상세내용을 볼 수 있습니다.",
+    "message":
+      "토큰 잔액을 가져오는데에 문제가 생겼습니다. (여기)서 상세내용을 볼 수 있습니다.",
     "description": "Followed by a link (here) to view token balances"
   },
   "typePassword": {
@@ -570,7 +586,8 @@
     "message": "새 UI에 오신 것을 환영합니다. (베타)"
   },
   "uiWelcomeMessage": {
-    "message": "새 메타마스크 UI를 사용하고 계십니다. 토큰 전송과 같은 새 기능들을 사용해보시면서 문제가 있다면 알려주세요."
+    "message":
+      "새 메타마스크 UI를 사용하고 계십니다. 토큰 전송과 같은 새 기능들을 사용해보시면서 문제가 있다면 알려주세요."
   },
   "unavailable": {
     "message": "유효하지 않은"

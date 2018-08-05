@@ -1,2 +1,2 @@
-import AddToken from './add-token.container'
-module.exports = AddToken
+import AddToken from "./add-token.container";
+module.exports = AddToken;

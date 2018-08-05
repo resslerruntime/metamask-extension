@@ -189,7 +189,6 @@ rollback to 3.10.0 due to bug
 - Add validation preventing users from inputting their own addresses as token tracking addresses.
 - Added button to reject all transactions (thanks to davidp94! https://github.com/davidp94)
 
-
 ## 3.9.13 2017-9-8
 
 - Changed the way we initialize the inpage provider to fix a bug affecting some developers.
@@ -461,13 +460,13 @@ rollback to 3.10.0 due to bug
 
 ## 3.2.2 2017-2-8
 
-- Revert eth.sign behavior to the previous one with a big warning.  We will be gradually implementing the new behavior over the coming time. https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_sign
+- Revert eth.sign behavior to the previous one with a big warning. We will be gradually implementing the new behavior over the coming time. https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_sign
 
 - Improve test coverage of eth.sign behavior, including a code example of verifying a signature.
 
 ## 3.2.2 2017-2-8
 
-- Revert eth.sign behavior to the previous one with a big warning.  We will be gradually implementing the new behavior over the coming time. https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_sign
+- Revert eth.sign behavior to the previous one with a big warning. We will be gradually implementing the new behavior over the coming time. https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_sign
 
 ## 3.2.1 2017-2-8
 
@@ -606,13 +605,13 @@ rollback to 3.10.0 due to bug
 
 - Add Parity compatibility, fixing Geth dependency issues.
 - Add a link to the transaction in history that goes to https://metamask.github.io/eth-tx-viz
-too help visualize transactions and to where they are going.
+  too help visualize transactions and to where they are going.
 - Show "Buy Ether" button and warning on tx confirmation when sender balance is insufficient
 
 ## 2.12.1 2016-09-14
 
 - Fixed bug where if you send a transaction from within MetaMask extension the
-popup notification opens up.
+  popup notification opens up.
 - Fixed bug where some tx errors would block subsequent txs until the plugin was refreshed.
 
 ## 2.12.0 2016-09-14
@@ -897,9 +896,9 @@ popup notification opens up.
 
 ## 1.3.2 2016-04-04
 
- - When unlocking, first account is auto-selected.
- - When creating a first vault on the test-net, the first account is auto-funded.
- - Fixed some styling issues.
+- When unlocking, first account is auto-selected.
+- When creating a first vault on the test-net, the first account is auto-funded.
+- Fixed some styling issues.
 
 ## 1.0.1-1.3.1
 

@@ -1,6 +1,6 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import classnames from 'classnames'
+import React from "react";
+import PropTypes from "prop-types";
+import classnames from "classnames";
 
 const ConfirmDetailRow = props => {
   const {
@@ -10,34 +10,33 @@ const ConfirmDetailRow = props => {
     onHeaderClick,
     fiatTextColor,
     headerText,
-    headerTextClassName,
-  } = props
+    headerTextClassName
+  } = props;
 
   return (
     <div className="confirm-detail-row">
-      <div className="confirm-detail-row__label">
-        { label }
-      </div>
+      <div className="confirm-detail-row__label">{label}</div>
       <div className="confirm-detail-row__details">
         <div
-          className={classnames('confirm-detail-row__header-text', headerTextClassName)}
+          className={classnames(
+            "confirm-detail-row__header-text",
+            headerTextClassName
+          )}
           onClick={() => onHeaderClick && onHeaderClick()}
         >
-          { headerText }
+          {headerText}
         </div>
         <div
           className="confirm-detail-row__fiat"
           style={{ color: fiatTextColor }}
         >
-          { fiatText }
+          {fiatText}
         </div>
-        <div className="confirm-detail-row__eth">
-          { ethText }
-        </div>
+        <div className="confirm-detail-row__eth">{ethText}</div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 ConfirmDetailRow.propTypes = {
   label: PropTypes.string,
@@ -46,7 +45,7 @@ ConfirmDetailRow.propTypes = {
   fiatTextColor: PropTypes.string,
   onHeaderClick: PropTypes.func,
   headerText: PropTypes.string,
-  headerTextClassName: PropTypes.string,
-}
+  headerTextClassName: PropTypes.string
+};
 
-export default ConfirmDetailRow
+export default ConfirmDetailRow;

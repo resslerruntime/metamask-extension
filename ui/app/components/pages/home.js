@@ -1,136 +1,142 @@
-const { Component } = require('react')
-const { connect } = require('react-redux')
-const PropTypes = require('prop-types')
-const { Redirect, withRouter } = require('react-router-dom')
-const { compose } = require('recompose')
-const h = require('react-hyperscript')
-const actions = require('../../actions')
-const log = require('loglevel')
+const { Component } = require("react");
+const { connect } = require("react-redux");
+const PropTypes = require("prop-types");
+const { Redirect, withRouter } = require("react-router-dom");
+const { compose } = require("recompose");
+const h = require("react-hyperscript");
+const actions = require("../../actions");
+const log = require("loglevel");
 
 // init
-const NewKeyChainScreen = require('../../new-keychain')
+const NewKeyChainScreen = require("../../new-keychain");
 // mascara
-const MascaraBuyEtherScreen = require('../../../../mascara/src/app/first-time/buy-ether-screen').default
+const MascaraBuyEtherScreen = require("../../../../mascara/src/app/first-time/buy-ether-screen")
+  .default;
 
 // accounts
-const MainContainer = require('../../main-container')
+const MainContainer = require("../../main-container");
 
 // other views
-const BuyView = require('../../components/buy-button-subview')
-const QrView = require('../../components/qr-code')
+const BuyView = require("../../components/buy-button-subview");
+const QrView = require("../../components/qr-code");
 
 // Routes
 const {
   INITIALIZE_BACKUP_PHRASE_ROUTE,
   RESTORE_VAULT_ROUTE,
   CONFIRM_TRANSACTION_ROUTE,
-  NOTICE_ROUTE,
-} = require('../../routes')
+  NOTICE_ROUTE
+} = require("../../routes");
 
-const { unconfirmedTransactionsCountSelector } = require('../../selectors/confirm-transaction')
+const {
+  unconfirmedTransactionsCountSelector
+} = require("../../selectors/confirm-transaction");
 
 class Home extends Component {
-  componentDidMount () {
-    const {
-      history,
-      unconfirmedTransactionsCount = 0,
-    } = this.props
+  componentDidMount() {
+    const { history, unconfirmedTransactionsCount = 0 } = this.props;
 
     // unapprovedTxs and unapproved messages
     if (unconfirmedTransactionsCount > 0) {
-      history.push(CONFIRM_TRANSACTION_ROUTE)
+      history.push(CONFIRM_TRANSACTION_ROUTE);
     }
   }
 
-  render () {
-    log.debug('rendering primary')
+  render() {
+    log.debug("rendering primary");
     const {
       noActiveNotices,
       lostAccounts,
       forgottenPassword,
       currentView,
       activeAddress,
-      seedWords,
-    } = this.props
+      seedWords
+    } = this.props;
 
     // notices
     if (!noActiveNotices || (lostAccounts && lostAccounts.length > 0)) {
       return h(Redirect, {
         to: {
-          pathname: NOTICE_ROUTE,
-        },
-      })
+          pathname: NOTICE_ROUTE
+        }
+      });
     }
 
     // seed words
     if (seedWords) {
-      log.debug('rendering seed words')
+      log.debug("rendering seed words");
       return h(Redirect, {
         to: {
-          pathname: INITIALIZE_BACKUP_PHRASE_ROUTE,
-        },
-      })
+          pathname: INITIALIZE_BACKUP_PHRASE_ROUTE
+        }
+      });
     }
 
     if (forgottenPassword) {
-      log.debug('rendering restore vault screen')
+      log.debug("rendering restore vault screen");
       return h(Redirect, {
         to: {
-          pathname: RESTORE_VAULT_ROUTE,
-        },
-      })
+          pathname: RESTORE_VAULT_ROUTE
+        }
+      });
     }
 
     // show current view
     switch (currentView.name) {
+      case "accountDetail":
+        log.debug("rendering main container");
+        return h(MainContainer, { key: "account-detail" });
 
-      case 'accountDetail':
-        log.debug('rendering main container')
-        return h(MainContainer, {key: 'account-detail'})
+      case "newKeychain":
+        log.debug("rendering new keychain screen");
+        return h(NewKeyChainScreen, { key: "new-keychain" });
 
-      case 'newKeychain':
-        log.debug('rendering new keychain screen')
-        return h(NewKeyChainScreen, {key: 'new-keychain'})
+      case "buyEth":
+        log.debug("rendering buy ether screen");
+        return h(BuyView, { key: "buyEthView" });
 
-      case 'buyEth':
-        log.debug('rendering buy ether screen')
-        return h(BuyView, {key: 'buyEthView'})
+      case "onboardingBuyEth":
+        log.debug("rendering onboarding buy ether screen");
+        return h(MascaraBuyEtherScreen, { key: "buyEthView" });
 
-      case 'onboardingBuyEth':
-        log.debug('rendering onboarding buy ether screen')
-        return h(MascaraBuyEtherScreen, {key: 'buyEthView'})
-
-      case 'qr':
-        log.debug('rendering show qr screen')
-        return h('div', {
-          style: {
-            position: 'absolute',
-            height: '100%',
-            top: '0px',
-            left: '0px',
+      case "qr":
+        log.debug("rendering show qr screen");
+        return h(
+          "div",
+          {
+            style: {
+              position: "absolute",
+              height: "100%",
+              top: "0px",
+              left: "0px"
+            }
           },
-        }, [
-          h('i.fa.fa-arrow-left.fa-lg.cursor-pointer.color-orange', {
-            onClick: () => this.props.dispatch(actions.backToAccountDetail(activeAddress)),
-            style: {
-              marginLeft: '10px',
-              marginTop: '50px',
-            },
-          }),
-          h('div', {
-            style: {
-              position: 'absolute',
-              left: '44px',
-              width: '285px',
-            },
-          }, [
-            h(QrView, {key: 'qr'}),
-          ]),
-        ])
+          [
+            h("i.fa.fa-arrow-left.fa-lg.cursor-pointer.color-orange", {
+              onClick: () =>
+                this.props.dispatch(actions.backToAccountDetail(activeAddress)),
+              style: {
+                marginLeft: "10px",
+                marginTop: "50px"
+              }
+            }),
+            h(
+              "div",
+              {
+                style: {
+                  position: "absolute",
+                  left: "44px",
+                  width: "285px"
+                }
+              },
+              [h(QrView, { key: "qr" })]
+            )
+          ]
+        );
 
       default:
-        log.debug('rendering default, account detail screen')
-        return h(MainContainer, {key: 'account-detail'})
+        log.debug("rendering default, account detail screen");
+        return h(MainContainer, { key: "account-detail" });
     }
   }
 }
@@ -165,17 +171,17 @@ Home.propTypes = {
   isPopup: PropTypes.bool,
   isMouseUser: PropTypes.bool,
   t: PropTypes.func,
-  unconfirmedTransactionsCount: PropTypes.number,
-}
+  unconfirmedTransactionsCount: PropTypes.number
+};
 
-function mapStateToProps (state) {
-  const { appState, metamask } = state
+function mapStateToProps(state) {
+  const { appState, metamask } = state;
   const {
     networkDropdownOpen,
     sidebarOpen,
     isLoading,
-    loadingMessage,
-  } = appState
+    loadingMessage
+  } = appState;
 
   const {
     accounts,
@@ -188,9 +194,9 @@ function mapStateToProps (state) {
     lostAccounts,
     unapprovedMsgCount,
     unapprovedPersonalMsgCount,
-    unapprovedTypedMessagesCount,
-  } = metamask
-  const selected = address || Object.keys(accounts)[0]
+    unapprovedTypedMessagesCount
+  } = metamask;
+  const selected = address || Object.keys(accounts)[0];
 
   return {
     // state from plugin
@@ -229,11 +235,11 @@ function mapStateToProps (state) {
 
     // state needed to get account dropdown temporarily rendering from app bar
     selected,
-    unconfirmedTransactionsCount: unconfirmedTransactionsCountSelector(state),
-  }
+    unconfirmedTransactionsCount: unconfirmedTransactionsCountSelector(state)
+  };
 }
 
 module.exports = compose(
   withRouter,
   connect(mapStateToProps)
-)(Home)
+)(Home);

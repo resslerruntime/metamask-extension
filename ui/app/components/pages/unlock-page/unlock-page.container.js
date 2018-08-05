@@ -1,31 +1,36 @@
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
-import { compose } from 'recompose'
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { compose } from "recompose";
 
 const {
   tryUnlockMetamask,
   forgotPassword,
-  markPasswordForgotten,
-} = require('../../../actions')
+  markPasswordForgotten
+} = require("../../../actions");
 
-import UnlockPage from './unlock-page.component'
+import UnlockPage from "./unlock-page.component";
 
 const mapStateToProps = state => {
-  const { metamask: { isUnlocked } } = state
+  const {
+    metamask: { isUnlocked }
+  } = state;
   return {
-    isUnlocked,
-  }
-}
+    isUnlocked
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
     forgotPassword: () => dispatch(forgotPassword()),
     tryUnlockMetamask: password => dispatch(tryUnlockMetamask(password)),
-    markPasswordForgotten: () => dispatch(markPasswordForgotten()),
-  }
-}
+    markPasswordForgotten: () => dispatch(markPasswordForgotten())
+  };
+};
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps)
-)(UnlockPage)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
+)(UnlockPage);

@@ -1,1 +1,1 @@
-export { default } from './send-dropdown-list.component'
+export { default } from "./send-dropdown-list.component";

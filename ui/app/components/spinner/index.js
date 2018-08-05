@@ -1,2 +1,2 @@
-const Spinner = require('./spinner.component')
-module.exports = Spinner
+const Spinner = require("./spinner.component");
+module.exports = Spinner;

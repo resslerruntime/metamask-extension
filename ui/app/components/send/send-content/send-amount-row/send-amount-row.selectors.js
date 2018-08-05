@@ -1,9 +1,9 @@
 const selectors = {
-  sendAmountIsInError,
-}
+  sendAmountIsInError
+};
 
-module.exports = selectors
+module.exports = selectors;
 
-function sendAmountIsInError (state) {
-  return Boolean(state.send.errors.amount)
+function sendAmountIsInError(state) {
+  return Boolean(state.send.errors.amount);
 }

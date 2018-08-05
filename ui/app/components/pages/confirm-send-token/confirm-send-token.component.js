@@ -1,29 +1,31 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import ConfirmTokenTransactionBase from '../confirm-token-transaction-base'
-import { SEND_ROUTE } from '../../../routes'
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import ConfirmTokenTransactionBase from "../confirm-token-transaction-base";
+import { SEND_ROUTE } from "../../../routes";
 
 export default class ConfirmSendToken extends Component {
   static propTypes = {
     history: PropTypes.object,
     editTransaction: PropTypes.func,
-    tokenAmount: PropTypes.number,
+    tokenAmount: PropTypes.number
+  };
+
+  handleEdit(confirmTransactionData) {
+    const { editTransaction, history } = this.props;
+    editTransaction(confirmTransactionData);
+    history.push(SEND_ROUTE);
   }
 
-  handleEdit (confirmTransactionData) {
-    const { editTransaction, history } = this.props
-    editTransaction(confirmTransactionData)
-    history.push(SEND_ROUTE)
-  }
-
-  render () {
-    const { tokenAmount } = this.props
+  render() {
+    const { tokenAmount } = this.props;
 
     return (
       <ConfirmTokenTransactionBase
-        onEdit={confirmTransactionData => this.handleEdit(confirmTransactionData)}
+        onEdit={confirmTransactionData =>
+          this.handleEdit(confirmTransactionData)
+        }
         tokenAmount={tokenAmount}
       />
-    )
+    );
   }
 }

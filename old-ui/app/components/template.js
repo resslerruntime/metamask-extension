@@ -1,18 +1,16 @@
-const Component = require('react').Component
-const h = require('react-hyperscript')
-const inherits = require('util').inherits
+const Component = require("react").Component;
+const h = require("react-hyperscript");
+const inherits = require("util").inherits;
 
-module.exports = NewComponent
+module.exports = NewComponent;
 
-inherits(NewComponent, Component)
-function NewComponent () {
-  Component.call(this)
+inherits(NewComponent, Component);
+function NewComponent() {
+  Component.call(this);
 }
 
-NewComponent.prototype.render = function () {
-  const props = this.props
+NewComponent.prototype.render = function() {
+  const props = this.props;
 
-  return (
-    h('span', props.message)
-  )
-}
+  return h("span", props.message);
+};

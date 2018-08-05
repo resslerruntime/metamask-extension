@@ -1,9 +1,7 @@
-const valuesFor = require('./util').valuesFor
-const abi = require('human-standard-token-abi')
+const valuesFor = require("./util").valuesFor;
+const abi = require("human-standard-token-abi");
 
-const {
-  multiplyCurrencies,
-} = require('./conversion-util')
+const { multiplyCurrencies } = require("./conversion-util");
 
 const selectors = {
   getSelectedAddress,
@@ -27,170 +25,181 @@ const selectors = {
   autoAddToBetaUI,
   getSendMaxModeState,
   getCurrentViewContext,
-  getTotalUnapprovedCount,
+  getTotalUnapprovedCount
+};
+
+module.exports = selectors;
+
+function getSelectedAddress(state) {
+  const selectedAddress =
+    state.metamask.selectedAddress || Object.keys(state.metamask.accounts)[0];
+
+  return selectedAddress;
 }
 
-module.exports = selectors
+function getSelectedIdentity(state) {
+  const selectedAddress = getSelectedAddress(state);
+  const identities = state.metamask.identities;
 
-function getSelectedAddress (state) {
-  const selectedAddress = state.metamask.selectedAddress || Object.keys(state.metamask.accounts)[0]
-
-  return selectedAddress
+  return identities[selectedAddress];
 }
 
-function getSelectedIdentity (state) {
-  const selectedAddress = getSelectedAddress(state)
-  const identities = state.metamask.identities
+function getSelectedAccount(state) {
+  const accounts = state.metamask.accounts;
+  const selectedAddress = getSelectedAddress(state);
 
-  return identities[selectedAddress]
+  return accounts[selectedAddress];
 }
 
-function getSelectedAccount (state) {
-  const accounts = state.metamask.accounts
-  const selectedAddress = getSelectedAddress(state)
+function getSelectedToken(state) {
+  const tokens = state.metamask.tokens || [];
+  const selectedTokenAddress = state.metamask.selectedTokenAddress;
+  const selectedToken = tokens.filter(
+    ({ address }) => address === selectedTokenAddress
+  )[0];
+  const sendToken = state.metamask.send.token;
 
-  return accounts[selectedAddress]
+  return selectedToken || sendToken || null;
 }
 
-function getSelectedToken (state) {
-  const tokens = state.metamask.tokens || []
-  const selectedTokenAddress = state.metamask.selectedTokenAddress
-  const selectedToken = tokens.filter(({ address }) => address === selectedTokenAddress)[0]
-  const sendToken = state.metamask.send.token
-
-  return selectedToken || sendToken || null
+function getSelectedTokenExchangeRate(state) {
+  const contractExchangeRates = state.metamask.contractExchangeRates;
+  const selectedToken = getSelectedToken(state) || {};
+  const { address } = selectedToken;
+  return contractExchangeRates[address] || 0;
 }
 
-function getSelectedTokenExchangeRate (state) {
-  const contractExchangeRates = state.metamask.contractExchangeRates
-  const selectedToken = getSelectedToken(state) || {}
-  const { address } = selectedToken
-  return contractExchangeRates[address] || 0
+function getTokenExchangeRate(state, address) {
+  const contractExchangeRates = state.metamask.contractExchangeRates;
+  return contractExchangeRates[address] || 0;
 }
 
-function getTokenExchangeRate (state, address) {
-  const contractExchangeRates = state.metamask.contractExchangeRates
-  return contractExchangeRates[address] || 0
+function conversionRateSelector(state) {
+  return state.metamask.conversionRate;
 }
 
-function conversionRateSelector (state) {
-  return state.metamask.conversionRate
+function getAddressBook(state) {
+  return state.metamask.addressBook;
 }
 
-function getAddressBook (state) {
-  return state.metamask.addressBook
+function accountsWithSendEtherInfoSelector(state) {
+  const { accounts, identities } = state.metamask;
+
+  const accountsWithSendEtherInfo = Object.entries(accounts).map(
+    ([key, account]) => {
+      return Object.assign({}, account, identities[key]);
+    }
+  );
+
+  return accountsWithSendEtherInfo;
 }
 
-function accountsWithSendEtherInfoSelector (state) {
-  const {
-    accounts,
-    identities,
-  } = state.metamask
+function getCurrentAccountWithSendEtherInfo(state) {
+  const currentAddress = getSelectedAddress(state);
+  const accounts = accountsWithSendEtherInfoSelector(state);
 
-  const accountsWithSendEtherInfo = Object.entries(accounts).map(([key, account]) => {
-    return Object.assign({}, account, identities[key])
-  })
-
-  return accountsWithSendEtherInfo
+  return accounts.find(({ address }) => address === currentAddress);
 }
 
-function getCurrentAccountWithSendEtherInfo (state) {
-  const currentAddress = getSelectedAddress(state)
-  const accounts = accountsWithSendEtherInfoSelector(state)
-
-  return accounts.find(({ address }) => address === currentAddress)
-}
-
-function transactionsSelector (state) {
-  const { network, selectedTokenAddress } = state.metamask
-  const unapprovedMsgs = valuesFor(state.metamask.unapprovedMsgs)
-  const shapeShiftTxList = (network === '1') ? state.metamask.shapeShiftTxList : undefined
-  const transactions = state.metamask.selectedAddressTxList || []
-  const txsToRender = !shapeShiftTxList ? transactions.concat(unapprovedMsgs) : transactions.concat(unapprovedMsgs, shapeShiftTxList)
+function transactionsSelector(state) {
+  const { network, selectedTokenAddress } = state.metamask;
+  const unapprovedMsgs = valuesFor(state.metamask.unapprovedMsgs);
+  const shapeShiftTxList =
+    network === "1" ? state.metamask.shapeShiftTxList : undefined;
+  const transactions = state.metamask.selectedAddressTxList || [];
+  const txsToRender = !shapeShiftTxList
+    ? transactions.concat(unapprovedMsgs)
+    : transactions.concat(unapprovedMsgs, shapeShiftTxList);
 
   // console.log({txsToRender, selectedTokenAddress})
   return selectedTokenAddress
     ? txsToRender
-      .filter(({ txParams }) => txParams && txParams.to === selectedTokenAddress)
-      .sort((a, b) => b.time - a.time)
-    : txsToRender
-      .sort((a, b) => b.time - a.time)
+        .filter(
+          ({ txParams }) => txParams && txParams.to === selectedTokenAddress
+        )
+        .sort((a, b) => b.time - a.time)
+    : txsToRender.sort((a, b) => b.time - a.time);
 }
 
-function getGasIsLoading (state) {
-  return state.appState.gasIsLoading
+function getGasIsLoading(state) {
+  return state.appState.gasIsLoading;
 }
 
-function getForceGasMin (state) {
-  return state.metamask.send.forceGasMin
+function getForceGasMin(state) {
+  return state.metamask.send.forceGasMin;
 }
 
-function getSendFrom (state) {
-  return state.metamask.send.from
+function getSendFrom(state) {
+  return state.metamask.send.from;
 }
 
-function getSendAmount (state) {
-  return state.metamask.send.amount
+function getSendAmount(state) {
+  return state.metamask.send.amount;
 }
 
-function getSendMaxModeState (state) {
-  return state.metamask.send.maxModeOn
+function getSendMaxModeState(state) {
+  return state.metamask.send.maxModeOn;
 }
 
-function getCurrentCurrency (state) {
-  return state.metamask.currentCurrency
+function getCurrentCurrency(state) {
+  return state.metamask.currentCurrency;
 }
 
-function getSelectedTokenToFiatRate (state) {
-  const selectedTokenExchangeRate = getSelectedTokenExchangeRate(state)
-  const conversionRate = conversionRateSelector(state)
+function getSelectedTokenToFiatRate(state) {
+  const selectedTokenExchangeRate = getSelectedTokenExchangeRate(state);
+  const conversionRate = conversionRateSelector(state);
 
   const tokenToFiatRate = multiplyCurrencies(
     conversionRate,
     selectedTokenExchangeRate,
-    { toNumericBase: 'dec' }
-  )
+    { toNumericBase: "dec" }
+  );
 
-  return tokenToFiatRate
+  return tokenToFiatRate;
 }
 
-function getSelectedTokenContract (state) {
-  const selectedToken = getSelectedToken(state)
+function getSelectedTokenContract(state) {
+  const selectedToken = getSelectedToken(state);
   return selectedToken
     ? global.eth.contract(abi).at(selectedToken.address)
-    : null
+    : null;
 }
 
-function autoAddToBetaUI (state) {
-  const autoAddTransactionThreshold = 12
-  const autoAddAccountsThreshold = 2
-  const autoAddTokensThreshold = 1
+function autoAddToBetaUI(state) {
+  const autoAddTransactionThreshold = 12;
+  const autoAddAccountsThreshold = 2;
+  const autoAddTokensThreshold = 1;
 
-  const numberOfTransactions = state.metamask.selectedAddressTxList.length
-  const numberOfAccounts = Object.keys(state.metamask.accounts).length
-  const numberOfTokensAdded = state.metamask.tokens.length
+  const numberOfTransactions = state.metamask.selectedAddressTxList.length;
+  const numberOfAccounts = Object.keys(state.metamask.accounts).length;
+  const numberOfTokensAdded = state.metamask.tokens.length;
 
-  const userPassesThreshold = (numberOfTransactions > autoAddTransactionThreshold) &&
-    (numberOfAccounts > autoAddAccountsThreshold) &&
-    (numberOfTokensAdded > autoAddTokensThreshold)
-  const userIsNotInBeta = !state.metamask.featureFlags.betaUI
+  const userPassesThreshold =
+    numberOfTransactions > autoAddTransactionThreshold &&
+    numberOfAccounts > autoAddAccountsThreshold &&
+    numberOfTokensAdded > autoAddTokensThreshold;
+  const userIsNotInBeta = !state.metamask.featureFlags.betaUI;
 
-  return userIsNotInBeta && userPassesThreshold
+  return userIsNotInBeta && userPassesThreshold;
 }
 
-function getCurrentViewContext (state) {
-  const { currentView = {} } = state.appState
-  return currentView.context
+function getCurrentViewContext(state) {
+  const { currentView = {} } = state.appState;
+  return currentView.context;
 }
 
-function getTotalUnapprovedCount ({ metamask }) {
+function getTotalUnapprovedCount({ metamask }) {
   const {
     unapprovedTxs = {},
     unapprovedMsgCount,
     unapprovedPersonalMsgCount,
-    unapprovedTypedMessagesCount,
-  } = metamask
-
-  return Object.keys(unapprovedTxs).length + unapprovedMsgCount + unapprovedPersonalMsgCount +
     unapprovedTypedMessagesCount
+  } = metamask;
+
+  return (
+    Object.keys(unapprovedTxs).length +
+    unapprovedMsgCount +
+    unapprovedPersonalMsgCount +
+    unapprovedTypedMessagesCount
+  );
 }

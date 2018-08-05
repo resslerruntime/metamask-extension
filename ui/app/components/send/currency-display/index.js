@@ -1,1 +1,1 @@
-export { default } from './currency-display.js'
+export { default } from "./currency-display.js";

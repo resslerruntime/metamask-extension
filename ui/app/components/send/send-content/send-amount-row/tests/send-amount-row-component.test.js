@@ -1,160 +1,161 @@
-import React from 'react'
-import assert from 'assert'
-import { shallow } from 'enzyme'
-import sinon from 'sinon'
-import SendAmountRow from '../send-amount-row.component.js'
+import React from "react";
+import assert from "assert";
+import { shallow } from "enzyme";
+import sinon from "sinon";
+import SendAmountRow from "../send-amount-row.component.js";
 
-import SendRowWrapper from '../../send-row-wrapper/send-row-wrapper.component'
-import AmountMaxButton from '../amount-max-button/amount-max-button.container'
-import CurrencyDisplay from '../../../currency-display'
+import SendRowWrapper from "../../send-row-wrapper/send-row-wrapper.component";
+import AmountMaxButton from "../amount-max-button/amount-max-button.container";
+import CurrencyDisplay from "../../../currency-display";
 
 const propsMethodSpies = {
   setMaxModeTo: sinon.spy(),
   updateSendAmount: sinon.spy(),
   updateSendAmountError: sinon.spy(),
   updateGas: sinon.spy(),
-  updateGasFeeError: sinon.spy(),
-}
+  updateGasFeeError: sinon.spy()
+};
 
-sinon.spy(SendAmountRow.prototype, 'updateAmount')
-sinon.spy(SendAmountRow.prototype, 'validateAmount')
-sinon.spy(SendAmountRow.prototype, 'updateGas')
+sinon.spy(SendAmountRow.prototype, "updateAmount");
+sinon.spy(SendAmountRow.prototype, "validateAmount");
+sinon.spy(SendAmountRow.prototype, "updateGas");
 
-describe('SendAmountRow Component', function () {
-  let wrapper
-  let instance
+describe("SendAmountRow Component", function() {
+  let wrapper;
+  let instance;
 
   beforeEach(() => {
-    wrapper = shallow(<SendAmountRow
-      amount={'mockAmount'}
-      amountConversionRate={'mockAmountConversionRate'}
-      balance={'mockBalance'}
-      conversionRate={7}
-      convertedCurrency={'mockConvertedCurrency'}
-      gasTotal={'mockGasTotal'}
-      inError={false}
-      primaryCurrency={'mockPrimaryCurrency'}
-      selectedToken={ { address: 'mockTokenAddress' } }
-      setMaxModeTo={propsMethodSpies.setMaxModeTo}
-      tokenBalance={'mockTokenBalance'}
-      updateGasFeeError={propsMethodSpies.updateGasFeeError}
-      updateSendAmount={propsMethodSpies.updateSendAmount}
-      updateSendAmountError={propsMethodSpies.updateSendAmountError}
-      updateGas={propsMethodSpies.updateGas}
-    />, { context: { t: str => str + '_t' } })
-    instance = wrapper.instance()
-  })
+    wrapper = shallow(
+      <SendAmountRow
+        amount={"mockAmount"}
+        amountConversionRate={"mockAmountConversionRate"}
+        balance={"mockBalance"}
+        conversionRate={7}
+        convertedCurrency={"mockConvertedCurrency"}
+        gasTotal={"mockGasTotal"}
+        inError={false}
+        primaryCurrency={"mockPrimaryCurrency"}
+        selectedToken={{ address: "mockTokenAddress" }}
+        setMaxModeTo={propsMethodSpies.setMaxModeTo}
+        tokenBalance={"mockTokenBalance"}
+        updateGasFeeError={propsMethodSpies.updateGasFeeError}
+        updateSendAmount={propsMethodSpies.updateSendAmount}
+        updateSendAmountError={propsMethodSpies.updateSendAmountError}
+        updateGas={propsMethodSpies.updateGas}
+      />,
+      { context: { t: str => str + "_t" } }
+    );
+    instance = wrapper.instance();
+  });
 
   afterEach(() => {
-    propsMethodSpies.setMaxModeTo.resetHistory()
-    propsMethodSpies.updateSendAmount.resetHistory()
-    propsMethodSpies.updateSendAmountError.resetHistory()
-    propsMethodSpies.updateGasFeeError.resetHistory()
-    SendAmountRow.prototype.validateAmount.resetHistory()
-    SendAmountRow.prototype.updateAmount.resetHistory()
-  })
+    propsMethodSpies.setMaxModeTo.resetHistory();
+    propsMethodSpies.updateSendAmount.resetHistory();
+    propsMethodSpies.updateSendAmountError.resetHistory();
+    propsMethodSpies.updateGasFeeError.resetHistory();
+    SendAmountRow.prototype.validateAmount.resetHistory();
+    SendAmountRow.prototype.updateAmount.resetHistory();
+  });
 
-  describe('validateAmount', () => {
-
-    it('should call updateSendAmountError with the correct params', () => {
-      assert.equal(propsMethodSpies.updateSendAmountError.callCount, 0)
-      instance.validateAmount('someAmount')
-      assert.equal(propsMethodSpies.updateSendAmountError.callCount, 1)
-      assert.deepEqual(
-        propsMethodSpies.updateSendAmountError.getCall(0).args,
-        [{
-          amount: 'someAmount',
-          amountConversionRate: 'mockAmountConversionRate',
-          balance: 'mockBalance',
+  describe("validateAmount", () => {
+    it("should call updateSendAmountError with the correct params", () => {
+      assert.equal(propsMethodSpies.updateSendAmountError.callCount, 0);
+      instance.validateAmount("someAmount");
+      assert.equal(propsMethodSpies.updateSendAmountError.callCount, 1);
+      assert.deepEqual(propsMethodSpies.updateSendAmountError.getCall(0).args, [
+        {
+          amount: "someAmount",
+          amountConversionRate: "mockAmountConversionRate",
+          balance: "mockBalance",
           conversionRate: 7,
-          gasTotal: 'mockGasTotal',
-          primaryCurrency: 'mockPrimaryCurrency',
-          selectedToken: { address: 'mockTokenAddress' },
-          tokenBalance: 'mockTokenBalance',
-        }]
-      )
-    })
+          gasTotal: "mockGasTotal",
+          primaryCurrency: "mockPrimaryCurrency",
+          selectedToken: { address: "mockTokenAddress" },
+          tokenBalance: "mockTokenBalance"
+        }
+      ]);
+    });
 
-    it('should call updateGasFeeError if selectedToken is truthy', () => {
-      assert.equal(propsMethodSpies.updateGasFeeError.callCount, 0)
-      instance.validateAmount('someAmount')
-      assert.equal(propsMethodSpies.updateGasFeeError.callCount, 1)
-      assert.deepEqual(
-        propsMethodSpies.updateGasFeeError.getCall(0).args,
-        [{
-          amount: 'someAmount',
-          amountConversionRate: 'mockAmountConversionRate',
-          balance: 'mockBalance',
+    it("should call updateGasFeeError if selectedToken is truthy", () => {
+      assert.equal(propsMethodSpies.updateGasFeeError.callCount, 0);
+      instance.validateAmount("someAmount");
+      assert.equal(propsMethodSpies.updateGasFeeError.callCount, 1);
+      assert.deepEqual(propsMethodSpies.updateGasFeeError.getCall(0).args, [
+        {
+          amount: "someAmount",
+          amountConversionRate: "mockAmountConversionRate",
+          balance: "mockBalance",
           conversionRate: 7,
-          gasTotal: 'mockGasTotal',
-          primaryCurrency: 'mockPrimaryCurrency',
-          selectedToken: { address: 'mockTokenAddress' },
-          tokenBalance: 'mockTokenBalance',
-        }]
-      )
-    })
+          gasTotal: "mockGasTotal",
+          primaryCurrency: "mockPrimaryCurrency",
+          selectedToken: { address: "mockTokenAddress" },
+          tokenBalance: "mockTokenBalance"
+        }
+      ]);
+    });
 
-    it('should call not updateGasFeeError if selectedToken is falsey', () => {
-      wrapper.setProps({ selectedToken: null })
-      assert.equal(propsMethodSpies.updateGasFeeError.callCount, 0)
-      instance.validateAmount('someAmount')
-      assert.equal(propsMethodSpies.updateGasFeeError.callCount, 0)
-    })
+    it("should call not updateGasFeeError if selectedToken is falsey", () => {
+      wrapper.setProps({ selectedToken: null });
+      assert.equal(propsMethodSpies.updateGasFeeError.callCount, 0);
+      instance.validateAmount("someAmount");
+      assert.equal(propsMethodSpies.updateGasFeeError.callCount, 0);
+    });
+  });
 
-  })
+  describe("updateAmount", () => {
+    it("should call setMaxModeTo", () => {
+      assert.equal(propsMethodSpies.setMaxModeTo.callCount, 0);
+      instance.updateAmount("someAmount");
+      assert.equal(propsMethodSpies.setMaxModeTo.callCount, 1);
+      assert.deepEqual(propsMethodSpies.setMaxModeTo.getCall(0).args, [false]);
+    });
 
-  describe('updateAmount', () => {
+    it("should call updateSendAmount", () => {
+      assert.equal(propsMethodSpies.updateSendAmount.callCount, 0);
+      instance.updateAmount("someAmount");
+      assert.equal(propsMethodSpies.updateSendAmount.callCount, 1);
+      assert.deepEqual(propsMethodSpies.updateSendAmount.getCall(0).args, [
+        "someAmount"
+      ]);
+    });
+  });
 
-    it('should call setMaxModeTo', () => {
-      assert.equal(propsMethodSpies.setMaxModeTo.callCount, 0)
-      instance.updateAmount('someAmount')
-      assert.equal(propsMethodSpies.setMaxModeTo.callCount, 1)
-      assert.deepEqual(
-        propsMethodSpies.setMaxModeTo.getCall(0).args,
-        [false]
-      )
-    })
+  describe("render", () => {
+    it("should render a SendRowWrapper component", () => {
+      assert.equal(wrapper.find(SendRowWrapper).length, 1);
+    });
 
-    it('should call updateSendAmount', () => {
-      assert.equal(propsMethodSpies.updateSendAmount.callCount, 0)
-      instance.updateAmount('someAmount')
-      assert.equal(propsMethodSpies.updateSendAmount.callCount, 1)
-      assert.deepEqual(
-        propsMethodSpies.updateSendAmount.getCall(0).args,
-        ['someAmount']
-      )
-    })
+    it("should pass the correct props to SendRowWrapper", () => {
+      const { errorType, label, showError } = wrapper
+        .find(SendRowWrapper)
+        .props();
 
-  })
+      assert.equal(errorType, "amount");
 
-  describe('render', () => {
-    it('should render a SendRowWrapper component', () => {
-      assert.equal(wrapper.find(SendRowWrapper).length, 1)
-    })
+      assert.equal(label, "amount_t:");
 
-    it('should pass the correct props to SendRowWrapper', () => {
-      const {
-        errorType,
-        label,
-        showError,
-      } = wrapper.find(SendRowWrapper).props()
+      assert.equal(showError, false);
+    });
 
-      assert.equal(errorType, 'amount')
+    it("should render an AmountMaxButton as the first child of the SendRowWrapper", () => {
+      assert(
+        wrapper
+          .find(SendRowWrapper)
+          .childAt(0)
+          .is(AmountMaxButton)
+      );
+    });
 
-      assert.equal(label, 'amount_t:')
+    it("should render a CurrencyDisplay as the second child of the SendRowWrapper", () => {
+      assert(
+        wrapper
+          .find(SendRowWrapper)
+          .childAt(1)
+          .is(CurrencyDisplay)
+      );
+    });
 
-      assert.equal(showError, false)
-    })
-
-    it('should render an AmountMaxButton as the first child of the SendRowWrapper', () => {
-      assert(wrapper.find(SendRowWrapper).childAt(0).is(AmountMaxButton))
-    })
-
-    it('should render a CurrencyDisplay as the second child of the SendRowWrapper', () => {
-      assert(wrapper.find(SendRowWrapper).childAt(1).is(CurrencyDisplay))
-    })
-
-    it('should render the CurrencyDisplay with the correct props', () => {
+    it("should render the CurrencyDisplay with the correct props", () => {
       const {
         conversionRate,
         convertedCurrency,
@@ -163,40 +164,43 @@ describe('SendAmountRow Component', function () {
         inError,
         primaryCurrency,
         selectedToken,
-        value,
-      } = wrapper.find(SendRowWrapper).childAt(1).props()
-      assert.equal(conversionRate, 'mockAmountConversionRate')
-      assert.equal(convertedCurrency, 'mockConvertedCurrency')
-      assert.equal(inError, false)
-      assert.equal(primaryCurrency, 'mockPrimaryCurrency')
-      assert.deepEqual(selectedToken, { address: 'mockTokenAddress' })
-      assert.equal(value, 'mockAmount')
-      assert.equal(SendAmountRow.prototype.updateGas.callCount, 0)
-      assert.equal(SendAmountRow.prototype.updateAmount.callCount, 0)
-      onBlur('mockNewAmount')
-      assert.equal(SendAmountRow.prototype.updateGas.callCount, 1)
-      assert.deepEqual(
-        SendAmountRow.prototype.updateGas.getCall(0).args,
-        ['mockNewAmount']
-      )
-      assert.equal(SendAmountRow.prototype.updateAmount.callCount, 1)
-      assert.deepEqual(
-        SendAmountRow.prototype.updateAmount.getCall(0).args,
-        ['mockNewAmount']
-      )
-      assert.equal(SendAmountRow.prototype.validateAmount.callCount, 0)
-      onChange('mockNewAmount')
-      assert.equal(SendAmountRow.prototype.validateAmount.callCount, 1)
-      assert.deepEqual(
-        SendAmountRow.prototype.validateAmount.getCall(0).args,
-        ['mockNewAmount']
-      )
-    })
+        value
+      } = wrapper
+        .find(SendRowWrapper)
+        .childAt(1)
+        .props();
+      assert.equal(conversionRate, "mockAmountConversionRate");
+      assert.equal(convertedCurrency, "mockConvertedCurrency");
+      assert.equal(inError, false);
+      assert.equal(primaryCurrency, "mockPrimaryCurrency");
+      assert.deepEqual(selectedToken, { address: "mockTokenAddress" });
+      assert.equal(value, "mockAmount");
+      assert.equal(SendAmountRow.prototype.updateGas.callCount, 0);
+      assert.equal(SendAmountRow.prototype.updateAmount.callCount, 0);
+      onBlur("mockNewAmount");
+      assert.equal(SendAmountRow.prototype.updateGas.callCount, 1);
+      assert.deepEqual(SendAmountRow.prototype.updateGas.getCall(0).args, [
+        "mockNewAmount"
+      ]);
+      assert.equal(SendAmountRow.prototype.updateAmount.callCount, 1);
+      assert.deepEqual(SendAmountRow.prototype.updateAmount.getCall(0).args, [
+        "mockNewAmount"
+      ]);
+      assert.equal(SendAmountRow.prototype.validateAmount.callCount, 0);
+      onChange("mockNewAmount");
+      assert.equal(SendAmountRow.prototype.validateAmount.callCount, 1);
+      assert.deepEqual(SendAmountRow.prototype.validateAmount.getCall(0).args, [
+        "mockNewAmount"
+      ]);
+    });
 
-    it('should pass the default primaryCurrency to the CurrencyDisplay if primaryCurrency is falsy', () => {
-      wrapper.setProps({ primaryCurrency: null })
-      const { primaryCurrency } = wrapper.find(SendRowWrapper).childAt(1).props()
-      assert.equal(primaryCurrency, 'ETH')
-    })
-  })
-})
+    it("should pass the default primaryCurrency to the CurrencyDisplay if primaryCurrency is falsy", () => {
+      wrapper.setProps({ primaryCurrency: null });
+      const { primaryCurrency } = wrapper
+        .find(SendRowWrapper)
+        .childAt(1)
+        .props();
+      assert.equal(primaryCurrency, "ETH");
+    });
+  });
+});

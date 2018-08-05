@@ -1,2 +1,2 @@
-import UnlockPage from './unlock-page.container'
-module.exports = UnlockPage
+import UnlockPage from "./unlock-page.container";
+module.exports = UnlockPage;

@@ -1,70 +1,70 @@
-global.window = global
+global.window = global;
 
-const SwGlobalListener = require('sw-stream/lib/sw-global-listener.js')
-const connectionListener = new SwGlobalListener(global)
-const setupMultiplex = require('../../app/scripts/lib/stream-utils.js').setupMultiplex
+const SwGlobalListener = require("sw-stream/lib/sw-global-listener.js");
+const connectionListener = new SwGlobalListener(global);
+const setupMultiplex = require("../../app/scripts/lib/stream-utils.js")
+  .setupMultiplex;
 
-const DbController = require('idb-global')
+const DbController = require("idb-global");
 
-const SwPlatform = require('../../app/scripts/platforms/sw')
-const MetamaskController = require('../../app/scripts/metamask-controller')
+const SwPlatform = require("../../app/scripts/platforms/sw");
+const MetamaskController = require("../../app/scripts/metamask-controller");
 
-const Migrator = require('../../app/scripts/lib/migrator/')
-const migrations = require('../../app/scripts/migrations/')
-const firstTimeState = require('../../app/scripts/first-time-state')
+const Migrator = require("../../app/scripts/lib/migrator/");
+const migrations = require("../../app/scripts/migrations/");
+const firstTimeState = require("../../app/scripts/first-time-state");
 
-const STORAGE_KEY = 'metamask-config'
-const METAMASK_DEBUG = process.env.METAMASK_DEBUG
-global.metamaskPopupIsOpen = false
+const STORAGE_KEY = "metamask-config";
+const METAMASK_DEBUG = process.env.METAMASK_DEBUG;
+global.metamaskPopupIsOpen = false;
 
-const log = require('loglevel')
-global.log = log
-log.setDefaultLevel(METAMASK_DEBUG ? 'debug' : 'warn')
+const log = require("loglevel");
+global.log = log;
+log.setDefaultLevel(METAMASK_DEBUG ? "debug" : "warn");
 
-global.addEventListener('install', function (event) {
-  event.waitUntil(global.skipWaiting())
-})
-global.addEventListener('activate', function (event) {
-  event.waitUntil(global.clients.claim())
-})
+global.addEventListener("install", function(event) {
+  event.waitUntil(global.skipWaiting());
+});
+global.addEventListener("activate", function(event) {
+  event.waitUntil(global.clients.claim());
+});
 
-log.debug('inside:open')
+log.debug("inside:open");
 
 // state persistence
 const dbController = new DbController({
-  key: STORAGE_KEY,
-})
+  key: STORAGE_KEY
+});
 
-start().catch(log.error)
+start().catch(log.error);
 
-async function start () {
-  log.debug('MetaMask initializing...')
-  const initState = await loadStateFromPersistence()
-  await setupController(initState)
-  log.debug('MetaMask initialization complete.')
+async function start() {
+  log.debug("MetaMask initializing...");
+  const initState = await loadStateFromPersistence();
+  await setupController(initState);
+  log.debug("MetaMask initialization complete.");
 }
 
 //
 // State and Persistence
 //
-async function loadStateFromPersistence () {
+async function loadStateFromPersistence() {
   // migrations
-  const migrator = new Migrator({ migrations })
-  const initialState = migrator.generateInitialState(firstTimeState)
-  dbController.initialState = initialState
-  const versionedData = await dbController.open()
-  const migratedData = await migrator.migrateData(versionedData)
-  await dbController.put(migratedData)
-  return migratedData.data
+  const migrator = new Migrator({ migrations });
+  const initialState = migrator.generateInitialState(firstTimeState);
+  dbController.initialState = initialState;
+  const versionedData = await dbController.open();
+  const migratedData = await migrator.migrateData(versionedData);
+  await dbController.put(migratedData);
+  return migratedData.data;
 }
 
-async function setupController (initState, client) {
-
+async function setupController(initState, client) {
   //
   // MetaMask Controller
   //
 
-  const platform = new SwPlatform()
+  const platform = new SwPlatform();
 
   const controller = new MetamaskController({
     // platform specific implementation
@@ -74,52 +74,57 @@ async function setupController (initState, client) {
     unlockAccountMessage: noop,
     showUnapprovedTx: noop,
     // initial state
-    initState,
-  })
-  global.metamaskController = controller
+    initState
+  });
+  global.metamaskController = controller;
 
-  controller.store.subscribe(async (state) => {
+  controller.store.subscribe(async state => {
     try {
-      const versionedData = await versionifyData(state)
-      await dbController.put(versionedData)
-    } catch (e) { console.error('METAMASK Error:', e) }
-  })
+      const versionedData = await versionifyData(state);
+      await dbController.put(versionedData);
+    } catch (e) {
+      console.error("METAMASK Error:", e);
+    }
+  });
 
-  async function versionifyData (state) {
-    const rawData = await dbController.get()
+  async function versionifyData(state) {
+    const rawData = await dbController.get();
     return {
       data: state,
-      meta: rawData.meta,
-    }
+      meta: rawData.meta
+    };
   }
 
   //
   // connect to other contexts
   //
 
-  connectionListener.on('remote', (portStream, messageEvent) => {
-    log.debug('REMOTE CONECTION FOUND***********')
-    connectRemote(portStream, messageEvent.data.context)
-  })
+  connectionListener.on("remote", (portStream, messageEvent) => {
+    log.debug("REMOTE CONECTION FOUND***********");
+    connectRemote(portStream, messageEvent.data.context);
+  });
 
-  function connectRemote (connectionStream, context) {
-    var isMetaMaskInternalProcess = (context === 'popup')
+  function connectRemote(connectionStream, context) {
+    var isMetaMaskInternalProcess = context === "popup";
     if (isMetaMaskInternalProcess) {
       // communication with popup
-      controller.setupTrustedCommunication(connectionStream, 'MetaMask')
-      global.metamaskPopupIsOpen = true
+      controller.setupTrustedCommunication(connectionStream, "MetaMask");
+      global.metamaskPopupIsOpen = true;
     } else {
       // communication with page
-      setupUntrustedCommunication(connectionStream, context)
+      setupUntrustedCommunication(connectionStream, context);
     }
   }
 
-  function setupUntrustedCommunication (connectionStream, originDomain) {
+  function setupUntrustedCommunication(connectionStream, originDomain) {
     // setup multiplexing
-    var mx = setupMultiplex(connectionStream)
+    var mx = setupMultiplex(connectionStream);
     // connect features
-    controller.setupProviderConnection(mx.createStream('provider'), originDomain)
-    controller.setupPublicConfig(mx.createStream('publicConfig'))
+    controller.setupProviderConnection(
+      mx.createStream("provider"),
+      originDomain
+    );
+    controller.setupPublicConfig(mx.createStream("publicConfig"));
   }
 }
 // // this will be useful later but commented out for linting for now (liiiinting)
@@ -131,4 +136,4 @@ async function setupController (initState, client) {
 //   })
 // }
 
-function noop () {}
+function noop() {}

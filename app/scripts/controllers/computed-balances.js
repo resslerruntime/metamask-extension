@@ -1,6 +1,6 @@
-const ObservableStore = require('obs-store')
-const extend = require('xtend')
-const BalanceController = require('./balance')
+const ObservableStore = require("obs-store");
+const extend = require("xtend");
+const BalanceController = require("./balance");
 
 /**
  * @typedef {Object} ComputedBalancesOptions
@@ -20,29 +20,32 @@ class ComputedbalancesController {
    *
    * @param {ComputedBalancesOptions} [opts] Controller configuration parameters
    */
-  constructor (opts = {}) {
-    const { accountTracker, txController, blockTracker } = opts
-    this.accountTracker = accountTracker
-    this.txController = txController
-    this.blockTracker = blockTracker
+  constructor(opts = {}) {
+    const { accountTracker, txController, blockTracker } = opts;
+    this.accountTracker = accountTracker;
+    this.txController = txController;
+    this.blockTracker = blockTracker;
 
-    const initState = extend({
-      computedBalances: {},
-    }, opts.initState)
-    this.store = new ObservableStore(initState)
-    this.balances = {}
+    const initState = extend(
+      {
+        computedBalances: {}
+      },
+      opts.initState
+    );
+    this.store = new ObservableStore(initState);
+    this.balances = {};
 
-    this._initBalanceUpdating()
+    this._initBalanceUpdating();
   }
 
   /**
    * Updates balances associated with each internal address
    */
-  updateAllBalances () {
-    Object.keys(this.balances).forEach((balance) => {
-      const address = balance.address
-      this.balances[address].updateBalance()
-    })
+  updateAllBalances() {
+    Object.keys(this.balances).forEach(balance => {
+      const address = balance.address;
+      this.balances[address].updateBalance();
+    });
   }
 
   /**
@@ -50,10 +53,12 @@ class ComputedbalancesController {
    *
    * @private
    */
-  _initBalanceUpdating () {
-    const store = this.accountTracker.store.getState()
-    this.syncAllAccountsFromStore(store)
-    this.accountTracker.store.subscribe(this.syncAllAccountsFromStore.bind(this))
+  _initBalanceUpdating() {
+    const store = this.accountTracker.store.getState();
+    this.syncAllAccountsFromStore(store);
+    this.accountTracker.store.subscribe(
+      this.syncAllAccountsFromStore.bind(this)
+    );
   }
 
   /**
@@ -62,22 +67,23 @@ class ComputedbalancesController {
    *
    * @param {{ accounts: Object }} store Account tracking state
    */
-  syncAllAccountsFromStore (store) {
-    const upstream = Object.keys(store.accounts)
-    const balances = Object.keys(this.balances)
-    .map(address => this.balances[address])
+  syncAllAccountsFromStore(store) {
+    const upstream = Object.keys(store.accounts);
+    const balances = Object.keys(this.balances).map(
+      address => this.balances[address]
+    );
 
     // Follow new addresses
     for (const address in balances) {
-      this.trackAddressIfNotAlready(address)
+      this.trackAddressIfNotAlready(address);
     }
 
     // Unfollow old ones
     balances.forEach(({ address }) => {
       if (!upstream.includes(address)) {
-        delete this.balances[address]
+        delete this.balances[address];
       }
-    })
+    });
   }
 
   /**
@@ -87,10 +93,10 @@ class ComputedbalancesController {
    *
    * @param {string} address Address to conditionally subscribe to
    */
-  trackAddressIfNotAlready (address) {
-    const state = this.store.getState()
+  trackAddressIfNotAlready(address) {
+    const state = this.store.getState();
     if (!(address in state.computedBalances)) {
-      this.trackAddress(address)
+      this.trackAddress(address);
     }
   }
 
@@ -100,21 +106,21 @@ class ComputedbalancesController {
    *
    * @param {string} address Address to conditionally subscribe to
    */
-  trackAddress (address) {
+  trackAddress(address) {
     const updater = new BalanceController({
       address,
       accountTracker: this.accountTracker,
       txController: this.txController,
-      blockTracker: this.blockTracker,
-    })
-    updater.store.subscribe((accountBalance) => {
-      const newState = this.store.getState()
-      newState.computedBalances[address] = accountBalance
-      this.store.updateState(newState)
-    })
-    this.balances[address] = updater
-    updater.updateBalance()
+      blockTracker: this.blockTracker
+    });
+    updater.store.subscribe(accountBalance => {
+      const newState = this.store.getState();
+      newState.computedBalances[address] = accountBalance;
+      this.store.updateState(newState);
+    });
+    this.balances[address] = updater;
+    updater.updateBalance();
   }
 }
 
-module.exports = ComputedbalancesController
+module.exports = ComputedbalancesController;

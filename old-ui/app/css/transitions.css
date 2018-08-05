@@ -23,12 +23,14 @@
 }
 
 /* loader transitions */
-.loader-enter, .loader-leave-active {
-  opacity: 0.0;
+.loader-enter,
+.loader-leave-active {
+  opacity: 0;
   transition: opacity 150 ease-in;
 }
-.loader-enter-active, .loader-leave {
-  opacity: 1.0;
+.loader-enter-active,
+.loader-leave {
+  opacity: 1;
   transition: opacity 150 ease-in;
 }
 
@@ -39,4 +41,3 @@
 .app-primary.from-left .main-enter:not(.main-enter-active) {
   transform: translateX(-360px);
 }
-

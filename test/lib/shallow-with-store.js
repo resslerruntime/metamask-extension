@@ -1,20 +1,20 @@
-const { shallow, mount } = require('enzyme')
+const { shallow, mount } = require("enzyme");
 
 module.exports = {
   shallowWithStore,
-  mountWithStore,
+  mountWithStore
+};
+
+function shallowWithStore(component, store) {
+  const context = {
+    store
+  };
+  return shallow(component, { context });
 }
 
-function shallowWithStore (component, store) {
+function mountWithStore(component, store) {
   const context = {
-    store,
-  }
-  return shallow(component, {context})
-}
-
-function mountWithStore (component, store) {
-  const context = {
-    store,
-  }
-  return mount(component, {context})
+    store
+  };
+  return mount(component, { context });
 }

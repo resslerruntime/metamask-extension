@@ -7,7 +7,7 @@
     "isUnlocked": true,
     "currentDomain": "example.com",
     "rpcTarget": "https://rawtestrpc.metamask.io/",
-    "shapeShiftTxList":[
+    "shapeShiftTxList": [
       {
         "depositAddress": "1L8BJCR6KHkCiVceDqibt7zJscqPpH7pFw",
         "depositType": "BTC",
@@ -17,7 +17,8 @@
           "status": "complete",
           "outgoingCoin": "100.00",
           "incomingCoin": "1.000",
-          "transaction": "0x3701e0ac344a12a1fc5417cf251109a7c41f3edab922310202630d9c012414c8"
+          "transaction":
+            "0x3701e0ac344a12a1fc5417cf251109a7c41f3edab922310202630d9c012414c8"
         }
       },
       {
@@ -41,13 +42,15 @@
         }
       }
     ],
-    "transactions": [      {
+    "transactions": [
+      {
         "id": 1467921503489592,
         "txParams": {
           "from": "0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc",
           "to": "0x18a3462427bcc9133bb46e88bcbe39cd7ef0e761",
           "value": "0x66c899104aa57038000",
-          "origin": "thelongestdomainnameintheworldandthensomeandthensomemoreandmore.com",
+          "origin":
+            "thelongestdomainnameintheworldandthensomeandthensomemoreandmore.com",
           "metamaskId": 1467921503489592,
           "metamaskNetworkId": "2"
         },
@@ -61,14 +64,16 @@
           "from": "0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc",
           "to": "0x18a3462427bcc9133bb46e88bcbe39cd7ef0e761",
           "value": "0x0",
-          "origin": "thelongestdomainnameintheworldandthensomeandthensomemoreandmore.com",
+          "origin":
+            "thelongestdomainnameintheworldandthensomeandthensomemoreandmore.com",
           "metamaskId": 1467923203344608,
           "metamaskNetworkId": "2"
         },
         "time": 1467923203344,
         "status": "confirmed",
         "containsDelegateCall": false,
-        "hash": "0x957bbba51e2732a86c10c5e7e8a484a093795a06f2e2c38ad02da1b20aeca620"
+        "hash":
+          "0x957bbba51e2732a86c10c5e7e8a484a093795a06f2e2c38ad02da1b20aeca620"
       },
       {
         "id": 1467921503489592,
@@ -76,14 +81,16 @@
           "from": "0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc",
           "to": "0x18a3462427bcc9133bb46e88bcbe39cd7ef0e761",
           "value": "0x66c899104aa57038000",
-          "origin": "thelongestdomainnameintheworldandthensomeandthensomemoreandmore.com",
+          "origin":
+            "thelongestdomainnameintheworldandthensomeandthensomemoreandmore.com",
           "metamaskId": 1467921503489592,
           "metamaskNetworkId": "2"
         },
         "time": 1467921503489,
         "status": "confirmed",
         "containsDelegateCall": false
-      }],
+      }
+    ],
     "identities": {
       "0x0dcd5d886577d5081b0c52e242ef29e70be3e7bc": {
         "name": "Wallet 1",

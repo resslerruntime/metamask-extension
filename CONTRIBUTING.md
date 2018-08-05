@@ -11,6 +11,7 @@ There are also plenty of open issues we'd love help with. Search the [`good firs
 If you're picking up a bounty or an existing issue, feel free to ask clarifying questions on the issue as you go about your work.
 
 ### Submitting a pull request
+
 When you're done with your project / bugfix / feature and ready to submit a PR, there are a couple guidelines we ask you to follow:
 
 - [ ] **Test it**: For any new programmatic functionality, we like unit tests when possible, so if you can keep your code cleanly isolated, please do add a test file to the `tests` folder.

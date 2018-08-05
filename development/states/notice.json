@@ -17,7 +17,8 @@
       "read": false,
       "date": "Tue Dec 13 2016",
       "title": "MultiVault Support",
-      "body": "# Multi\n# Line\n## Support\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt dapibus justo a auctor. Sed luctus metus non mi laoreet, sit amet placerat nibh ultricies. Cras fringilla, urna sit amet sodales porttitor, lacus risus lacinia lorem, non euismod magna felis id ex. Nam iaculis, ante nec imperdiet suscipit, nisi quam fringilla nisl, sed fringilla turpis lectus et nibh. Pellentesque sed neque pretium nulla elementum lacinia eu eget felis. Nulla facilisi. Pellentesque id mi tempor, tempus sapien id, ultricies nibh. Integer faucibus elit non orci dapibus porttitor. Pellentesque rutrum hendrerit sapien ut lacinia. Nunc elementum eget arcu eu volutpat. Integer ullamcorper aliquam metus, eu malesuada tellus vestibulum a.\n",
+      "body":
+        "# Multi\n# Line\n## Support\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tincidunt dapibus justo a auctor. Sed luctus metus non mi laoreet, sit amet placerat nibh ultricies. Cras fringilla, urna sit amet sodales porttitor, lacus risus lacinia lorem, non euismod magna felis id ex. Nam iaculis, ante nec imperdiet suscipit, nisi quam fringilla nisl, sed fringilla turpis lectus et nibh. Pellentesque sed neque pretium nulla elementum lacinia eu eget felis. Nulla facilisi. Pellentesque id mi tempor, tempus sapien id, ultricies nibh. Integer faucibus elit non orci dapibus porttitor. Pellentesque rutrum hendrerit sapien ut lacinia. Nunc elementum eget arcu eu volutpat. Integer ullamcorper aliquam metus, eu malesuada tellus vestibulum a.\n",
       "id": 0
     },
     "network": "3",
@@ -38,10 +39,7 @@
     "unconfMsgs": {},
     "messages": [],
     "shapeShiftTxList": [],
-    "keyringTypes": [
-      "Simple Key Pair",
-      "HD Key Tree"
-    ]
+    "keyringTypes": ["Simple Key Pair", "HD Key Tree"]
   },
   "appState": {
     "menuOpen": false,

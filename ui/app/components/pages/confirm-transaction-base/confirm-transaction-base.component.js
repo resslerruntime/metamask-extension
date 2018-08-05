@@ -1,18 +1,20 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import ConfirmPageContainer, { ConfirmDetailRow } from '../../confirm-page-container'
-import { formatCurrency } from '../../../helpers/confirm-transaction/util'
-import { isBalanceSufficient } from '../../send/send.utils'
-import { DEFAULT_ROUTE } from '../../../routes'
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import ConfirmPageContainer, {
+  ConfirmDetailRow
+} from "../../confirm-page-container";
+import { formatCurrency } from "../../../helpers/confirm-transaction/util";
+import { isBalanceSufficient } from "../../send/send.utils";
+import { DEFAULT_ROUTE } from "../../../routes";
 import {
   INSUFFICIENT_FUNDS_ERROR_KEY,
-  TRANSACTION_ERROR_KEY,
-} from '../../../constants/error-keys'
+  TRANSACTION_ERROR_KEY
+} from "../../../constants/error-keys";
 
 export default class ConfirmTransactionBase extends Component {
   static contextTypes = {
-    t: PropTypes.func,
-  }
+    t: PropTypes.func
+  };
 
   static propTypes = {
     // react-router props
@@ -68,79 +70,76 @@ export default class ConfirmTransactionBase extends Component {
     summaryComponent: PropTypes.node,
     title: PropTypes.string,
     valid: PropTypes.bool,
-    warning: PropTypes.string,
-  }
+    warning: PropTypes.string
+  };
 
-  componentDidUpdate () {
+  componentDidUpdate() {
     const {
       transactionStatus,
       showTransactionConfirmedModal,
       history,
-      clearConfirmTransaction,
-    } = this.props
+      clearConfirmTransaction
+    } = this.props;
 
-    if (transactionStatus === 'dropped') {
+    if (transactionStatus === "dropped") {
       showTransactionConfirmedModal({
         onHide: () => {
-          clearConfirmTransaction()
-          history.push(DEFAULT_ROUTE)
-        },
-      })
+          clearConfirmTransaction();
+          history.push(DEFAULT_ROUTE);
+        }
+      });
 
-      return
+      return;
     }
   }
 
-  getErrorKey () {
+  getErrorKey() {
     const {
       balance,
       conversionRate,
       hexGasTotal,
-      txData: {
-        simulationFails,
-        txParams: {
-          value: amount,
-        } = {},
-      } = {},
-    } = this.props
+      txData: { simulationFails, txParams: { value: amount } = {} } = {}
+    } = this.props;
 
-    const insufficientBalance = balance && !isBalanceSufficient({
-      amount,
-      gasTotal: hexGasTotal || '0x0',
-      balance,
-      conversionRate,
-    })
+    const insufficientBalance =
+      balance &&
+      !isBalanceSufficient({
+        amount,
+        gasTotal: hexGasTotal || "0x0",
+        balance,
+        conversionRate
+      });
 
     if (insufficientBalance) {
       return {
         valid: false,
-        errorKey: INSUFFICIENT_FUNDS_ERROR_KEY,
-      }
+        errorKey: INSUFFICIENT_FUNDS_ERROR_KEY
+      };
     }
 
     if (simulationFails) {
       return {
         valid: false,
-        errorKey: TRANSACTION_ERROR_KEY,
-      }
+        errorKey: TRANSACTION_ERROR_KEY
+      };
     }
 
     return {
-      valid: true,
-    }
+      valid: true
+    };
   }
 
-  handleEditGas () {
-    const { onEditGas, showCustomizeGasModal } = this.props
+  handleEditGas() {
+    const { onEditGas, showCustomizeGasModal } = this.props;
 
     if (onEditGas) {
-      onEditGas()
+      onEditGas();
     } else {
-      showCustomizeGasModal()
+      showCustomizeGasModal();
     }
   }
 
-  renderDetails () {
+  renderDetails() {
     const {
       detailsComponent,
       fiatTransactionFee,
@@ -150,14 +149,17 @@ export default class ConfirmTransactionBase extends Component {
       ethTransactionTotal,
       fiatTotalTextOverride,
       ethTotalTextOverride,
-      hideDetails,
-    } = this.props
+      hideDetails
+    } = this.props;
 
     if (hideDetails) {
-      return null
+      return null;
     }
 
-    const formattedCurrency = formatCurrency(fiatTransactionTotal, currentCurrency)
+    const formattedCurrency = formatCurrency(
+      fiatTransactionTotal,
+      currentCurrency
+    );
 
     return (
       detailsComponent || (
@@ -184,93 +186,94 @@ export default class ConfirmTransactionBase extends Component {
           </div>
         </div>
       )
-    )
+    );
   }
 
-  renderData () {
-    const { t } = this.context
+  renderData() {
+    const { t } = this.context;
     const {
-      txData: {
-        txParams: {
-          data,
-        } = {},
-      } = {},
-      methodData: {
-        name,
-        params,
-      } = {},
+      txData: { txParams: { data } = {} } = {},
+      methodData: { name, params } = {},
       hideData,
-      dataComponent,
-    } = this.props
+      dataComponent
+    } = this.props;
 
     if (hideData) {
-      return null
+      return null;
     }
 
-    return dataComponent || (
-      <div className="confirm-page-container-content__data">
-        <div className="confirm-page-container-content__data-box-label">
-          {`${t('functionType')}:`}
-          <span className="confirm-page-container-content__function-type">
-            { name || t('notFound') }
-          </span>
-        </div>
-        {
-          params && (
+    return (
+      dataComponent || (
+        <div className="confirm-page-container-content__data">
+          <div className="confirm-page-container-content__data-box-label">
+            {`${t("functionType")}:`}
+            <span className="confirm-page-container-content__function-type">
+              {name || t("notFound")}
+            </span>
+          </div>
+          {params && (
             <div className="confirm-page-container-content__data-box">
               <div className="confirm-page-container-content__data-field-label">
-                { `${t('parameters')}:` }
+                {`${t("parameters")}:`}
               </div>
               <div>
-                <pre>{ JSON.stringify(params, null, 2) }</pre>
+                <pre>{JSON.stringify(params, null, 2)}</pre>
               </div>
             </div>
-          )
-        }
-        <div className="confirm-page-container-content__data-box-label">
-          {`${t('hexData')}:`}
+          )}
+          <div className="confirm-page-container-content__data-box-label">
+            {`${t("hexData")}:`}
+          </div>
+          <div className="confirm-page-container-content__data-box">{data}</div>
         </div>
-        <div className="confirm-page-container-content__data-box">
-          { data }
-        </div>
-      </div>
-    )
+      )
+    );
   }
 
-  handleEdit () {
-    const { txData, tokenData, tokenProps, onEdit } = this.props
-    onEdit({ txData, tokenData, tokenProps })
+  handleEdit() {
+    const { txData, tokenData, tokenProps, onEdit } = this.props;
+    onEdit({ txData, tokenData, tokenProps });
   }
 
-  handleCancel () {
-    const { onCancel, txData, cancelTransaction, history, clearConfirmTransaction } = this.props
+  handleCancel() {
+    const {
+      onCancel,
+      txData,
+      cancelTransaction,
+      history,
+      clearConfirmTransaction
+    } = this.props;
 
     if (onCancel) {
-      onCancel(txData)
+      onCancel(txData);
     } else {
-      cancelTransaction(txData)
-        .then(() => {
-          clearConfirmTransaction()
-          history.push(DEFAULT_ROUTE)
-        })
+      cancelTransaction(txData).then(() => {
+        clearConfirmTransaction();
+        history.push(DEFAULT_ROUTE);
+      });
     }
   }
 
-  handleSubmit () {
-    const { sendTransaction, clearConfirmTransaction, txData, history, onSubmit } = this.props
+  handleSubmit() {
+    const {
+      sendTransaction,
+      clearConfirmTransaction,
+      txData,
+      history,
+      onSubmit
+    } = this.props;
 
     if (onSubmit) {
-      onSubmit(txData)
+      onSubmit(txData);
     } else {
-      sendTransaction(txData)
-        .then(() => {
-          clearConfirmTransaction()
-          history.push(DEFAULT_ROUTE)
-        })
+      sendTransaction(txData).then(() => {
+        clearConfirmTransaction();
+        history.push(DEFAULT_ROUTE);
+      });
     }
   }
 
-  render () {
+  render() {
     const {
       isTxReprice,
       fromName,
@@ -293,12 +296,15 @@ export default class ConfirmTransactionBase extends Component {
       contentComponent,
       onEdit,
       nonce,
-      warning,
-    } = this.props
+      warning
+    } = this.props;
 
-    const { name } = methodData
-    const fiatConvertedAmount = formatCurrency(fiatTransactionAmount, currentCurrency)
-    const { valid, errorKey } = this.getErrorKey()
+    const { name } = methodData;
+    const fiatConvertedAmount = formatCurrency(
+      fiatTransactionAmount,
+      currentCurrency
+    );
+    const { valid, errorKey } = this.getErrorKey();
 
     return (
       <ConfirmPageContainer
@@ -307,8 +313,10 @@ export default class ConfirmTransactionBase extends Component {
         toName={toName}
         toAddress={toAddress}
         showEdit={onEdit && !isTxReprice}
-        action={action || name || this.context.t('unknownFunction')}
-        title={title || `${fiatConvertedAmount} ${currentCurrency.toUpperCase()}`}
+        action={action || name || this.context.t("unknownFunction")}
+        title={
+          title || `${fiatConvertedAmount} ${currentCurrency.toUpperCase()}`
+        }
         subtitle={subtitle || `\u2666 ${ethTransactionAmount}`}
         hideSubtitle={hideSubtitle}
         summaryComponent={summaryComponent}
@@ -325,6 +333,6 @@ export default class ConfirmTransactionBase extends Component {
         onCancel={() => this.handleCancel()}
         onSubmit={() => this.handleSubmit()}
       />
-    )
+    );
   }
 }

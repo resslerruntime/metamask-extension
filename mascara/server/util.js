@@ -1,47 +1,44 @@
-const browserify = require('browserify')
-const watchify = require('watchify')
+const browserify = require("browserify");
+const watchify = require("watchify");
 
 module.exports = {
   serveBundle,
-  createBundle,
+  createBundle
+};
+
+function serveBundle(server, path, bundle) {
+  server.get(path, function(req, res) {
+    res.setHeader("Content-Type", "application/javascript; charset=UTF-8");
+    res.send(bundle.latest);
+  });
 }
 
-
-function serveBundle (server, path, bundle) {
-  server.get(path, function (req, res) {
-    res.setHeader('Content-Type', 'application/javascript; charset=UTF-8')
-    res.send(bundle.latest)
-  })
-}
-
-function createBundle (entryPoint) {
-
-  var bundleContainer = {}
+function createBundle(entryPoint) {
+  var bundleContainer = {};
 
   var bundler = browserify({
     entries: [entryPoint],
     cache: {},
     packageCache: {},
-    plugin: [watchify],
+    plugin: [watchify]
   })
-    .transform('babelify')
-    .transform('uglifyify', { global: true })
+    .transform("babelify")
+    .transform("uglifyify", { global: true });
 
-  bundler.on('update', bundle)
-  bundle()
+  bundler.on("update", bundle);
+  bundle();
 
-  return bundleContainer
+  return bundleContainer;
 
-  function bundle () {
-    bundler.bundle(function (err, result) {
+  function bundle() {
+    bundler.bundle(function(err, result) {
       if (err) {
-        console.log(`Bundle failed! (${entryPoint})`)
-        console.error(err)
-        return
+        console.log(`Bundle failed! (${entryPoint})`);
+        console.error(err);
+        return;
       }
-      console.log(`Bundle updated! (${entryPoint})`)
-      bundleContainer.latest = result.toString()
-    })
+      console.log(`Bundle updated! (${entryPoint})`);
+      bundleContainer.latest = result.toString();
+    });
   }
-
 }

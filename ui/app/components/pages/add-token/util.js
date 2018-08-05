@@ -1,13 +1,13 @@
-import R from 'ramda'
+import R from "ramda";
 
-export function checkExistingAddresses (address, tokenList = []) {
+export function checkExistingAddresses(address, tokenList = []) {
   if (!address) {
-    return false
+    return false;
   }
 
   const matchesAddress = existingToken => {
-    return existingToken.address.toLowerCase() === address.toLowerCase()
-  }
+    return existingToken.address.toLowerCase() === address.toLowerCase();
+  };
 
-  return R.any(matchesAddress)(tokenList)
+  return R.any(matchesAddress)(tokenList);
 }

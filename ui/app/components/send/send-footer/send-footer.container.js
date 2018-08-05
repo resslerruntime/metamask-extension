@@ -1,13 +1,13 @@
-import { connect } from 'react-redux'
-import ethUtil from 'ethereumjs-util'
+import { connect } from "react-redux";
+import ethUtil from "ethereumjs-util";
 import {
   addToAddressBook,
   clearSend,
   signTokenTx,
   signTx,
-  updateTransaction,
-} from '../../../actions'
-import SendFooter from './send-footer.component'
+  updateTransaction
+} from "../../../actions";
+import SendFooter from "./send-footer.component";
 import {
   getGasLimit,
   getGasPrice,
@@ -20,20 +20,21 @@ import {
   getSendToAccounts,
   getSendHexData,
   getTokenBalance,
-  getUnapprovedTxs,
-} from '../send.selectors'
-import {
-  isSendFormInError,
-} from './send-footer.selectors'
+  getUnapprovedTxs
+} from "../send.selectors";
+import { isSendFormInError } from "./send-footer.selectors";
 import {
   addressIsNew,
   constructTxParams,
-  constructUpdatedTx,
-} from './send-footer.utils'
+  constructUpdatedTx
+} from "./send-footer.utils";
 
-export default connect(mapStateToProps, mapDispatchToProps)(SendFooter)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SendFooter);
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     amount: getSendAmount(state),
     data: getSendHexData(state),
@@ -47,11 +48,11 @@ function mapStateToProps (state) {
     to: getSendTo(state),
     toAccounts: getSendToAccounts(state),
     tokenBalance: getTokenBalance(state),
-    unapprovedTxs: getUnapprovedTxs(state),
-  }
+    unapprovedTxs: getUnapprovedTxs(state)
+  };
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     clearSend: () => dispatch(clearSend()),
     sign: ({ selectedToken, to, amount, from, gas, gasPrice, data }) => {
@@ -62,12 +63,12 @@ function mapDispatchToProps (dispatch) {
         gas,
         gasPrice,
         selectedToken,
-        to,
-      })
+        to
+      });
 
       selectedToken
         ? dispatch(signTokenTx(selectedToken.address, to, amount, txParams))
-        : dispatch(signTx(txParams))
+        : dispatch(signTx(txParams));
     },
     update: ({
       amount,
@@ -78,7 +79,7 @@ function mapDispatchToProps (dispatch) {
       gasPrice,
       selectedToken,
       to,
-      unapprovedTxs,
+      unapprovedTxs
     }) => {
       const editingTx = constructUpdatedTx({
         amount,
@@ -89,17 +90,17 @@ function mapDispatchToProps (dispatch) {
         gasPrice,
         selectedToken,
         to,
-        unapprovedTxs,
-      })
+        unapprovedTxs
+      });
 
-      return dispatch(updateTransaction(editingTx))
+      return dispatch(updateTransaction(editingTx));
     },
-    addToAddressBookIfNew: (newAddress, toAccounts, nickname = '') => {
-      const hexPrefixedAddress = ethUtil.addHexPrefix(newAddress)
+    addToAddressBookIfNew: (newAddress, toAccounts, nickname = "") => {
+      const hexPrefixedAddress = ethUtil.addHexPrefix(newAddress);
       if (addressIsNew(toAccounts)) {
         // TODO: nickname, i.e. addToAddressBook(recipient, nickname)
-        dispatch(addToAddressBook(hexPrefixedAddress, nickname))
+        dispatch(addToAddressBook(hexPrefixedAddress, nickname));
       }
-    },
-  }
+    }
+  };
 }

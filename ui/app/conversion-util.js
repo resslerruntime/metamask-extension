@@ -22,217 +22,220 @@
 * the keys are specified in the options parameters and the values are setter functions.
 */
 
-const BigNumber = require('bignumber.js')
-const ethUtil = require('ethereumjs-util')
-const BN = ethUtil.BN
-const R = require('ramda')
-const { stripHexPrefix } = require('ethereumjs-util')
+const BigNumber = require("bignumber.js");
+const ethUtil = require("ethereumjs-util");
+const BN = ethUtil.BN;
+const R = require("ramda");
+const { stripHexPrefix } = require("ethereumjs-util");
 
 BigNumber.config({
-  ROUNDING_MODE: BigNumber.ROUND_HALF_DOWN,
-})
+  ROUNDING_MODE: BigNumber.ROUND_HALF_DOWN
+});
 
 // Big Number Constants
-const BIG_NUMBER_WEI_MULTIPLIER = new BigNumber('1000000000000000000')
-const BIG_NUMBER_GWEI_MULTIPLIER = new BigNumber('1000000000')
+const BIG_NUMBER_WEI_MULTIPLIER = new BigNumber("1000000000000000000");
+const BIG_NUMBER_GWEI_MULTIPLIER = new BigNumber("1000000000");
 
 // Individual Setters
-const convert = R.invoker(1, 'times')
-const round = R.invoker(2, 'round')(R.__, BigNumber.ROUND_HALF_DOWN)
-const roundDown = R.invoker(2, 'round')(R.__, BigNumber.ROUND_DOWN)
-const invertConversionRate = conversionRate => () => new BigNumber(1.0).div(conversionRate)
-const decToBigNumberViaString = n => R.pipe(String, toBigNumber['dec'])
+const convert = R.invoker(1, "times");
+const round = R.invoker(2, "round")(R.__, BigNumber.ROUND_HALF_DOWN);
+const roundDown = R.invoker(2, "round")(R.__, BigNumber.ROUND_DOWN);
+const invertConversionRate = conversionRate => () =>
+  new BigNumber(1.0).div(conversionRate);
+const decToBigNumberViaString = n =>
+  R.pipe(
+    String,
+    toBigNumber["dec"]
+  );
 
 // Setter Maps
 const toBigNumber = {
   hex: n => new BigNumber(stripHexPrefix(n), 16),
   dec: n => new BigNumber(n, 10),
-  BN: n => new BigNumber(n.toString(16), 16),
-}
+  BN: n => new BigNumber(n.toString(16), 16)
+};
 const toNormalizedDenomination = {
   WEI: bigNumber => bigNumber.div(BIG_NUMBER_WEI_MULTIPLIER),
-  GWEI: bigNumber => bigNumber.div(BIG_NUMBER_GWEI_MULTIPLIER),
-}
+  GWEI: bigNumber => bigNumber.div(BIG_NUMBER_GWEI_MULTIPLIER)
+};
 const toSpecifiedDenomination = {
   WEI: bigNumber => bigNumber.times(BIG_NUMBER_WEI_MULTIPLIER).round(),
-  GWEI: bigNumber => bigNumber.times(BIG_NUMBER_GWEI_MULTIPLIER).round(9),
-}
+  GWEI: bigNumber => bigNumber.times(BIG_NUMBER_GWEI_MULTIPLIER).round(9)
+};
 const baseChange = {
   hex: n => n.toString(16),
   dec: n => Number(n).toString(10),
-  BN: n => new BN(n.toString(16)),
-}
+  BN: n => new BN(n.toString(16))
+};
 
 // Predicates
 const fromAndToCurrencyPropsNotEqual = R.compose(
   R.not,
-  R.eqBy(R.__, 'fromCurrency', 'toCurrency'),
+  R.eqBy(R.__, "fromCurrency", "toCurrency"),
   R.flip(R.prop)
-)
+);
 
 // Lens
-const valuePropertyLens = R.over(R.lensProp('value'))
-const conversionRateLens = R.over(R.lensProp('conversionRate'))
+const valuePropertyLens = R.over(R.lensProp("value"));
+const conversionRateLens = R.over(R.lensProp("conversionRate"));
 
 // conditional conversionRate setting wrapper
-const whenPredSetCRWithPropAndSetter = (pred, prop, setter) => R.when(
-  pred,
-  R.converge(
-    conversionRateLens,
-    [R.pipe(R.prop(prop), setter), R.identity]
-  )
-)
+const whenPredSetCRWithPropAndSetter = (pred, prop, setter) =>
+  R.when(
+    pred,
+    R.converge(conversionRateLens, [
+      R.pipe(
+        R.prop(prop),
+        setter
+      ),
+      R.identity
+    ])
+  );
 
 // conditional 'value' setting wrappers
-const whenPredSetWithPropAndSetter = (pred, prop, setter) => R.when(
-  pred,
-  R.converge(
-    valuePropertyLens,
-    [R.pipe(R.prop(prop), setter), R.identity]
-  )
-)
-const whenPropApplySetterMap = (prop, setterMap) => whenPredSetWithPropAndSetter(
-  R.prop(prop),
-  prop,
-  R.prop(R.__, setterMap)
-)
+const whenPredSetWithPropAndSetter = (pred, prop, setter) =>
+  R.when(
+    pred,
+    R.converge(valuePropertyLens, [
+      R.pipe(
+        R.prop(prop),
+        setter
+      ),
+      R.identity
+    ])
+  );
+const whenPropApplySetterMap = (prop, setterMap) =>
+  whenPredSetWithPropAndSetter(R.prop(prop), prop, R.prop(R.__, setterMap));
 
 // Conversion utility function
 const converter = R.pipe(
-  whenPredSetCRWithPropAndSetter(R.prop('conversionRate'), 'conversionRate', decToBigNumberViaString),
-  whenPredSetCRWithPropAndSetter(R.prop('invertConversionRate'), 'conversionRate', invertConversionRate),
-  whenPropApplySetterMap('fromNumericBase', toBigNumber),
-  whenPropApplySetterMap('fromDenomination', toNormalizedDenomination),
-  whenPredSetWithPropAndSetter(fromAndToCurrencyPropsNotEqual, 'conversionRate', convert),
-  whenPropApplySetterMap('toDenomination', toSpecifiedDenomination),
-  whenPredSetWithPropAndSetter(R.prop('numberOfDecimals'), 'numberOfDecimals', round),
-  whenPredSetWithPropAndSetter(R.prop('roundDown'), 'roundDown', roundDown),
-  whenPropApplySetterMap('toNumericBase', baseChange),
-  R.view(R.lensProp('value'))
-)
+  whenPredSetCRWithPropAndSetter(
+    R.prop("conversionRate"),
+    "conversionRate",
+    decToBigNumberViaString
+  ),
+  whenPredSetCRWithPropAndSetter(
+    R.prop("invertConversionRate"),
+    "conversionRate",
+    invertConversionRate
+  ),
+  whenPropApplySetterMap("fromNumericBase", toBigNumber),
+  whenPropApplySetterMap("fromDenomination", toNormalizedDenomination),
+  whenPredSetWithPropAndSetter(
+    fromAndToCurrencyPropsNotEqual,
+    "conversionRate",
+    convert
+  ),
+  whenPropApplySetterMap("toDenomination", toSpecifiedDenomination),
+  whenPredSetWithPropAndSetter(
+    R.prop("numberOfDecimals"),
+    "numberOfDecimals",
+    round
+  ),
+  whenPredSetWithPropAndSetter(R.prop("roundDown"), "roundDown", roundDown),
+  whenPropApplySetterMap("toNumericBase", baseChange),
+  R.view(R.lensProp("value"))
+);
 
-const conversionUtil = (value, {
-  fromCurrency = null,
-  toCurrency = fromCurrency,
-  fromNumericBase,
-  toNumericBase,
-  fromDenomination,
-  toDenomination,
-  numberOfDecimals,
-  conversionRate,
-  invertConversionRate,
-}) => converter({
-  fromCurrency,
-  toCurrency,
-  fromNumericBase,
-  toNumericBase,
-  fromDenomination,
-  toDenomination,
-  numberOfDecimals,
-  conversionRate,
-  invertConversionRate,
-  value: value || '0',
-})
+const conversionUtil = (
+  value,
+  {
+    fromCurrency = null,
+    toCurrency = fromCurrency,
+    fromNumericBase,
+    toNumericBase,
+    fromDenomination,
+    toDenomination,
+    numberOfDecimals,
+    conversionRate,
+    invertConversionRate
+  }
+) =>
+  converter({
+    fromCurrency,
+    toCurrency,
+    fromNumericBase,
+    toNumericBase,
+    fromDenomination,
+    toDenomination,
+    numberOfDecimals,
+    conversionRate,
+    invertConversionRate,
+    value: value || "0"
+  });
 
 const addCurrencies = (a, b, options = {}) => {
-  const {
-    aBase,
-    bBase,
-    ...conversionOptions
-  } = options
-  const value = (new BigNumber(a.toString(), aBase)).add(b.toString(), bBase)
+  const { aBase, bBase, ...conversionOptions } = options;
+  const value = new BigNumber(a.toString(), aBase).add(b.toString(), bBase);
 
   return converter({
     value,
-    ...conversionOptions,
-  })
-}
+    ...conversionOptions
+  });
+};
 
 const subtractCurrencies = (a, b, options = {}) => {
-  const {
-    aBase,
-    bBase,
-    ...conversionOptions
-  } = options
-  const value = (new BigNumber(a, aBase)).minus(b, bBase)
+  const { aBase, bBase, ...conversionOptions } = options;
+  const value = new BigNumber(a, aBase).minus(b, bBase);
 
   return converter({
     value,
-    ...conversionOptions,
-  })
-}
+    ...conversionOptions
+  });
+};
 
 const multiplyCurrencies = (a, b, options = {}) => {
-  const {
-    multiplicandBase,
-    multiplierBase,
-    ...conversionOptions
-  } = options
+  const { multiplicandBase, multiplierBase, ...conversionOptions } = options;
 
-  const bigNumberA = new BigNumber(String(a), multiplicandBase)
-  const bigNumberB = new BigNumber(String(b), multiplierBase)
+  const bigNumberA = new BigNumber(String(a), multiplicandBase);
+  const bigNumberB = new BigNumber(String(b), multiplierBase);
 
-  const value = bigNumberA.times(bigNumberB)
+  const value = bigNumberA.times(bigNumberB);
 
   return converter({
     value,
-    ...conversionOptions,
-  })
-}
+    ...conversionOptions
+  });
+};
 
-const conversionGreaterThan = (
-  { ...firstProps },
-  { ...secondProps },
-) => {
-  const firstValue = converter({ ...firstProps })
-  const secondValue = converter({ ...secondProps })
+const conversionGreaterThan = ({ ...firstProps }, { ...secondProps }) => {
+  const firstValue = converter({ ...firstProps });
+  const secondValue = converter({ ...secondProps });
 
-  return firstValue.gt(secondValue)
-}
+  return firstValue.gt(secondValue);
+};
 
-const conversionLessThan = (
-  { ...firstProps },
-  { ...secondProps },
-) => {
-  const firstValue = converter({ ...firstProps })
-  const secondValue = converter({ ...secondProps })
+const conversionLessThan = ({ ...firstProps }, { ...secondProps }) => {
+  const firstValue = converter({ ...firstProps });
+  const secondValue = converter({ ...secondProps });
 
-  return firstValue.lt(secondValue)
-}
+  return firstValue.lt(secondValue);
+};
 
-const conversionMax = (
-  { ...firstProps },
-  { ...secondProps },
-) => {
+const conversionMax = ({ ...firstProps }, { ...secondProps }) => {
   const firstIsGreater = conversionGreaterThan(
     { ...firstProps },
     { ...secondProps }
-  )
+  );
 
-  return firstIsGreater ? firstProps.value : secondProps.value
-}
+  return firstIsGreater ? firstProps.value : secondProps.value;
+};
 
-const conversionGTE = (
-  { ...firstProps },
-  { ...secondProps },
-) => {
-  const firstValue = converter({ ...firstProps })
-  const secondValue = converter({ ...secondProps })
-  return firstValue.greaterThanOrEqualTo(secondValue)
-}
+const conversionGTE = ({ ...firstProps }, { ...secondProps }) => {
+  const firstValue = converter({ ...firstProps });
+  const secondValue = converter({ ...secondProps });
+  return firstValue.greaterThanOrEqualTo(secondValue);
+};
 
-const conversionLTE = (
-  { ...firstProps },
-  { ...secondProps },
-) => {
-  const firstValue = converter({ ...firstProps })
-  const secondValue = converter({ ...secondProps })
-  return firstValue.lessThanOrEqualTo(secondValue)
-}
+const conversionLTE = ({ ...firstProps }, { ...secondProps }) => {
+  const firstValue = converter({ ...firstProps });
+  const secondValue = converter({ ...secondProps });
+  return firstValue.lessThanOrEqualTo(secondValue);
+};
 
 const toNegative = (n, options = {}) => {
-  return multiplyCurrencies(n, -1, options)
-}
+  return multiplyCurrencies(n, -1, options);
+};
 
 module.exports = {
   conversionUtil,
@@ -244,5 +247,5 @@ module.exports = {
   conversionLTE,
   conversionMax,
   toNegative,
-  subtractCurrencies,
-}
+  subtractCurrencies
+};

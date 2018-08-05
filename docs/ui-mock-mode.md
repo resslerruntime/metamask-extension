@@ -5,4 +5,3 @@ You can run `npm run mock` and your browser should open a live-reloading demo ve
 It does not yet connect to a real blockchain (this could be a good test feature later, connecting to a test blockchain), so only local operations work.
 
 You can reset the mock ui at any time with the `Reset` button at the top of the screen.
-

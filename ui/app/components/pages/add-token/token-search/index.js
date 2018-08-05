@@ -1,2 +1,2 @@
-import TokenSearch from './token-search.component'
-module.exports = TokenSearch
+import TokenSearch from "./token-search.component";
+module.exports = TokenSearch;

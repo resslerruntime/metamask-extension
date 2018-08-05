@@ -1,13 +1,13 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import SenderToRecipient from '../sender-to-recipient'
-import { PageContainerFooter } from '../page-container'
-import { ConfirmPageContainerHeader, ConfirmPageContainerContent } from './'
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import SenderToRecipient from "../sender-to-recipient";
+import { PageContainerFooter } from "../page-container";
+import { ConfirmPageContainerHeader, ConfirmPageContainerContent } from "./";
 
 export default class ConfirmPageContainer extends Component {
   static contextTypes = {
-    t: PropTypes.func,
-  }
+    t: PropTypes.func
+  };
 
   static propTypes = {
     // Header
@@ -43,10 +43,10 @@ export default class ConfirmPageContainer extends Component {
     // Footer
     onCancel: PropTypes.func,
     onSubmit: PropTypes.func,
-    valid: PropTypes.bool,
-  }
+    valid: PropTypes.bool
+  };
 
-  render () {
+  render() {
     const {
       showEdit,
       onEdit,
@@ -70,15 +70,12 @@ export default class ConfirmPageContainer extends Component {
       onSubmit,
       identiconAddress,
       nonce,
-      warning,
-    } = this.props
+      warning
+    } = this.props;
 
     return (
       <div className="page-container">
-        <ConfirmPageContainerHeader
-          showEdit={showEdit}
-          onEdit={() => onEdit()}
-        >
+        <ConfirmPageContainerHeader showEdit={showEdit} onEdit={() => onEdit()}>
           <SenderToRecipient
             senderName={fromName}
             senderAddress={fromAddress}
@@ -86,33 +83,31 @@ export default class ConfirmPageContainer extends Component {
             recipientAddress={toAddress}
           />
         </ConfirmPageContainerHeader>
-        {
-          contentComponent || (
-            <ConfirmPageContainerContent
-              action={action}
-              title={title}
-              titleComponent={titleComponent}
-              subtitle={subtitle}
-              hideSubtitle={hideSubtitle}
-              summaryComponent={summaryComponent}
-              detailsComponent={detailsComponent}
-              dataComponent={dataComponent}
-              errorMessage={errorMessage}
-              errorKey={errorKey}
-              identiconAddress={identiconAddress}
-              nonce={nonce}
-              warning={warning}
-            />
-          )
-        }
+        {contentComponent || (
+          <ConfirmPageContainerContent
+            action={action}
+            title={title}
+            titleComponent={titleComponent}
+            subtitle={subtitle}
+            hideSubtitle={hideSubtitle}
+            summaryComponent={summaryComponent}
+            detailsComponent={detailsComponent}
+            dataComponent={dataComponent}
+            errorMessage={errorMessage}
+            errorKey={errorKey}
+            identiconAddress={identiconAddress}
+            nonce={nonce}
+            warning={warning}
+          />
+        )}
         <PageContainerFooter
           onCancel={() => onCancel()}
           onSubmit={() => onSubmit()}
-          submitText={this.context.t('confirm')}
+          submitText={this.context.t("confirm")}
           submitButtonType="confirm"
           disabled={!valid}
         />
       </div>
-    )
+    );
   }
 }

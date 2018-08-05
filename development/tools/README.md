@@ -3,9 +3,7 @@
 This folder contains configuration files which are used by the the different
 development-tools, like e.g. JsDoc.
 
-
 ## Appveyor
-
 
 https://www.appveyor.com/docs/build-configuration/#alternative-yaml-file-location
 

@@ -4,15 +4,15 @@ Transaction Controller is an aggregate of sub-controllers and trackers
 exposed to the MetaMask controller.
 
 - txStateManager
-    responsible for the state of a transaction and
-    storing the transaction
+  responsible for the state of a transaction and
+  storing the transaction
 - pendingTxTracker
-    watching blocks for transactions to be include
-    and emitting confirmed events
+  watching blocks for transactions to be include
+  and emitting confirmed events
 - txGasUtil
-    gas calculations and safety buffering
+  gas calculations and safety buffering
 - nonceTracker
-    calculating nonces
+  calculating nonces
 
 ## Flow diagram of processing a transaction
 

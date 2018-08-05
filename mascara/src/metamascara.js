@@ -1,1 +1,1 @@
-global.metamask = require('metamascara')
+global.metamask = require("metamascara");

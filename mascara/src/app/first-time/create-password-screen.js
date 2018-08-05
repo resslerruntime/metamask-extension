@@ -1,24 +1,24 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
-import { withRouter } from 'react-router-dom'
-import { compose } from 'recompose'
-import { createNewVaultAndKeychain } from '../../../../ui/app/actions'
-import Breadcrumbs from './breadcrumbs'
-import EventEmitter from 'events'
-import Mascot from '../../../../ui/app/components/mascot'
-import classnames from 'classnames'
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { compose } from "recompose";
+import { createNewVaultAndKeychain } from "../../../../ui/app/actions";
+import Breadcrumbs from "./breadcrumbs";
+import EventEmitter from "events";
+import Mascot from "../../../../ui/app/components/mascot";
+import classnames from "classnames";
 import {
   INITIALIZE_UNIQUE_IMAGE_ROUTE,
   INITIALIZE_IMPORT_WITH_SEED_PHRASE_ROUTE,
-  INITIALIZE_NOTICE_ROUTE,
-} from '../../../../ui/app/routes'
-import TextField from '../../../../ui/app/components/text-field'
+  INITIALIZE_NOTICE_ROUTE
+} from "../../../../ui/app/routes";
+import TextField from "../../../../ui/app/components/text-field";
 
 class CreatePasswordScreen extends Component {
   static contextTypes = {
-    t: PropTypes.func,
-  }
+    t: PropTypes.func
+  };
 
   static propTypes = {
     isLoading: PropTypes.bool.isRequired,
@@ -26,114 +26,118 @@ class CreatePasswordScreen extends Component {
     history: PropTypes.object.isRequired,
     isInitialized: PropTypes.bool,
     isUnlocked: PropTypes.bool,
-    isMascara: PropTypes.bool.isRequired,
-  }
+    isMascara: PropTypes.bool.isRequired
+  };
 
   state = {
-    password: '',
-    confirmPassword: '',
+    password: "",
+    confirmPassword: "",
     passwordError: null,
-    confirmPasswordError: null,
+    confirmPasswordError: null
+  };
+
+  constructor(props) {
+    super(props);
+    this.animationEventEmitter = new EventEmitter();
   }
 
-  constructor (props) {
-    super(props)
-    this.animationEventEmitter = new EventEmitter()
-  }
-
-  componentWillMount () {
-    const { isInitialized, history } = this.props
+  componentWillMount() {
+    const { isInitialized, history } = this.props;
 
     if (isInitialized) {
-      history.push(INITIALIZE_NOTICE_ROUTE)
+      history.push(INITIALIZE_NOTICE_ROUTE);
     }
   }
 
-  isValid () {
-    const { password, confirmPassword } = this.state
+  isValid() {
+    const { password, confirmPassword } = this.state;
 
     if (!password || !confirmPassword) {
-      return false
+      return false;
     }
 
     if (password.length < 8) {
-      return false
+      return false;
     }
 
-    return password === confirmPassword
+    return password === confirmPassword;
   }
 
   createAccount = () => {
     if (!this.isValid()) {
-      return
+      return;
     }
 
-    const { password } = this.state
-    const { createAccount, history } = this.props
+    const { password } = this.state;
+    const { createAccount, history } = this.props;
 
-    this.setState({ isLoading: true })
-    createAccount(password)
-      .then(() => history.push(INITIALIZE_UNIQUE_IMAGE_ROUTE))
-  }
+    this.setState({ isLoading: true });
+    createAccount(password).then(() =>
+      history.push(INITIALIZE_UNIQUE_IMAGE_ROUTE)
+    );
+  };
 
-  handlePasswordChange (password) {
-    const { confirmPassword } = this.state
-    let confirmPasswordError = null
-    let passwordError = null
+  handlePasswordChange(password) {
+    const { confirmPassword } = this.state;
+    let confirmPasswordError = null;
+    let passwordError = null;
 
     if (password && password.length < 8) {
-      passwordError = this.context.t('passwordNotLongEnough')
+      passwordError = this.context.t("passwordNotLongEnough");
     }
 
     if (confirmPassword && password !== confirmPassword) {
-      confirmPasswordError = this.context.t('passwordsDontMatch')
+      confirmPasswordError = this.context.t("passwordsDontMatch");
     }
 
-    this.setState({ password, passwordError, confirmPasswordError })
+    this.setState({ password, passwordError, confirmPasswordError });
   }
 
-  handleConfirmPasswordChange (confirmPassword) {
-    const { password } = this.state
-    let confirmPasswordError = null
+  handleConfirmPasswordChange(confirmPassword) {
+    const { password } = this.state;
+    let confirmPasswordError = null;
 
     if (password !== confirmPassword) {
-      confirmPasswordError = this.context.t('passwordsDontMatch')
+      confirmPasswordError = this.context.t("passwordsDontMatch");
     }
 
-    this.setState({ confirmPassword, confirmPasswordError })
+    this.setState({ confirmPassword, confirmPasswordError });
   }
 
-  render () {
-    const { history, isMascara } = this.props
-    const { passwordError, confirmPasswordError } = this.state
-    const { t } = this.context
+  render() {
+    const { history, isMascara } = this.props;
+    const { passwordError, confirmPasswordError } = this.state;
+    const { t } = this.context;
 
     return (
-      <div className={classnames({ 'first-view-main-wrapper': !isMascara })}>
-        <div className={classnames({
-          'first-view-main': !isMascara,
-          'first-view-main__mascara': isMascara,
-        })}>
-          {isMascara && <div className="mascara-info first-view-phone-invisible">
-            <Mascot
-              animationEventEmitter={this.animationEventEmitter}
-              width="225"
-              height="225"
-            />
-            <div className="info">
-              MetaMask is a secure identity vault for Ethereum.
+      <div className={classnames({ "first-view-main-wrapper": !isMascara })}>
+        <div
+          className={classnames({
+            "first-view-main": !isMascara,
+            "first-view-main__mascara": isMascara
+          })}
+        >
+          {isMascara && (
+            <div className="mascara-info first-view-phone-invisible">
+              <Mascot
+                animationEventEmitter={this.animationEventEmitter}
+                width="225"
+                height="225"
+              />
+              <div className="info">
+                MetaMask is a secure identity vault for Ethereum.
+              </div>
+              <div className="info">
+                It allows you to hold ether & tokens, and interact with
+                decentralized applications.
+              </div>
             </div>
-            <div className="info">
-              It allows you to hold ether & tokens, and interact with decentralized applications.
-            </div>
-          </div>}
+          )}
           <div className="create-password">
-            <div className="create-password__title">
-              Create Password
-            </div>
+            <div className="create-password__title">Create Password</div>
             <TextField
               id="create-password"
-              label={t('newPassword')}
+              label={t("newPassword")}
               type="password"
               className="first-time-flow__input"
               value={this.state.password}
@@ -147,11 +151,13 @@ class CreatePasswordScreen extends Component {
             />
             <TextField
               id="confirm-password"
-              label={t('confirmPassword')}
+              label={t("confirmPassword")}
               type="password"
               className="first-time-flow__input"
               value={this.state.confirmPassword}
-              onChange={event => this.handleConfirmPasswordChange(event.target.value)}
+              onChange={event =>
+                this.handleConfirmPasswordChange(event.target.value)
+              }
               error={confirmPasswordError}
               autoComplete="confirm-password"
               margin="normal"
@@ -169,13 +175,13 @@ class CreatePasswordScreen extends Component {
               href=""
               className="first-time-flow__link create-password__import-link"
               onClick={e => {
-                e.preventDefault()
-                history.push(INITIALIZE_IMPORT_WITH_SEED_PHRASE_ROUTE)
+                e.preventDefault();
+                history.push(INITIALIZE_IMPORT_WITH_SEED_PHRASE_ROUTE);
               }}
             >
               Import with seed phrase
             </a>
-            { /* }
+            {/* }
             <a
               href=""
               className="first-time-flow__link create-password__import-link"
@@ -186,34 +192,34 @@ class CreatePasswordScreen extends Component {
             >
               Import an account
             </a>
-            { */ }
+            { */}
             <Breadcrumbs total={3} currentIndex={0} />
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
 const mapStateToProps = ({ metamask, appState }) => {
-  const { isInitialized, isUnlocked, isMascara, noActiveNotices } = metamask
-  const { isLoading } = appState
+  const { isInitialized, isUnlocked, isMascara, noActiveNotices } = metamask;
+  const { isLoading } = appState;
 
   return {
     isLoading,
     isInitialized,
     isUnlocked,
     isMascara,
-    noActiveNotices,
-  }
-}
+    noActiveNotices
+  };
+};
 
 export default compose(
   withRouter,
   connect(
     mapStateToProps,
     dispatch => ({
-      createAccount: password => dispatch(createNewVaultAndKeychain(password)),
+      createAccount: password => dispatch(createNewVaultAndKeychain(password))
     })
   )
-)(CreatePasswordScreen)
+)(CreatePasswordScreen);

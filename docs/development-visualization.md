@@ -3,12 +3,14 @@
 This will generate a video of the repo commit history.
 
 Install preqs:
+
 ```
 brew install gource
 brew install ffmpeg
 ```
 
 From the repo dir, pipe `gource` into `ffmpeg`:
+
 ```
 gource \
   --seconds-per-day .1 \
@@ -32,4 +34,3 @@ gource \
   --output-framerate 30 \
   | ffmpeg -y -r 30 -f image2pipe -vcodec ppm -i - -b 65536K metamask-dev-history.mp4
 ```
-

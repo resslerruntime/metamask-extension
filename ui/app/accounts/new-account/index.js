@@ -1,87 +1,93 @@
-const Component = require('react').Component
-const h = require('react-hyperscript')
-const PropTypes = require('prop-types')
-const inherits = require('util').inherits
-const connect = require('react-redux').connect
-const actions = require('../../actions')
-const { getCurrentViewContext } = require('../../selectors')
-const classnames = require('classnames')
+const Component = require("react").Component;
+const h = require("react-hyperscript");
+const PropTypes = require("prop-types");
+const inherits = require("util").inherits;
+const connect = require("react-redux").connect;
+const actions = require("../../actions");
+const { getCurrentViewContext } = require("../../selectors");
+const classnames = require("classnames");
 
-const NewAccountCreateForm = require('./create-form')
-const NewAccountImportForm = require('../import')
+const NewAccountCreateForm = require("./create-form");
+const NewAccountImportForm = require("../import");
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
-    displayedForm: getCurrentViewContext(state),
-  }
+    displayedForm: getCurrentViewContext(state)
+  };
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     displayForm: form => dispatch(actions.setNewAccountForm(form)),
-    showQrView: (selected, identity) => dispatch(actions.showQrView(selected, identity)),
+    showQrView: (selected, identity) =>
+      dispatch(actions.showQrView(selected, identity)),
     showExportPrivateKeyModal: () => {
-      dispatch(actions.showModal({ name: 'EXPORT_PRIVATE_KEY' }))
+      dispatch(actions.showModal({ name: "EXPORT_PRIVATE_KEY" }));
     },
     hideModal: () => dispatch(actions.hideModal()),
-    setAccountLabel: (address, label) => dispatch(actions.setAccountLabel(address, label)),
-  }
+    setAccountLabel: (address, label) =>
+      dispatch(actions.setAccountLabel(address, label))
+  };
 }
 
-inherits(AccountDetailsModal, Component)
-function AccountDetailsModal (props) {
-  Component.call(this)
+inherits(AccountDetailsModal, Component);
+function AccountDetailsModal(props) {
+  Component.call(this);
 
   this.state = {
-    displayedForm: props.displayedForm,
-  }
+    displayedForm: props.displayedForm
+  };
 }
 
 AccountDetailsModal.contextTypes = {
-  t: PropTypes.func,
-}
+  t: PropTypes.func
+};
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(AccountDetailsModal)
+module.exports = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AccountDetailsModal);
 
+AccountDetailsModal.prototype.render = function() {
+  const { displayedForm, displayForm } = this.props;
 
-AccountDetailsModal.prototype.render = function () {
-  const { displayedForm, displayForm } = this.props
+  return h("div.new-account", {}, [
+    h("div.new-account__header", [
+      h("div.new-account__title", this.context.t("newAccount")),
 
-  return h('div.new-account', {}, [
+      h("div.new-account__tabs", [
+        h(
+          "div.new-account__tabs__tab",
+          {
+            className: classnames("new-account__tabs__tab", {
+              "new-account__tabs__selected": displayedForm === "CREATE",
+              "new-account__tabs__unselected cursor-pointer":
+                displayedForm !== "CREATE"
+            }),
+            onClick: () => displayForm("CREATE")
+          },
+          this.context.t("createDen")
+        ),
 
-    h('div.new-account__header', [
-
-      h('div.new-account__title', this.context.t('newAccount')),
-
-      h('div.new-account__tabs', [
-
-        h('div.new-account__tabs__tab', {
-          className: classnames('new-account__tabs__tab', {
-            'new-account__tabs__selected': displayedForm === 'CREATE',
-            'new-account__tabs__unselected cursor-pointer': displayedForm !== 'CREATE',
-          }),
-          onClick: () => displayForm('CREATE'),
-        }, this.context.t('createDen')),
-
-        h('div.new-account__tabs__tab', {
-          className: classnames('new-account__tabs__tab', {
-            'new-account__tabs__selected': displayedForm === 'IMPORT',
-            'new-account__tabs__unselected cursor-pointer': displayedForm !== 'IMPORT',
-          }),
-          onClick: () => displayForm('IMPORT'),
-        }, this.context.t('import')),
-
-      ]),
-
+        h(
+          "div.new-account__tabs__tab",
+          {
+            className: classnames("new-account__tabs__tab", {
+              "new-account__tabs__selected": displayedForm === "IMPORT",
+              "new-account__tabs__unselected cursor-pointer":
+                displayedForm !== "IMPORT"
+            }),
+            onClick: () => displayForm("IMPORT")
+          },
+          this.context.t("import")
+        )
+      ])
     ]),
 
-    h('div.new-account__form', [
-
-      displayedForm === 'CREATE'
+    h("div.new-account__form", [
+      displayedForm === "CREATE"
         ? h(NewAccountCreateForm)
-        : h(NewAccountImportForm),
-
-    ]),
-
-  ])
-}
+        : h(NewAccountImportForm)
+    ])
+  ]);
+};

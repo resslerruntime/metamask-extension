@@ -8,7 +8,7 @@
   color: $mid-gray;
 
   &__close::after {
-    content: '\00D7';
+    content: "\00D7";
     font-size: 29px;
     font-weight: 200;
     color: $dusty-gray;
@@ -19,6 +19,6 @@
   }
 
   &__description {
-    font-size: .75rem;
+    font-size: 0.75rem;
   }
 }
