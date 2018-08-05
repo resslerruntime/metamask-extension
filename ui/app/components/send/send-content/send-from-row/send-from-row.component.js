@@ -1,10 +1,9 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import SendRowWrapper from '../send-row-wrapper/'
-import FromDropdown from './from-dropdown/'
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import SendRowWrapper from "../send-row-wrapper/";
+import FromDropdown from "./from-dropdown/";
 
 export default class SendFromRow extends Component {
-
   static propTypes = {
     closeFromDropdown: PropTypes.func,
     conversionRate: PropTypes.number,
@@ -14,39 +13,35 @@ export default class SendFromRow extends Component {
     openFromDropdown: PropTypes.func,
     tokenContract: PropTypes.object,
     updateSendFrom: PropTypes.func,
-    setSendTokenBalance: PropTypes.func,
+    setSendTokenBalance: PropTypes.func
   };
 
   static contextTypes = {
-    t: PropTypes.func,
+    t: PropTypes.func
   };
 
-  async handleFromChange (newFrom) {
-    const {
-      updateSendFrom,
-      tokenContract,
-      setSendTokenBalance,
-    } = this.props
+  async handleFromChange(newFrom) {
+    const { updateSendFrom, tokenContract, setSendTokenBalance } = this.props;
 
     if (tokenContract) {
-      const usersToken = await tokenContract.balanceOf(newFrom.address)
-      setSendTokenBalance(usersToken)
+      const usersToken = await tokenContract.balanceOf(newFrom.address);
+      setSendTokenBalance(usersToken);
     }
-    updateSendFrom(newFrom)
+    updateSendFrom(newFrom);
   }
 
-  render () {
+  render() {
     const {
       closeFromDropdown,
       conversionRate,
       from,
       fromAccounts,
       fromDropdownOpen,
-      openFromDropdown,
-    } = this.props
+      openFromDropdown
+    } = this.props;
 
     return (
-      <SendRowWrapper label={`${this.context.t('from')}:`}>
+      <SendRowWrapper label={`${this.context.t("from")}:`}>
         <FromDropdown
           accounts={fromAccounts}
           closeDropdown={() => closeFromDropdown()}
@@ -57,7 +52,6 @@ export default class SendFromRow extends Component {
           selectedAccount={from}
         />
       </SendRowWrapper>
-    )
+    );
   }
-
 }

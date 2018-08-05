@@ -1,11 +1,10 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import SendRowWrapper from '../send-row-wrapper/'
-import EnsInput from '../../../ens-input'
-import { getToErrorObject } from './send-to-row.utils.js'
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import SendRowWrapper from "../send-row-wrapper/";
+import EnsInput from "../../../ens-input";
+import { getToErrorObject } from "./send-to-row.utils.js";
 
 export default class SendToRow extends Component {
-
   static propTypes = {
     closeToDropdown: PropTypes.func,
     inError: PropTypes.bool,
@@ -16,24 +15,24 @@ export default class SendToRow extends Component {
     toDropdownOpen: PropTypes.bool,
     updateGas: PropTypes.func,
     updateSendTo: PropTypes.func,
-    updateSendToError: PropTypes.func,
+    updateSendToError: PropTypes.func
   };
 
   static contextTypes = {
-    t: PropTypes.func,
+    t: PropTypes.func
   };
 
-  handleToChange (to, nickname = '', toError) {
-    const { updateSendTo, updateSendToError, updateGas } = this.props
-    const toErrorObject = getToErrorObject(to, toError)
-    updateSendTo(to, nickname)
-    updateSendToError(toErrorObject)
+  handleToChange(to, nickname = "", toError) {
+    const { updateSendTo, updateSendToError, updateGas } = this.props;
+    const toErrorObject = getToErrorObject(to, toError);
+    updateSendTo(to, nickname);
+    updateSendToError(toErrorObject);
     if (toErrorObject.to === null) {
-      updateGas({ to })
+      updateGas({ to });
     }
   }
 
-  render () {
+  render() {
     const {
       closeToDropdown,
       inError,
@@ -41,13 +40,13 @@ export default class SendToRow extends Component {
       openToDropdown,
       to,
       toAccounts,
-      toDropdownOpen,
-    } = this.props
+      toDropdownOpen
+    } = this.props;
 
     return (
       <SendRowWrapper
-        errorType={'to'}
-        label={`${this.context.t('to')}`}
+        errorType={"to"}
+        label={`${this.context.t("to")}`}
         showError={inError}
       >
         <EnsInput
@@ -55,15 +54,16 @@ export default class SendToRow extends Component {
           closeDropdown={() => closeToDropdown()}
           dropdownOpen={toDropdownOpen}
           inError={inError}
-          name={'address'}
+          name={"address"}
           network={network}
-          onChange={({ toAddress, nickname, toError }) => this.handleToChange(toAddress, nickname, toError)}
+          onChange={({ toAddress, nickname, toError }) =>
+            this.handleToChange(toAddress, nickname, toError)
+          }
           openDropdown={() => openToDropdown()}
-          placeholder={this.context.t('recipientAddress')}
+          placeholder={this.context.t("recipientAddress")}
           to={to}
         />
       </SendRowWrapper>
-    )
+    );
   }
-
 }

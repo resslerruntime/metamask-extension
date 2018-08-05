@@ -1,57 +1,65 @@
-const inherits = require('util').inherits
-const Component = require('react').Component
-const h = require('react-hyperscript')
-const ReactMarkdown = require('react-markdown')
-const linker = require('extension-link-enabler')
-const findDOMNode = require('react-dom').findDOMNode
+const inherits = require("util").inherits;
+const Component = require("react").Component;
+const h = require("react-hyperscript");
+const ReactMarkdown = require("react-markdown");
+const linker = require("extension-link-enabler");
+const findDOMNode = require("react-dom").findDOMNode;
 
-module.exports = Notice
+module.exports = Notice;
 
-inherits(Notice, Component)
-function Notice () {
-  Component.call(this)
+inherits(Notice, Component);
+function Notice() {
+  Component.call(this);
 }
 
-Notice.prototype.render = function () {
-  const { notice, onConfirm } = this.props
-  const { title, date, body } = notice
-  const state = this.state || { disclaimerDisabled: true }
-  const disabled = state.disclaimerDisabled
+Notice.prototype.render = function() {
+  const { notice, onConfirm } = this.props;
+  const { title, date, body } = notice;
+  const state = this.state || { disclaimerDisabled: true };
+  const disabled = state.disclaimerDisabled;
 
-  return (
-    h('.flex-column.flex-center.flex-grow', {
+  return h(
+    ".flex-column.flex-center.flex-grow",
+    {
       style: {
-        width: '100%',
-      },
-    }, [
-      h('h3.flex-center.text-transform-uppercase.terms-header', {
-        style: {
-          background: '#EBEBEB',
-          color: '#AEAEAE',
-          width: '100%',
-          fontSize: '20px',
-          textAlign: 'center',
-          padding: 6,
+        width: "100%"
+      }
+    },
+    [
+      h(
+        "h3.flex-center.text-transform-uppercase.terms-header",
+        {
+          style: {
+            background: "#EBEBEB",
+            color: "#AEAEAE",
+            width: "100%",
+            fontSize: "20px",
+            textAlign: "center",
+            padding: 6
+          }
         },
-      }, [
-        title,
-      ]),
+        [title]
+      ),
 
-      h('h5.flex-center.text-transform-uppercase.terms-header', {
-        style: {
-          background: '#EBEBEB',
-          color: '#AEAEAE',
-          marginBottom: 24,
-          width: '100%',
-          fontSize: '20px',
-          textAlign: 'center',
-          padding: 6,
+      h(
+        "h5.flex-center.text-transform-uppercase.terms-header",
+        {
+          style: {
+            background: "#EBEBEB",
+            color: "#AEAEAE",
+            marginBottom: 24,
+            width: "100%",
+            fontSize: "20px",
+            textAlign: "center",
+            padding: 6
+          }
         },
-      }, [
-        date,
-      ]),
+        [date]
+      ),
 
-      h('style', `
+      h(
+        "style",
+        `
 
         .markdown {
           overflow-x: hidden;
@@ -77,56 +85,68 @@ Notice.prototype.render = function () {
           color: #df6b0e;
         }
 
-      `),
+      `
+      ),
 
-      h('div.markdown', {
-        onScroll: (e) => {
-          var object = e.currentTarget
-          if (object.offsetHeight + object.scrollTop + 100 >= object.scrollHeight) {
-            this.setState({disclaimerDisabled: false})
+      h(
+        "div.markdown",
+        {
+          onScroll: e => {
+            var object = e.currentTarget;
+            if (
+              object.offsetHeight + object.scrollTop + 100 >=
+              object.scrollHeight
+            ) {
+              this.setState({ disclaimerDisabled: false });
+            }
+          },
+          style: {
+            background: "rgb(235, 235, 235)",
+            height: "310px",
+            padding: "6px",
+            width: "90%",
+            overflowY: "scroll",
+            scroll: "auto"
           }
         },
-        style: {
-          background: 'rgb(235, 235, 235)',
-          height: '310px',
-          padding: '6px',
-          width: '90%',
-          overflowY: 'scroll',
-          scroll: 'auto',
-        },
-      }, [
-        h(ReactMarkdown, {
-          className: 'notice-box',
-          source: body,
-          skipHtml: true,
-        }),
-      ]),
+        [
+          h(ReactMarkdown, {
+            className: "notice-box",
+            source: body,
+            skipHtml: true
+          })
+        ]
+      ),
 
-      h('button', {
-        disabled,
-        onClick: () => {
-          this.setState({disclaimerDisabled: true})
-          onConfirm()
+      h(
+        "button",
+        {
+          disabled,
+          onClick: () => {
+            this.setState({ disclaimerDisabled: true });
+            onConfirm();
+          },
+          style: {
+            marginTop: "18px"
+          }
         },
-        style: {
-          marginTop: '18px',
-        },
-      }, 'Accept'),
-    ])
-  )
-}
+        "Accept"
+      )
+    ]
+  );
+};
 
-Notice.prototype.componentDidMount = function () {
+Notice.prototype.componentDidMount = function() {
   // eslint-disable-next-line react/no-find-dom-node
-  var node = findDOMNode(this)
-  linker.setupListener(node)
-  if (document.getElementsByClassName('notice-box')[0].clientHeight < 310) {
-    this.setState({disclaimerDisabled: false})
+  var node = findDOMNode(this);
+  linker.setupListener(node);
+  if (document.getElementsByClassName("notice-box")[0].clientHeight < 310) {
+    this.setState({ disclaimerDisabled: false });
   }
-}
+};
 
-Notice.prototype.componentWillUnmount = function () {
+Notice.prototype.componentWillUnmount = function() {
   // eslint-disable-next-line react/no-find-dom-node
-  var node = findDOMNode(this)
-  linker.teardownListener(node)
-}
+  var node = findDOMNode(this);
+  linker.teardownListener(node);
+};

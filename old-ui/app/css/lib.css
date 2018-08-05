@@ -1,11 +1,11 @@
 /* color */
 
 .color-orange {
-  color: #F7861C;
+  color: #f7861c;
 }
 
 .color-forest {
-  color: #0A5448;
+  color: #0a5448;
 }
 
 /* lib */
@@ -176,7 +176,7 @@ hr.horizontal-line {
 }
 
 .red-dot {
-  background: #E91550;
+  background: #e91550;
   color: white;
   border-radius: 10px;
 }
@@ -192,7 +192,7 @@ hr.horizontal-line {
 }
 
 .golden-square {
-  background: #EBB33F;
+  background: #ebb33f;
 }
 
 .pending-dot {
@@ -214,7 +214,7 @@ hr.horizontal-line {
 .keyring-label {
   z-index: 1;
   font-size: 11px;
-  background: rgba(255,0,0,0.8);
+  background: rgba(255, 0, 0, 0.8);
   color: white;
   bottom: 0px;
   left: -18px;
@@ -253,7 +253,7 @@ i.fa.fa-question-circle.fa-lg.menu-icon {
   border-radius: 20px;
 }
 .testnet-icon {
-  background: #2465E1;
+  background: #2465e1;
 }
 
 .drop-menu-item {

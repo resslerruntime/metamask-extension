@@ -72,7 +72,7 @@
       background-color: $dusty-gray;
       color: $black;
       font-weight: normal;
-      letter-spacing: .5px;
+      letter-spacing: 0.5px;
     }
   }
 
@@ -94,7 +94,7 @@
 
     &:hover {
       .remove-account-icon::after {
-        content: '\00D7';
+        content: "\00D7";
         font-size: 25px;
         color: $white;
         cursor: pointer;

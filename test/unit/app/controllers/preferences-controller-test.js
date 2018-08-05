@@ -1,187 +1,184 @@
-const assert = require('assert')
-const PreferencesController = require('../../../../app/scripts/controllers/preferences')
+const assert = require("assert");
+const PreferencesController = require("../../../../app/scripts/controllers/preferences");
 
-describe('preferences controller', function () {
-  let preferencesController
+describe("preferences controller", function() {
+  let preferencesController;
 
   beforeEach(() => {
-    preferencesController = new PreferencesController()
-  })
+    preferencesController = new PreferencesController();
+  });
 
-  describe('setAddresses', function () {
-    it('should keep a map of addresses to names and addresses in the store', function () {
-      preferencesController.setAddresses([
-        '0xda22le',
-        '0x7e57e2',
-      ])
+  describe("setAddresses", function() {
+    it("should keep a map of addresses to names and addresses in the store", function() {
+      preferencesController.setAddresses(["0xda22le", "0x7e57e2"]);
 
-      const {identities} = preferencesController.store.getState()
+      const { identities } = preferencesController.store.getState();
       assert.deepEqual(identities, {
-        '0xda22le': {
-          name: 'Account 1',
-          address: '0xda22le',
+        "0xda22le": {
+          name: "Account 1",
+          address: "0xda22le"
         },
-        '0x7e57e2': {
-          name: 'Account 2',
-          address: '0x7e57e2',
-        },
-      })
-    })
+        "0x7e57e2": {
+          name: "Account 2",
+          address: "0x7e57e2"
+        }
+      });
+    });
 
-    it('should replace its list of addresses', function () {
-      preferencesController.setAddresses([
-        '0xda22le',
-        '0x7e57e2',
-      ])
-      preferencesController.setAddresses([
-        '0xda22le77',
-        '0x7e57e277',
-      ])
+    it("should replace its list of addresses", function() {
+      preferencesController.setAddresses(["0xda22le", "0x7e57e2"]);
+      preferencesController.setAddresses(["0xda22le77", "0x7e57e277"]);
 
-      const {identities} = preferencesController.store.getState()
+      const { identities } = preferencesController.store.getState();
       assert.deepEqual(identities, {
-        '0xda22le77': {
-          name: 'Account 1',
-          address: '0xda22le77',
+        "0xda22le77": {
+          name: "Account 1",
+          address: "0xda22le77"
         },
-        '0x7e57e277': {
-          name: 'Account 2',
-          address: '0x7e57e277',
-        },
-      })
-    })
-  })
+        "0x7e57e277": {
+          name: "Account 2",
+          address: "0x7e57e277"
+        }
+      });
+    });
+  });
 
-  describe('removeAddress', function () {
-    it('should remove an address from state', function () {
-      preferencesController.setAddresses([
-        '0xda22le',
-        '0x7e57e2',
-      ])
+  describe("removeAddress", function() {
+    it("should remove an address from state", function() {
+      preferencesController.setAddresses(["0xda22le", "0x7e57e2"]);
 
-      preferencesController.removeAddress('0xda22le')
+      preferencesController.removeAddress("0xda22le");
 
-      assert.equal(preferencesController.store.getState().identities['0xda22le'], undefined)
-    })
+      assert.equal(
+        preferencesController.store.getState().identities["0xda22le"],
+        undefined
+      );
+    });
 
-    it('should switch accounts if the selected address is removed', function () {
-      preferencesController.setAddresses([
-        '0xda22le',
-        '0x7e57e2',
-      ])
+    it("should switch accounts if the selected address is removed", function() {
+      preferencesController.setAddresses(["0xda22le", "0x7e57e2"]);
 
-      preferencesController.setSelectedAddress('0x7e57e2')
-      preferencesController.removeAddress('0x7e57e2')
+      preferencesController.setSelectedAddress("0x7e57e2");
+      preferencesController.removeAddress("0x7e57e2");
 
-      assert.equal(preferencesController.getSelectedAddress(), '0xda22le')
-    })
-  })
+      assert.equal(preferencesController.getSelectedAddress(), "0xda22le");
+    });
+  });
 
-  describe('setAccountLabel', function () {
-    it('should update a label for the given account', function () {
-      preferencesController.setAddresses([
-        '0xda22le',
-        '0x7e57e2',
-      ])
+  describe("setAccountLabel", function() {
+    it("should update a label for the given account", function() {
+      preferencesController.setAddresses(["0xda22le", "0x7e57e2"]);
 
-      assert.deepEqual(preferencesController.store.getState().identities['0xda22le'], {
-        name: 'Account 1',
-        address: '0xda22le',
-      })
+      assert.deepEqual(
+        preferencesController.store.getState().identities["0xda22le"],
+        {
+          name: "Account 1",
+          address: "0xda22le"
+        }
+      );
 
+      preferencesController.setAccountLabel("0xda22le", "Dazzle");
+      assert.deepEqual(
+        preferencesController.store.getState().identities["0xda22le"],
+        {
+          name: "Dazzle",
+          address: "0xda22le"
+        }
+      );
+    });
+  });
 
-      preferencesController.setAccountLabel('0xda22le', 'Dazzle')
-      assert.deepEqual(preferencesController.store.getState().identities['0xda22le'], {
-        name: 'Dazzle',
-        address: '0xda22le',
-      })
-    })
-  })
+  describe("getTokens", function() {
+    it("should return an empty list initially", async function() {
+      await preferencesController.setSelectedAddress("0x7e57e2");
 
-  describe('getTokens', function () {
-    it('should return an empty list initially', async function () {
-      await preferencesController.setSelectedAddress('0x7e57e2')
+      const tokens = preferencesController.getTokens();
+      assert.equal(tokens.length, 0, "empty list of tokens");
+    });
+  });
 
-      const tokens = preferencesController.getTokens()
-      assert.equal(tokens.length, 0, 'empty list of tokens')
-    })
-  })
+  describe("addToken", function() {
+    it("should add that token to its state", async function() {
+      const address = "0xabcdef1234567";
+      const symbol = "ABBR";
+      const decimals = 5;
 
-  describe('addToken', function () {
-    it('should add that token to its state', async function () {
-      const address = '0xabcdef1234567'
-      const symbol = 'ABBR'
-      const decimals = 5
+      await preferencesController.setSelectedAddress("0x7e57e2");
+      await preferencesController.addToken(address, symbol, decimals);
 
-      await preferencesController.setSelectedAddress('0x7e57e2')
-      await preferencesController.addToken(address, symbol, decimals)
+      const tokens = preferencesController.getTokens();
+      assert.equal(tokens.length, 1, "one token added");
 
-      const tokens = preferencesController.getTokens()
-      assert.equal(tokens.length, 1, 'one token added')
+      const added = tokens[0];
+      assert.equal(added.address, address, "set address correctly");
+      assert.equal(added.symbol, symbol, "set symbol correctly");
+      assert.equal(added.decimals, decimals, "set decimals correctly");
+    });
 
-      const added = tokens[0]
-      assert.equal(added.address, address, 'set address correctly')
-      assert.equal(added.symbol, symbol, 'set symbol correctly')
-      assert.equal(added.decimals, decimals, 'set decimals correctly')
-    })
+    it("should allow updating a token value", async function() {
+      const address = "0xabcdef1234567";
+      const symbol = "ABBR";
+      const decimals = 5;
 
-    it('should allow updating a token value', async function () {
-      const address = '0xabcdef1234567'
-      const symbol = 'ABBR'
-      const decimals = 5
+      await preferencesController.setSelectedAddress("0x7e57e2");
+      await preferencesController.addToken(address, symbol, decimals);
 
-      await preferencesController.setSelectedAddress('0x7e57e2')
-      await preferencesController.addToken(address, symbol, decimals)
+      const newDecimals = 6;
+      await preferencesController.addToken(address, symbol, newDecimals);
 
-      const newDecimals = 6
-      await preferencesController.addToken(address, symbol, newDecimals)
+      const tokens = preferencesController.getTokens();
+      assert.equal(tokens.length, 1, "one token added");
 
-      const tokens = preferencesController.getTokens()
-      assert.equal(tokens.length, 1, 'one token added')
+      const added = tokens[0];
+      assert.equal(added.address, address, "set address correctly");
+      assert.equal(added.symbol, symbol, "set symbol correctly");
+      assert.equal(added.decimals, newDecimals, "updated decimals correctly");
+    });
 
-      const added = tokens[0]
-      assert.equal(added.address, address, 'set address correctly')
-      assert.equal(added.symbol, symbol, 'set symbol correctly')
-      assert.equal(added.decimals, newDecimals, 'updated decimals correctly')
-    })
+    it("should allow adding tokens to two separate addresses", async function() {
+      const address = "0xabcdef1234567";
+      const symbol = "ABBR";
+      const decimals = 5;
 
-    it('should allow adding tokens to two separate addresses', async function () {
-      const address = '0xabcdef1234567'
-      const symbol = 'ABBR'
-      const decimals = 5
+      await preferencesController.setSelectedAddress("0x7e57e2");
+      await preferencesController.addToken(address, symbol, decimals);
+      assert.equal(
+        preferencesController.getTokens().length,
+        1,
+        "one token added for 1st address"
+      );
 
-      await preferencesController.setSelectedAddress('0x7e57e2')
-      await preferencesController.addToken(address, symbol, decimals)
-      assert.equal(preferencesController.getTokens().length, 1, 'one token added for 1st address')
+      await preferencesController.setSelectedAddress("0xda22le");
+      await preferencesController.addToken(address, symbol, decimals);
+      assert.equal(
+        preferencesController.getTokens().length,
+        1,
+        "one token added for 2nd address"
+      );
+    });
+  });
 
-      await preferencesController.setSelectedAddress('0xda22le')
-      await preferencesController.addToken(address, symbol, decimals)
-      assert.equal(preferencesController.getTokens().length, 1, 'one token added for 2nd address')
-    })
-  })
+  describe("removeToken", function() {
+    it("should remove the only token from its state", async function() {
+      await preferencesController.setSelectedAddress("0x7e57e2");
+      await preferencesController.addToken("0xa", "A", 5);
+      await preferencesController.removeToken("0xa");
 
-  describe('removeToken', function () {
-    it('should remove the only token from its state', async function () {
-      await preferencesController.setSelectedAddress('0x7e57e2')
-      await preferencesController.addToken('0xa', 'A', 5)
-      await preferencesController.removeToken('0xa')
+      const tokens = preferencesController.getTokens();
+      assert.equal(tokens.length, 0, "one token removed");
+    });
 
-      const tokens = preferencesController.getTokens()
-      assert.equal(tokens.length, 0, 'one token removed')
-    })
+    it("should remove a token from its state", async function() {
+      await preferencesController.setSelectedAddress("0x7e57e2");
+      await preferencesController.addToken("0xa", "A", 4);
+      await preferencesController.addToken("0xb", "B", 5);
+      await preferencesController.removeToken("0xa");
 
-    it('should remove a token from its state', async function () {
-      await preferencesController.setSelectedAddress('0x7e57e2')
-      await preferencesController.addToken('0xa', 'A', 4)
-      await preferencesController.addToken('0xb', 'B', 5)
-      await preferencesController.removeToken('0xa')
+      const tokens = preferencesController.getTokens();
+      assert.equal(tokens.length, 1, "one token removed");
 
-      const tokens = preferencesController.getTokens()
-      assert.equal(tokens.length, 1, 'one token removed')
-
-      const [token1] = tokens
-      assert.deepEqual(token1, {address: '0xb', symbol: 'B', decimals: 5})
-    })
-  })
-})
-
+      const [token1] = tokens;
+      assert.deepEqual(token1, { address: "0xb", symbol: "B", decimals: 5 });
+    });
+  });
+});

@@ -1,11 +1,11 @@
-const ethUtil = require('ethereumjs-util')
-const assert = require('assert')
-const BN = require('bn.js')
+const ethUtil = require("ethereumjs-util");
+const assert = require("assert");
+const BN = require("bn.js");
 const {
   ENVIRONMENT_TYPE_POPUP,
   ENVIRONMENT_TYPE_NOTIFICATION,
-  ENVIRONMENT_TYPE_FULLSCREEN,
-} = require('./enums')
+  ENVIRONMENT_TYPE_FULLSCREEN
+} = require("./enums");
 
 /**
  * Generates an example stack trace
@@ -13,9 +13,9 @@ const {
  * @returns {string} A stack trace
  *
  */
-function getStack () {
-  const stack = new Error('Stack trace generator - not an error').stack
-  return stack
+function getStack() {
+  const stack = new Error("Stack trace generator - not an error").stack;
+  return stack;
 }
 
 /**
@@ -29,13 +29,16 @@ function getStack () {
  */
 const getEnvironmentType = (url = window.location.href) => {
   if (url.match(/popup.html(?:#.*)*$/)) {
-    return ENVIRONMENT_TYPE_POPUP
-  } else if (url.match(/home.html(?:\?.+)*$/) || url.match(/home.html(?:#.*)*$/)) {
-    return ENVIRONMENT_TYPE_FULLSCREEN
+    return ENVIRONMENT_TYPE_POPUP;
+  } else if (
+    url.match(/home.html(?:\?.+)*$/) ||
+    url.match(/home.html(?:#.*)*$/)
+  ) {
+    return ENVIRONMENT_TYPE_FULLSCREEN;
   } else {
-    return ENVIRONMENT_TYPE_NOTIFICATION
+    return ENVIRONMENT_TYPE_NOTIFICATION;
   }
-}
+};
 
 /**
  * Checks whether a given balance of ETH, represented as a hex string, is sufficient to pay a value plus a gas fee
@@ -48,18 +51,26 @@ const getEnvironmentType = (url = window.location.href) => {
  * @returns {boolean} Whether the balance is greater than or equal to the value plus the value of gas times gasPrice
  *
  */
-function sufficientBalance (txParams, hexBalance) {
+function sufficientBalance(txParams, hexBalance) {
   // validate hexBalance is a hex string
-  assert.equal(typeof hexBalance, 'string', 'sufficientBalance - hexBalance is not a hex string')
-  assert.equal(hexBalance.slice(0, 2), '0x', 'sufficientBalance - hexBalance is not a hex string')
+  assert.equal(
+    typeof hexBalance,
+    "string",
+    "sufficientBalance - hexBalance is not a hex string"
+  );
+  assert.equal(
+    hexBalance.slice(0, 2),
+    "0x",
+    "sufficientBalance - hexBalance is not a hex string"
+  );
 
-  const balance = hexToBn(hexBalance)
-  const value = hexToBn(txParams.value)
-  const gasLimit = hexToBn(txParams.gas)
-  const gasPrice = hexToBn(txParams.gasPrice)
+  const balance = hexToBn(hexBalance);
+  const value = hexToBn(txParams.value);
+  const gasLimit = hexToBn(txParams.gas);
+  const gasPrice = hexToBn(txParams.gasPrice);
 
-  const maxCost = value.add(gasLimit.mul(gasPrice))
-  return balance.gte(maxCost)
+  const maxCost = value.add(gasLimit.mul(gasPrice));
+  return balance.gte(maxCost);
 }
 
 /**
@@ -69,8 +80,8 @@ function sufficientBalance (txParams, hexBalance) {
  * @returns {string} A '0x' prefixed hex string
  *
  */
-function bnToHex (inputBn) {
-  return ethUtil.addHexPrefix(inputBn.toString(16))
+function bnToHex(inputBn) {
+  return ethUtil.addHexPrefix(inputBn.toString(16));
 }
 
 /**
@@ -80,8 +91,8 @@ function bnToHex (inputBn) {
  * @returns {Object} A BN object
  *
  */
-function hexToBn (inputHex) {
-  return new BN(ethUtil.stripHexPrefix(inputHex), 16)
+function hexToBn(inputHex) {
+  return new BN(ethUtil.stripHexPrefix(inputHex), 16);
 }
 
 /**
@@ -93,10 +104,10 @@ function hexToBn (inputHex) {
  * @returns {BN} The product of the multiplication
  *
  */
-function BnMultiplyByFraction (targetBN, numerator, denominator) {
-  const numBN = new BN(numerator)
-  const denomBN = new BN(denominator)
-  return targetBN.mul(numBN).div(denomBN)
+function BnMultiplyByFraction(targetBN, numerator, denominator) {
+  const numBN = new BN(numerator);
+  const denomBN = new BN(denominator);
+  return targetBN.mul(numBN).div(denomBN);
 }
 
 module.exports = {
@@ -105,5 +116,5 @@ module.exports = {
   sufficientBalance,
   hexToBn,
   bnToHex,
-  BnMultiplyByFraction,
-}
+  BnMultiplyByFraction
+};

@@ -1,21 +1,21 @@
-module.exports = function (network) {
-  const net = parseInt(network)
-  let prefix
+module.exports = function(network) {
+  const net = parseInt(network);
+  let prefix;
   switch (net) {
     case 1: // main net
-      prefix = ''
-      break
+      prefix = "";
+      break;
     case 3: // ropsten test net
-      prefix = 'ropsten.'
-      break
+      prefix = "ropsten.";
+      break;
     case 4: // rinkeby test net
-      prefix = 'rinkeby.'
-      break
+      prefix = "rinkeby.";
+      break;
     case 42: // kovan test net
-      prefix = 'kovan.'
-      break
+      prefix = "kovan.";
+      break;
     default:
-      prefix = ''
+      prefix = "";
   }
-  return prefix
-}
+  return prefix;
+};

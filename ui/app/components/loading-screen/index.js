@@ -1,2 +1,2 @@
-const LoadingScreen = require('./loading-screen.component')
-module.exports = LoadingScreen
+const LoadingScreen = require("./loading-screen.component");
+module.exports = LoadingScreen;

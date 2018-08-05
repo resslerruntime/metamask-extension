@@ -1,4 +1,5 @@
 # MetaMask Browser Extension
+
 [![Build Status](https://circleci.com/gh/MetaMask/metamask-extension.svg?style=shield&circle-token=a1ddcf3cd38e29267f254c9c59d556d513e3a1fd)](https://circleci.com/gh/MetaMask/metamask-extension) [![Coverage Status](https://coveralls.io/repos/github/MetaMask/metamask-extension/badge.svg?branch=master)](https://coveralls.io/github/MetaMask/metamask-extension?branch=master) [![Greenkeeper badge](https://badges.greenkeeper.io/MetaMask/metamask-extension.svg)](https://greenkeeper.io/) [![Stories in Ready](https://badge.waffle.io/MetaMask/metamask-extension.png?label=in%20progress&title=waffle.io)](https://waffle.io/MetaMask/metamask-extension)
 
 ## Support
@@ -26,15 +27,15 @@ If you're a web dapp developer, we've got two types of guides for you:
 
 ## Building locally
 
- - Install [Node.js](https://nodejs.org/en/) version 8.11.3 and npm version 6.1.0
- - Install dependencies:
-   - If you are using nvm (recommended) running `nvm use` will automatically choose the right node version for you.
- - Install gulp globally with `npm install -g gulp-cli`.
- - Build the project to the `./dist/` folder with `gulp build`.
- - Optionally, to rebuild on file changes, run `gulp dev`.
- - To package .zip files for distribution, run `gulp zip`, or run the full build & zip with `gulp dist`.
+- Install [Node.js](https://nodejs.org/en/) version 8.11.3 and npm version 6.1.0
+- Install dependencies:
+  - If you are using nvm (recommended) running `nvm use` will automatically choose the right node version for you.
+- Install gulp globally with `npm install -g gulp-cli`.
+- Build the project to the `./dist/` folder with `gulp build`.
+- Optionally, to rebuild on file changes, run `gulp dev`.
+- To package .zip files for distribution, run `gulp zip`, or run the full build & zip with `gulp dist`.
 
- Uncompressed builds can be found in `/dist`, compressed builds can be found in `/builds` once they're built.
+Uncompressed builds can be found in `/dist`, compressed builds can be found in `/builds` once they're built.
 
 ### Running Tests
 

@@ -1,2 +1,2 @@
-import Tab from './tab.component'
-module.exports = Tab
+import Tab from "./tab.component";
+module.exports = Tab;

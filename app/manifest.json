@@ -26,10 +26,7 @@
   },
   "default_locale": "en",
   "background": {
-    "scripts": [
-      "chromereload.js",
-      "background.js"
-    ],
+    "scripts": ["chromereload.js", "background.js"],
     "persistent": true
   },
   "browser_action": {
@@ -42,14 +39,8 @@
   },
   "content_scripts": [
     {
-      "matches": [
-        "file://*/*",
-        "http://*/*",
-        "https://*/*"
-      ],
-      "js": [
-        "contentscript.js"
-      ],
+      "matches": ["file://*/*", "http://*/*", "https://*/*"],
+      "js": ["contentscript.js"],
       "run_at": "document_start",
       "all_frames": true
     }
@@ -66,16 +57,9 @@
     "*://*.test/",
     "notifications"
   ],
-  "web_accessible_resources": [
-    "inpage.js",
-    "phishing.html"
-  ],
+  "web_accessible_resources": ["inpage.js", "phishing.html"],
   "externally_connectable": {
-    "matches": [
-      "https://metamask.io/*"
-    ],
-    "ids": [
-      "*"
-    ]
+    "matches": ["https://metamask.io/*"],
+    "ids": ["*"]
   }
 }

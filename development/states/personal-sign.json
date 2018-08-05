@@ -52,7 +52,8 @@
         "id": 2971973686529444,
         "msgParams": {
           "from": "0xfdea65c8e26263f6d9a1b5de9555d2931a33b825",
-          "data": "0x879a053d4800c6354e76c7985a865d2922c82fb5b3f4577b2fe08b998954f2e01"
+          "data":
+            "0x879a053d4800c6354e76c7985a865d2922c82fb5b3f4577b2fe08b998954f2e01"
         },
         "time": 1487888668426,
         "status": "unapproved",
@@ -60,10 +61,7 @@
       }
     },
     "unapprovedPersonalMsgCount": 1,
-    "keyringTypes": [
-      "Simple Key Pair",
-      "HD Key Tree"
-    ],
+    "keyringTypes": ["Simple Key Pair", "HD Key Tree"],
     "keyrings": [
       {
         "type": "HD Key Tree",

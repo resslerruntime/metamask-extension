@@ -1,2 +1,2 @@
-import InfoBox from './info-box.component'
-module.exports = InfoBox
+import InfoBox from "./info-box.component";
+module.exports = InfoBox;

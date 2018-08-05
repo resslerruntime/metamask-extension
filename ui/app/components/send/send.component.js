@@ -1,24 +1,23 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import PersistentForm from '../../../lib/persistent-form'
+import React from "react";
+import PropTypes from "prop-types";
+import PersistentForm from "../../../lib/persistent-form";
 import {
   getAmountErrorObject,
   getGasFeeErrorObject,
   getToAddressForGasUpdate,
-  doesAmountErrorRequireUpdate,
-} from './send.utils'
+  doesAmountErrorRequireUpdate
+} from "./send.utils";
 
-import SendHeader from './send-header/'
-import SendContent from './send-content/'
-import SendFooter from './send-footer/'
+import SendHeader from "./send-header/";
+import SendContent from "./send-content/";
+import SendFooter from "./send-footer/";
 
 export default class SendTransactionScreen extends PersistentForm {
-
   static propTypes = {
     amount: PropTypes.string,
     amountConversionRate: PropTypes.oneOfType([
       PropTypes.string,
-      PropTypes.number,
+      PropTypes.number
     ]),
     blockGasLimit: PropTypes.string,
     conversionRate: PropTypes.number,
@@ -37,14 +36,14 @@ export default class SendTransactionScreen extends PersistentForm {
     tokenContract: PropTypes.object,
     updateAndSetGasTotal: PropTypes.func,
     updateSendErrors: PropTypes.func,
-    updateSendTokenBalance: PropTypes.func,
+    updateSendTokenBalance: PropTypes.func
   };
 
   static contextTypes = {
-    t: PropTypes.func,
+    t: PropTypes.func
   };
 
-  updateGas ({ to: updatedToAddress, amount: value } = {}) {
+  updateGas({ to: updatedToAddress, amount: value } = {}) {
     const {
       amount,
       blockGasLimit,
@@ -55,8 +54,8 @@ export default class SendTransactionScreen extends PersistentForm {
       selectedAddress,
       selectedToken = {},
       to: currentToAddress,
-      updateAndSetGasTotal,
-    } = this.props
+      updateAndSetGasTotal
+    } = this.props;
 
     updateAndSetGasTotal({
       blockGasLimit,
@@ -67,11 +66,11 @@ export default class SendTransactionScreen extends PersistentForm {
       selectedAddress,
       selectedToken,
       to: getToAddressForGasUpdate(updatedToAddress, currentToAddress),
-      value: value || amount,
-    })
+      value: value || amount
+    });
   }
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate(prevProps) {
     const {
       amount,
       amountConversionRate,
@@ -84,17 +83,17 @@ export default class SendTransactionScreen extends PersistentForm {
       tokenBalance,
       updateSendErrors,
       updateSendTokenBalance,
-      tokenContract,
-    } = this.props
+      tokenContract
+    } = this.props;
 
     const {
       from: { balance: prevBalance },
       gasTotal: prevGasTotal,
       tokenBalance: prevTokenBalance,
-      network: prevNetwork,
-    } = prevProps
+      network: prevNetwork
+    } = prevProps;
 
-    const uninitialized = [prevBalance, prevGasTotal].every(n => n === null)
+    const uninitialized = [prevBalance, prevGasTotal].every(n => n === null);
 
     const amountErrorRequiresUpdate = doesAmountErrorRequireUpdate({
       balance,
@@ -103,8 +102,8 @@ export default class SendTransactionScreen extends PersistentForm {
       prevGasTotal,
       prevTokenBalance,
       selectedToken,
-      tokenBalance,
-    })
+      tokenBalance
+    });
 
     if (amountErrorRequiresUpdate) {
       const amountErrorObject = getAmountErrorObject({
@@ -115,65 +114,63 @@ export default class SendTransactionScreen extends PersistentForm {
         gasTotal,
         primaryCurrency,
         selectedToken,
-        tokenBalance,
-      })
+        tokenBalance
+      });
       const gasFeeErrorObject = selectedToken
         ? getGasFeeErrorObject({
-          amount,
-          amountConversionRate,
-          balance,
-          conversionRate,
-          gasTotal,
-          primaryCurrency,
-          selectedToken,
-          tokenBalance,
-        })
-        : { gasFee: null }
-      updateSendErrors(Object.assign(amountErrorObject, gasFeeErrorObject))
+            amount,
+            amountConversionRate,
+            balance,
+            conversionRate,
+            gasTotal,
+            primaryCurrency,
+            selectedToken,
+            tokenBalance
+          })
+        : { gasFee: null };
+      updateSendErrors(Object.assign(amountErrorObject, gasFeeErrorObject));
     }
 
     if (!uninitialized) {
-
-      if (network !== prevNetwork && network !== 'loading') {
+      if (network !== prevNetwork && network !== "loading") {
         updateSendTokenBalance({
           selectedToken,
           tokenContract,
-          address,
-        })
-        this.updateGas()
+          address
+        });
+        this.updateGas();
       }
     }
   }
 
-  componentWillMount () {
+  componentWillMount() {
     const {
       from: { address },
       selectedToken,
       tokenContract,
-      updateSendTokenBalance,
-    } = this.props
+      updateSendTokenBalance
+    } = this.props;
     updateSendTokenBalance({
       selectedToken,
       tokenContract,
-      address,
-    })
-    this.updateGas()
+      address
+    });
+    this.updateGas();
   }
 
-  componentWillUnmount () {
-    this.props.resetSendState()
+  componentWillUnmount() {
+    this.props.resetSendState();
   }
 
-  render () {
-    const { history } = this.props
+  render() {
+    const { history } = this.props;
 
     return (
       <div className="page-container">
-        <SendHeader history={history}/>
-        <SendContent updateGas={(updateData) => this.updateGas(updateData)}/>
-        <SendFooter history={history}/>
+        <SendHeader history={history} />
+        <SendContent updateGas={updateData => this.updateGas(updateData)} />
+        <SendFooter history={history} />
       </div>
-    )
+    );
   }
-
 }

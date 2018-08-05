@@ -1,2 +1,2 @@
-import ConfirmTransaction from './confirm-transaction.container'
-module.exports = ConfirmTransaction
+import ConfirmTransaction from "./confirm-transaction.container";
+module.exports = ConfirmTransaction;

@@ -1,9 +1,9 @@
-const EventEmitter = require('events')
-const ObservableStore = require('obs-store')
-const createId = require('./random-id')
-const assert = require('assert')
-const sigUtil = require('eth-sig-util')
-const log = require('loglevel')
+const EventEmitter = require("events");
+const ObservableStore = require("obs-store");
+const createId = require("./random-id");
+const assert = require("assert");
+const sigUtil = require("eth-sig-util");
+const log = require("loglevel");
 
 /**
  * Represents, and contains data about, an 'eth_signTypedData' type signature request. These are created when a
@@ -35,13 +35,13 @@ module.exports = class TypedMessageManager extends EventEmitter {
    * @property {array} messages Holds all messages that have been created by this TypedMessage
    *
    */
-  constructor (opts) {
-    super()
+  constructor(opts) {
+    super();
     this.memStore = new ObservableStore({
       unapprovedTypedMessages: {},
-      unapprovedTypedMessagesCount: 0,
-    })
-    this.messages = []
+      unapprovedTypedMessagesCount: 0
+    });
+    this.messages = [];
   }
 
   /**
@@ -50,8 +50,8 @@ module.exports = class TypedMessageManager extends EventEmitter {
    * @returns {number} The number of 'unapproved' TypedMessages in this.messages
    *
    */
-  get unapprovedTypedMessagesCount () {
-    return Object.keys(this.getUnapprovedMsgs()).length
+  get unapprovedTypedMessagesCount() {
+    return Object.keys(this.getUnapprovedMsgs()).length;
   }
 
   /**
@@ -61,9 +61,13 @@ module.exports = class TypedMessageManager extends EventEmitter {
    * this.messages
    *
    */
-  getUnapprovedMsgs () {
-    return this.messages.filter(msg => msg.status === 'unapproved')
-      .reduce((result, msg) => { result[msg.id] = msg; return result }, {})
+  getUnapprovedMsgs() {
+    return this.messages
+      .filter(msg => msg.status === "unapproved")
+      .reduce((result, msg) => {
+        result[msg.id] = msg;
+        return result;
+      }, {});
   }
 
   /**
@@ -75,25 +79,27 @@ module.exports = class TypedMessageManager extends EventEmitter {
    * @returns {number} The id of the newly created TypedMessage.
    *
    */
-  addUnapprovedMessage (msgParams) {
-    this.validateParams(msgParams)
+  addUnapprovedMessage(msgParams) {
+    this.validateParams(msgParams);
 
-    log.debug(`TypedMessageManager addUnapprovedMessage: ${JSON.stringify(msgParams)}`)
+    log.debug(
+      `TypedMessageManager addUnapprovedMessage: ${JSON.stringify(msgParams)}`
+    );
     // create txData obj with parameters and meta data
-    var time = (new Date()).getTime()
-    var msgId = createId()
+    var time = new Date().getTime();
+    var msgId = createId();
     var msgData = {
       id: msgId,
       msgParams: msgParams,
       time: time,
-      status: 'unapproved',
-      type: 'eth_signTypedData',
-    }
-    this.addMsg(msgData)
+      status: "unapproved",
+      type: "eth_signTypedData"
+    };
+    this.addMsg(msgData);
 
     // signal update
-    this.emit('update')
-    return msgId
+    this.emit("update");
+    return msgId;
   }
 
   /**
@@ -102,15 +108,15 @@ module.exports = class TypedMessageManager extends EventEmitter {
    * @param {Object} params The params to validate
    *
    */
-  validateParams (params) {
-    assert.equal(typeof params, 'object', 'Params should ben an object.')
-    assert.ok('data' in params, 'Params must include a data field.')
-    assert.ok('from' in params, 'Params must include a from field.')
-    assert.ok(Array.isArray(params.data), 'Data should be an array.')
-    assert.equal(typeof params.from, 'string', 'From field must be a string.')
+  validateParams(params) {
+    assert.equal(typeof params, "object", "Params should ben an object.");
+    assert.ok("data" in params, "Params must include a data field.");
+    assert.ok("from" in params, "Params must include a from field.");
+    assert.ok(Array.isArray(params.data), "Data should be an array.");
+    assert.equal(typeof params.from, "string", "From field must be a string.");
     assert.doesNotThrow(() => {
-      sigUtil.typedSignatureHash(params.data)
-    }, 'Expected EIP712 typed data')
+      sigUtil.typedSignatureHash(params.data);
+    }, "Expected EIP712 typed data");
   }
 
   /**
@@ -120,9 +126,9 @@ module.exports = class TypedMessageManager extends EventEmitter {
    * @param {Message} msg The TypedMessage to add to this.messages
    *
    */
-  addMsg (msg) {
-    this.messages.push(msg)
-    this._saveMsgList()
+  addMsg(msg) {
+    this.messages.push(msg);
+    this._saveMsgList();
   }
 
   /**
@@ -133,8 +139,8 @@ module.exports = class TypedMessageManager extends EventEmitter {
    * if no TypedMessage has that id.
    *
    */
-  getMsg (msgId) {
-    return this.messages.find(msg => msg.id === msgId)
+  getMsg(msgId) {
+    return this.messages.find(msg => msg.id === msgId);
   }
 
   /**
@@ -146,9 +152,9 @@ module.exports = class TypedMessageManager extends EventEmitter {
    * @returns {Promise<object>} Promises the msgParams object with metamaskId removed.
    *
    */
-  approveMessage (msgParams) {
-    this.setMsgStatusApproved(msgParams.metamaskId)
-    return this.prepMsgForSigning(msgParams)
+  approveMessage(msgParams) {
+    this.setMsgStatusApproved(msgParams.metamaskId);
+    return this.prepMsgForSigning(msgParams);
   }
 
   /**
@@ -157,8 +163,8 @@ module.exports = class TypedMessageManager extends EventEmitter {
    * @param {number} msgId The id of the TypedMessage to approve.
    *
    */
-  setMsgStatusApproved (msgId) {
-    this._setMsgStatus(msgId, 'approved')
+  setMsgStatusApproved(msgId) {
+    this._setMsgStatus(msgId, "approved");
   }
 
   /**
@@ -169,11 +175,11 @@ module.exports = class TypedMessageManager extends EventEmitter {
    * @param {buffer} rawSig The raw data of the signature request
    *
    */
-  setMsgStatusSigned (msgId, rawSig) {
-    const msg = this.getMsg(msgId)
-    msg.rawSig = rawSig
-    this._updateMsg(msg)
-    this._setMsgStatus(msgId, 'signed')
+  setMsgStatusSigned(msgId, rawSig) {
+    const msg = this.getMsg(msgId);
+    msg.rawSig = rawSig;
+    this._updateMsg(msg);
+    this._setMsgStatus(msgId, "signed");
   }
 
   /**
@@ -183,9 +189,9 @@ module.exports = class TypedMessageManager extends EventEmitter {
    * @returns {Promise<object>} Promises the msgParams with the metamaskId property removed
    *
    */
-  prepMsgForSigning (msgParams) {
-    delete msgParams.metamaskId
-    return Promise.resolve(msgParams)
+  prepMsgForSigning(msgParams) {
+    delete msgParams.metamaskId;
+    return Promise.resolve(msgParams);
   }
 
   /**
@@ -194,8 +200,8 @@ module.exports = class TypedMessageManager extends EventEmitter {
    * @param {number} msgId The id of the TypedMessage to reject.
    *
    */
-  rejectMsg (msgId) {
-    this._setMsgStatus(msgId, 'rejected')
+  rejectMsg(msgId) {
+    this._setMsgStatus(msgId, "rejected");
   }
 
   //
@@ -215,14 +221,17 @@ module.exports = class TypedMessageManager extends EventEmitter {
    * with the TypedMessage
    *
    */
-  _setMsgStatus (msgId, status) {
-    const msg = this.getMsg(msgId)
-    if (!msg) throw new Error('TypedMessageManager - Message not found for id: "${msgId}".')
-    msg.status = status
-    this._updateMsg(msg)
-    this.emit(`${msgId}:${status}`, msg)
-    if (status === 'rejected' || status === 'signed') {
-      this.emit(`${msgId}:finished`, msg)
+  _setMsgStatus(msgId, status) {
+    const msg = this.getMsg(msgId);
+    if (!msg)
+      throw new Error(
+        'TypedMessageManager - Message not found for id: "${msgId}".'
+      );
+    msg.status = status;
+    this._updateMsg(msg);
+    this.emit(`${msgId}:${status}`, msg);
+    if (status === "rejected" || status === "signed") {
+      this.emit(`${msgId}:finished`, msg);
     }
   }
 
@@ -235,12 +244,12 @@ module.exports = class TypedMessageManager extends EventEmitter {
    * id) in this.messages
    *
    */
-  _updateMsg (msg) {
-    const index = this.messages.findIndex((message) => message.id === msg.id)
+  _updateMsg(msg) {
+    const index = this.messages.findIndex(message => message.id === msg.id);
     if (index !== -1) {
-      this.messages[index] = msg
+      this.messages[index] = msg;
     }
-    this._saveMsgList()
+    this._saveMsgList();
   }
 
   /**
@@ -250,11 +259,14 @@ module.exports = class TypedMessageManager extends EventEmitter {
    * @fires 'updateBadge'
    *
    */
-  _saveMsgList () {
-    const unapprovedTypedMessages = this.getUnapprovedMsgs()
-    const unapprovedTypedMessagesCount = Object.keys(unapprovedTypedMessages).length
-    this.memStore.updateState({ unapprovedTypedMessages, unapprovedTypedMessagesCount })
-    this.emit('updateBadge')
+  _saveMsgList() {
+    const unapprovedTypedMessages = this.getUnapprovedMsgs();
+    const unapprovedTypedMessagesCount = Object.keys(unapprovedTypedMessages)
+      .length;
+    this.memStore.updateState({
+      unapprovedTypedMessages,
+      unapprovedTypedMessagesCount
+    });
+    this.emit("updateBadge");
   }
-
-}
+};

@@ -1,12 +1,11 @@
-  const ObservableStore = require('obs-store')
-const extend = require('xtend')
-const log = require('loglevel')
+const ObservableStore = require("obs-store");
+const extend = require("xtend");
+const log = require("loglevel");
 
 // every ten minutes
-const POLLING_INTERVAL = 600000
+const POLLING_INTERVAL = 600000;
 
 class CurrencyController {
-
   /**
    * Controller responsible for managing data associated with the currently selected currency.
    *
@@ -23,13 +22,16 @@ class CurrencyController {
    * Used to clear an existing interval on subsequent calls of that method.
    *
    */
-  constructor (opts = {}) {
-    const initState = extend({
-      currentCurrency: 'usd',
-      conversionRate: 0,
-      conversionDate: 'N/A',
-    }, opts.initState)
-    this.store = new ObservableStore(initState)
+  constructor(opts = {}) {
+    const initState = extend(
+      {
+        currentCurrency: "usd",
+        conversionRate: 0,
+        conversionDate: "N/A"
+      },
+      opts.initState
+    );
+    this.store = new ObservableStore(initState);
   }
 
   //
@@ -42,8 +44,8 @@ class CurrencyController {
    * @returns {string} A 2-4 character shorthand that describes a specific currency, currently selected by the user
    *
    */
-  getCurrentCurrency () {
-    return this.store.getState().currentCurrency
+  getCurrentCurrency() {
+    return this.store.getState().currentCurrency;
   }
 
   /**
@@ -52,8 +54,8 @@ class CurrencyController {
    * @param {string} currentCurrency The new currency to set as the currentCurrency in the store
    *
    */
-  setCurrentCurrency (currentCurrency) {
-    this.store.updateState({ currentCurrency })
+  setCurrentCurrency(currentCurrency) {
+    this.store.updateState({ currentCurrency });
   }
 
   /**
@@ -62,8 +64,8 @@ class CurrencyController {
    * @returns {string} The conversion rate from ETH to the selected currency.
    *
    */
-  getConversionRate () {
-    return this.store.getState().conversionRate
+  getConversionRate() {
+    return this.store.getState().conversionRate;
   }
 
   /**
@@ -72,8 +74,8 @@ class CurrencyController {
    * @param {number} conversionRate The new rate to set as the conversionRate in the store
    *
    */
-  setConversionRate (conversionRate) {
-    this.store.updateState({ conversionRate })
+  setConversionRate(conversionRate) {
+    this.store.updateState({ conversionRate });
   }
 
   /**
@@ -83,8 +85,8 @@ class CurrencyController {
    * January 1, 1970
    *
    */
-  getConversionDate () {
-    return this.store.getState().conversionDate
+  getConversionDate() {
+    return this.store.getState().conversionDate;
   }
 
   /**
@@ -94,8 +96,8 @@ class CurrencyController {
    * conversionRate was set
    *
    */
-  setConversionDate (conversionDate) {
-    this.store.updateState({ conversionDate })
+  setConversionDate(conversionDate) {
+    this.store.updateState({ conversionDate });
   }
 
   /**
@@ -103,18 +105,24 @@ class CurrencyController {
    * fetched from an external API
    *
    */
-  async updateConversionRate () {
-    let currentCurrency
+  async updateConversionRate() {
+    let currentCurrency;
     try {
-      currentCurrency = this.getCurrentCurrency()
-      const response = await fetch(`https://api.infura.io/v1/ticker/eth${currentCurrency.toLowerCase()}`)
-      const parsedResponse = await response.json()
-      this.setConversionRate(Number(parsedResponse.bid))
-      this.setConversionDate(Number(parsedResponse.timestamp))
+      currentCurrency = this.getCurrentCurrency();
+      const response = await fetch(
+        `https://api.infura.io/v1/ticker/eth${currentCurrency.toLowerCase()}`
+      );
+      const parsedResponse = await response.json();
+      this.setConversionRate(Number(parsedResponse.bid));
+      this.setConversionDate(Number(parsedResponse.timestamp));
     } catch (err) {
-      log.warn(`MetaMask - Failed to query currency conversion:`, currentCurrency, err)
-      this.setConversionRate(0)
-      this.setConversionDate('N/A')
+      log.warn(
+        `MetaMask - Failed to query currency conversion:`,
+        currentCurrency,
+        err
+      );
+      this.setConversionRate(0);
+      this.setConversionDate("N/A");
     }
   }
 
@@ -124,14 +132,14 @@ class CurrencyController {
    * previous interval is clear and a new one is created.
    *
    */
-  scheduleConversionInterval () {
+  scheduleConversionInterval() {
     if (this.conversionInterval) {
-      clearInterval(this.conversionInterval)
+      clearInterval(this.conversionInterval);
     }
     this.conversionInterval = setInterval(() => {
-      this.updateConversionRate()
-    }, POLLING_INTERVAL)
+      this.updateConversionRate();
+    }, POLLING_INTERVAL);
   }
 }
 
-module.exports = CurrencyController
+module.exports = CurrencyController;

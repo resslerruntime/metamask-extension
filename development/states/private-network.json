@@ -39,7 +39,8 @@
         "txParams": {
           "from": "0xfdea65c8e26263f6d9a1b5de9555d2931a33b825",
           "to": "0x48ff0cbac0acefedf152281ee80e9a0a01d5da63",
-          "data": "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb000000000000000000000000000000000000000000000000000000000000000a",
+          "data":
+            "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb000000000000000000000000000000000000000000000000000000000000000a",
           "metamaskId": 5551995700357153,
           "metamaskNetworkId": "1479490588308"
         },
@@ -49,7 +50,8 @@
         "metamaskNetworkId": "1479490588308",
         "containsDelegateCall": true,
         "estimatedGas": "0x24b33",
-        "hash": "0xad609a6931f54a575ad71222ffc27cd6746017106d5b89f4ad300b37b273f8ac"
+        "hash":
+          "0xad609a6931f54a575ad71222ffc27cd6746017106d5b89f4ad300b37b273f8ac"
       }
     ],
     "selectedAddress": "0xfdea65c8e26263f6d9a1b5de9555d2931a33b825",

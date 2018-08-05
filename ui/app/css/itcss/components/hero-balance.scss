@@ -1,5 +1,4 @@
 .hero-balance {
-
   @media screen and (max-width: $break-small) {
     display: flex;
     flex-direction: column;
@@ -14,7 +13,7 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    margin: 2.3em 2.37em .8em;
+    margin: 2.3em 2.37em 0.8em;
     flex: 0 0 auto;
   }
 
@@ -68,7 +67,7 @@
     }
 
     @media screen and (min-width: $break-large) {
-      margin: 0 .8em;
+      margin: 0 0.8em;
       justify-content: flex-start;
       align-items: flex-start;
       min-width: 0;
@@ -78,14 +77,14 @@
       }
 
       .fiat-amount {
-        margin-top: .25%;
+        margin-top: 0.25%;
         font-size: 105%;
       }
     }
 
     @media #{$sub-mid-size-breakpoint-range} {
-      margin-left: .4em;
-      margin-right: .4em;
+      margin-left: 0.4em;
+      margin-right: 0.4em;
       justify-content: flex-start;
       align-items: flex-start;
 
@@ -94,14 +93,13 @@
       }
 
       .fiat-amount {
-        margin-top: .25%;
+        margin-top: 0.25%;
         font-size: 1rem;
       }
     }
   }
 
   .hero-balance-buttons {
-
     @media screen and (max-width: $break-small) {
       width: 100%;
       // height: 100px; // needed a round number to set the heights of the buttons inside
@@ -121,7 +119,7 @@
   width: 6rem;
 
   @media #{$sub-mid-size-breakpoint-range} {
-    padding: .4rem;
+    padding: 0.4rem;
     width: 4rem;
     display: flex;
     flex: 1;

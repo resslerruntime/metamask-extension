@@ -1,2 +1,2 @@
-const NetworkController = require('./network')
-module.exports = NetworkController
+const NetworkController = require("./network");
+module.exports = NetworkController;

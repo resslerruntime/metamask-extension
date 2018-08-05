@@ -1,30 +1,29 @@
-const inherits = require('util').inherits
-const Component = require('react').Component
-const h = require('react-hyperscript')
-const connect = require('react-redux').connect
+const inherits = require("util").inherits;
+const Component = require("react").Component;
+const h = require("react-hyperscript");
+const connect = require("react-redux").connect;
 
-module.exports = connect(mapStateToProps)(COMPONENTNAME)
+module.exports = connect(mapStateToProps)(COMPONENTNAME);
 
-function mapStateToProps (state) {
-  return {}
+function mapStateToProps(state) {
+  return {};
 }
 
-inherits(COMPONENTNAME, Component)
-function COMPONENTNAME () {
-  Component.call(this)
+inherits(COMPONENTNAME, Component);
+function COMPONENTNAME() {
+  Component.call(this);
 }
 
-COMPONENTNAME.prototype.render = function () {
-  const props = this.props
+COMPONENTNAME.prototype.render = function() {
+  const props = this.props;
 
-  return (
-    h('div', {
+  return h(
+    "div",
+    {
       style: {
-        background: 'blue',
-      },
-    }, [
-      `Hello, ${props.sender}`,
-    ])
-  )
-}
-
+        background: "blue"
+      }
+    },
+    [`Hello, ${props.sender}`]
+  );
+};

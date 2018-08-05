@@ -1,2 +1,2 @@
-import Notification from './notification.container'
-module.exports = Notification
+import Notification from "./notification.container";
+module.exports = Notification;

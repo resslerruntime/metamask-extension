@@ -1,2 +1,2 @@
-import NetworkDisplay from './network-display.container'
-module.exports = NetworkDisplay
+import NetworkDisplay from "./network-display.container";
+module.exports = NetworkDisplay;

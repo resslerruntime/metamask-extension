@@ -1,12 +1,12 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import classnames from 'classnames'
-import { Tabs, Tab } from '../../tabs'
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import classnames from "classnames";
+import { Tabs, Tab } from "../../tabs";
 import {
   ConfirmPageContainerSummary,
   ConfirmPageContainerError,
-  ConfirmPageContainerWarning,
-} from './'
+  ConfirmPageContainerWarning
+} from "./";
 
 export default class ConfirmPageContainerContent extends Component {
   static propTypes = {
@@ -22,35 +22,31 @@ export default class ConfirmPageContainerContent extends Component {
     summaryComponent: PropTypes.node,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     titleComponent: PropTypes.func,
-    warning: PropTypes.string,
-  }
+    warning: PropTypes.string
+  };
 
-  renderContent () {
-    const { detailsComponent, dataComponent } = this.props
+  renderContent() {
+    const { detailsComponent, dataComponent } = this.props;
 
     if (detailsComponent && dataComponent) {
-      return this.renderTabs()
+      return this.renderTabs();
     } else {
-      return detailsComponent || dataComponent
+      return detailsComponent || dataComponent;
     }
   }
 
-  renderTabs () {
-    const { detailsComponent, dataComponent } = this.props
+  renderTabs() {
+    const { detailsComponent, dataComponent } = this.props;
 
     return (
       <Tabs>
-        <Tab name="Details">
-          { detailsComponent }
-        </Tab>
-        <Tab name="Data">
-          { dataComponent }
-        </Tab>
+        <Tab name="Details">{detailsComponent}</Tab>
+        <Tab name="Data">{dataComponent}</Tab>
       </Tabs>
-    )
+    );
   }
 
-  render () {
+  render() {
     const {
       action,
       errorKey,
@@ -63,43 +59,36 @@ export default class ConfirmPageContainerContent extends Component {
       summaryComponent,
       detailsComponent,
       dataComponent,
-      warning,
-    } = this.props
+      warning
+    } = this.props;
 
     return (
       <div className="confirm-page-container-content">
-        {
-          warning && (
-            <ConfirmPageContainerWarning warning={warning} />
-          )
-        }
-        {
-          summaryComponent || (
-            <ConfirmPageContainerSummary
-              className={classnames({
-                'confirm-page-container-summary--border': !detailsComponent || !dataComponent,
-              })}
-              action={action}
-              title={title}
-              subtitle={subtitle}
-              hideSubtitle={hideSubtitle}
-              identiconAddress={identiconAddress}
-              nonce={nonce}
+        {warning && <ConfirmPageContainerWarning warning={warning} />}
+        {summaryComponent || (
+          <ConfirmPageContainerSummary
+            className={classnames({
+              "confirm-page-container-summary--border":
+                !detailsComponent || !dataComponent
+            })}
+            action={action}
+            title={title}
+            subtitle={subtitle}
+            hideSubtitle={hideSubtitle}
+            identiconAddress={identiconAddress}
+            nonce={nonce}
+          />
+        )}
+        {this.renderContent()}
+        {(errorKey || errorMessage) && (
+          <div className="confirm-page-container-content__error-container">
+            <ConfirmPageContainerError
+              errorMessage={errorMessage}
+              errorKey={errorKey}
             />
-          )
-        }
-        { this.renderContent() }
-        {
-          (errorKey || errorMessage) && (
-            <div className="confirm-page-container-content__error-container">
-              <ConfirmPageContainerError
-                errorMessage={errorMessage}
-                errorKey={errorKey}
-              />
-            </div>
-          )
-        }
+          </div>
+        )}
       </div>
-    )
+    );
   }
 }

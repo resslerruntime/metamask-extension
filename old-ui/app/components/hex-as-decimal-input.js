@@ -1,16 +1,16 @@
-const Component = require('react').Component
-const h = require('react-hyperscript')
-const inherits = require('util').inherits
-const ethUtil = require('ethereumjs-util')
-const BN = ethUtil.BN
-const extend = require('xtend')
+const Component = require("react").Component;
+const h = require("react-hyperscript");
+const inherits = require("util").inherits;
+const ethUtil = require("ethereumjs-util");
+const BN = ethUtil.BN;
+const extend = require("xtend");
 
-module.exports = HexAsDecimalInput
+module.exports = HexAsDecimalInput;
 
-inherits(HexAsDecimalInput, Component)
-function HexAsDecimalInput () {
-  this.state = { invalid: null }
-  Component.call(this)
+inherits(HexAsDecimalInput, Component);
+function HexAsDecimalInput() {
+  this.state = { invalid: null };
+  Component.call(this);
 }
 
 /* Hex as Decimal Input
@@ -22,133 +22,148 @@ function HexAsDecimalInput () {
  * and passes it an updated hex string.
  */
 
-HexAsDecimalInput.prototype.render = function () {
-  const props = this.props
-  const state = this.state
+HexAsDecimalInput.prototype.render = function() {
+  const props = this.props;
+  const state = this.state;
 
-  const { value, onChange, min, max } = props
+  const { value, onChange, min, max } = props;
 
-  const toEth = props.toEth
-  const suffix = props.suffix
-  const decimalValue = decimalize(value, toEth)
-  const style = props.style
+  const toEth = props.toEth;
+  const suffix = props.suffix;
+  const decimalValue = decimalize(value, toEth);
+  const style = props.style;
 
-  return (
-    h('.flex-column', [
-      h('.flex-row', {
+  return h(".flex-column", [
+    h(
+      ".flex-row",
+      {
         style: {
-          alignItems: 'flex-end',
-          lineHeight: '13px',
-          fontFamily: 'Montserrat Light',
-          textRendering: 'geometricPrecision',
-        },
-      }, [
-        h('input.hex-input', {
-          type: 'number',
+          alignItems: "flex-end",
+          lineHeight: "13px",
+          fontFamily: "Montserrat Light",
+          textRendering: "geometricPrecision"
+        }
+      },
+      [
+        h("input.hex-input", {
+          type: "number",
           required: true,
           min: min,
           max: max,
-          style: extend({
-            display: 'block',
-            textAlign: 'right',
-            backgroundColor: 'transparent',
-            border: '1px solid #bdbdbd',
-
-          }, style),
+          style: extend(
+            {
+              display: "block",
+              textAlign: "right",
+              backgroundColor: "transparent",
+              border: "1px solid #bdbdbd"
+            },
+            style
+          ),
           value: parseInt(decimalValue),
-          onBlur: (event) => {
-            this.updateValidity(event)
+          onBlur: event => {
+            this.updateValidity(event);
           },
-          onChange: (event) => {
-            this.updateValidity(event)
-            const hexString = (event.target.value === '') ? '' : hexify(event.target.value)
-            onChange(hexString)
+          onChange: event => {
+            this.updateValidity(event);
+            const hexString =
+              event.target.value === "" ? "" : hexify(event.target.value);
+            onChange(hexString);
           },
-          onInvalid: (event) => {
-            const msg = this.constructWarning()
+          onInvalid: event => {
+            const msg = this.constructWarning();
             if (msg === state.invalid) {
-              return
+              return;
             }
-            this.setState({ invalid: msg })
-            event.preventDefault()
-            return false
-          },
+            this.setState({ invalid: msg });
+            event.preventDefault();
+            return false;
+          }
         }),
-        h('div', {
-          style: {
-            color: ' #AEAEAE',
-            fontSize: '12px',
-            marginLeft: '5px',
-            marginRight: '6px',
-            width: '20px',
+        h(
+          "div",
+          {
+            style: {
+              color: " #AEAEAE",
+              fontSize: "12px",
+              marginLeft: "5px",
+              marginRight: "6px",
+              width: "20px"
+            }
           },
-        }, suffix),
-      ]),
+          suffix
+        )
+      ]
+    ),
 
-      state.invalid ? h('span.error', {
-        style: {
-          position: 'absolute',
-          right: '0px',
-          textAlign: 'right',
-          transform: 'translateY(26px)',
-          padding: '3px',
-          background: 'rgba(255,255,255,0.85)',
-          zIndex: '1',
-          textTransform: 'capitalize',
-          border: '2px solid #E20202',
-        },
-      }, state.invalid) : null,
-    ])
-  )
-}
+    state.invalid
+      ? h(
+          "span.error",
+          {
+            style: {
+              position: "absolute",
+              right: "0px",
+              textAlign: "right",
+              transform: "translateY(26px)",
+              padding: "3px",
+              background: "rgba(255,255,255,0.85)",
+              zIndex: "1",
+              textTransform: "capitalize",
+              border: "2px solid #E20202"
+            }
+          },
+          state.invalid
+        )
+      : null
+  ]);
+};
 
-HexAsDecimalInput.prototype.setValid = function (message) {
-  this.setState({ invalid: null })
-}
+HexAsDecimalInput.prototype.setValid = function(message) {
+  this.setState({ invalid: null });
+};
 
-HexAsDecimalInput.prototype.updateValidity = function (event) {
-  const target = event.target
-  const value = this.props.value
-  const newValue = target.value
+HexAsDecimalInput.prototype.updateValidity = function(event) {
+  const target = event.target;
+  const value = this.props.value;
+  const newValue = target.value;
 
   if (value === newValue) {
-    return
+    return;
   }
 
-  const valid = target.checkValidity()
+  const valid = target.checkValidity();
   if (valid) {
-    this.setState({ invalid: null })
+    this.setState({ invalid: null });
   }
-}
+};
 
-HexAsDecimalInput.prototype.constructWarning = function () {
-  const { name, min, max } = this.props
-  let message = name ? name + ' ' : ''
+HexAsDecimalInput.prototype.constructWarning = function() {
+  const { name, min, max } = this.props;
+  let message = name ? name + " " : "";
 
   if (min && max) {
-    message += `must be greater than or equal to  ${min} and less than or equal to ${max}.`
+    message += `must be greater than or equal to  ${min} and less than or equal to ${max}.`;
   } else if (min) {
-    message += `must be greater than or equal to ${min}.`
+    message += `must be greater than or equal to ${min}.`;
   } else if (max) {
-    message += `must be less than or equal to ${max}.`
+    message += `must be less than or equal to ${max}.`;
   } else {
-    message += 'Invalid input.'
+    message += "Invalid input.";
   }
 
-  return message
+  return message;
+};
+
+function hexify(decimalString) {
+  const hexBN = new BN(parseInt(decimalString), 10);
+  return "0x" + hexBN.toString("hex");
 }
 
-function hexify (decimalString) {
-  const hexBN = new BN(parseInt(decimalString), 10)
-  return '0x' + hexBN.toString('hex')
-}
-
-function decimalize (input, toEth) {
-  if (input === '') {
-    return ''
+function decimalize(input, toEth) {
+  if (input === "") {
+    return "";
   } else {
-    const strippedInput = ethUtil.stripHexPrefix(input)
-    const inputBN = new BN(strippedInput, 'hex')
-    return inputBN.toString(10)
+    const strippedInput = ethUtil.stripHexPrefix(input);
+    const inputBN = new BN(strippedInput, "hex");
+    return inputBN.toString(10);
   }
 }

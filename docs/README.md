@@ -1,6 +1,5 @@
 # Documentation
 
-
 - [How to add custom build to Chrome](./add-to-chrome.md)
 - [How to add custom build to Firefox](./add-to-firefox.md)
 - [How to develop a live-reloading UI](./ui-dev-mode.md)

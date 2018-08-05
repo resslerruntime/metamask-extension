@@ -1,21 +1,21 @@
-const createStore = require('redux').createStore
-const applyMiddleware = require('redux').applyMiddleware
-const thunkMiddleware = require('redux-thunk').default
-const rootReducer = require('./reducers')
-const createLogger = require('redux-logger').createLogger
+const createStore = require("redux").createStore;
+const applyMiddleware = require("redux").applyMiddleware;
+const thunkMiddleware = require("redux-thunk").default;
+const rootReducer = require("./reducers");
+const createLogger = require("redux-logger").createLogger;
 
-global.METAMASK_DEBUG = process.env.METAMASK_DEBUG
+global.METAMASK_DEBUG = process.env.METAMASK_DEBUG;
 
-module.exports = configureStore
+module.exports = configureStore;
 
 const loggerMiddleware = createLogger({
-  predicate: () => global.METAMASK_DEBUG,
-})
+  predicate: () => global.METAMASK_DEBUG
+});
 
-const middlewares = [thunkMiddleware, loggerMiddleware]
+const middlewares = [thunkMiddleware, loggerMiddleware];
 
-const createStoreWithMiddleware = applyMiddleware(...middlewares)(createStore)
+const createStoreWithMiddleware = applyMiddleware(...middlewares)(createStore);
 
-function configureStore (initialState) {
-  return createStoreWithMiddleware(rootReducer, initialState)
+function configureStore(initialState) {
+  return createStoreWithMiddleware(rootReducer, initialState);
 }

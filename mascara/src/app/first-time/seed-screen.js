@@ -1,13 +1,16 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import classnames from 'classnames'
-import { withRouter } from 'react-router-dom'
-import { compose } from 'recompose'
-import Identicon from '../../../../ui/app/components/identicon'
-import Breadcrumbs from './breadcrumbs'
-import LoadingScreen from './loading-screen'
-import { DEFAULT_ROUTE, INITIALIZE_CONFIRM_SEED_ROUTE } from '../../../../ui/app/routes'
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import classnames from "classnames";
+import { withRouter } from "react-router-dom";
+import { compose } from "recompose";
+import Identicon from "../../../../ui/app/components/identicon";
+import Breadcrumbs from "./breadcrumbs";
+import LoadingScreen from "./loading-screen";
+import {
+  DEFAULT_ROUTE,
+  INITIALIZE_CONFIRM_SEED_ROUTE
+} from "../../../../ui/app/routes";
 
 const LockIcon = props => (
   <svg
@@ -20,7 +23,7 @@ const LockIcon = props => (
     width="401.998px"
     height="401.998px"
     viewBox="0 0 401.998 401.998"
-    style={{enableBackground: 'new 0 0 401.998 401.998'}}
+    style={{ enableBackground: "new 0 0 401.998 401.998" }}
     xmlSpace="preserve"
     {...props}
   >
@@ -36,43 +39,45 @@ const LockIcon = props => (
       />
     </g>
   </svg>
-)
+);
 
 class BackupPhraseScreen extends Component {
   static propTypes = {
     isLoading: PropTypes.bool.isRequired,
     address: PropTypes.string.isRequired,
     seedWords: PropTypes.string,
-    history: PropTypes.object,
+    history: PropTypes.object
   };
 
   static defaultProps = {
-    seedWords: '',
-  }
+    seedWords: ""
+  };
 
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
-      isShowingSecret: false,
-    }
+      isShowingSecret: false
+    };
   }
 
-  componentWillMount () {
-    const { seedWords, history } = this.props
+  componentWillMount() {
+    const { seedWords, history } = this.props;
 
     if (!seedWords) {
-      history.push(DEFAULT_ROUTE)
+      history.push(DEFAULT_ROUTE);
     }
   }
 
-  renderSecretWordsContainer () {
-    const { isShowingSecret } = this.state
+  renderSecretWordsContainer() {
+    const { isShowingSecret } = this.state;
 
     return (
       <div className="backup-phrase__secret">
-        <div className={classnames('backup-phrase__secret-words', {
-          'backup-phrase__secret-words--hidden': !isShowingSecret,
-        })}>
+        <div
+          className={classnames("backup-phrase__secret-words", {
+            "backup-phrase__secret-words--hidden": !isShowingSecret
+          })}
+        >
           {this.props.seedWords}
         </div>
         {!isShowingSecret && (
@@ -81,30 +86,30 @@ class BackupPhraseScreen extends Component {
             onClick={() => this.setState({ isShowingSecret: true })}
           >
             <LockIcon width="28px" height="35px" fill="#FFFFFF" />
-            <div
-              className="backup-phrase__reveal-button"
-            >
+            <div className="backup-phrase__reveal-button">
               Click here to reveal secret words
             </div>
           </div>
         )}
       </div>
-    )
+    );
   }
 
-  renderSecretScreen () {
-    const { isShowingSecret } = this.state
-    const { history } = this.props
+  renderSecretScreen() {
+    const { isShowingSecret } = this.state;
+    const { history } = this.props;
 
     return (
       <div className="backup-phrase__content-wrapper">
         <div className="backup-phrase__phrase">
           <div className="backup-phrase__title">Secret Backup Phrase</div>
           <div className="backup-phrase__body-text">
-            Your secret backup phrase makes it easy to back up and restore your account.
+            Your secret backup phrase makes it easy to back up and restore your
+            account.
           </div>
           <div className="backup-phrase__body-text">
-            WARNING: Never disclose your backup phrase. Anyone with this phrase can take your Ether forever.
+            WARNING: Never disclose your backup phrase. Anyone with this phrase
+            can take your Ether forever.
           </div>
           {this.renderSecretWordsContainer()}
         </div>
@@ -114,16 +119,18 @@ class BackupPhraseScreen extends Component {
             Store this phrase in a password manager like 1password.
           </div>
           <div className="backup-phrase__tips-text">
-            Write this phrase on a piece of paper and store in a secure location. If you want even more security, write it down on multiple pieces of paper and store each in 2 - 3 different locations.
+            Write this phrase on a piece of paper and store in a secure
+            location. If you want even more security, write it down on multiple
+            pieces of paper and store each in 2 - 3 different locations.
           </div>
-          <div className="backup-phrase__tips-text">
-            Memorize this phrase.
-          </div>
+          <div className="backup-phrase__tips-text">Memorize this phrase.</div>
         </div>
         <div className="backup-phrase__next-button">
           <button
             className="first-time-flow__button"
-            onClick={() => isShowingSecret && history.push(INITIALIZE_CONFIRM_SEED_ROUTE)}
+            onClick={() =>
+              isShowingSecret && history.push(INITIALIZE_CONFIRM_SEED_ROUTE)
+            }
             disabled={!isShowingSecret}
           >
             Next
@@ -131,32 +138,35 @@ class BackupPhraseScreen extends Component {
           <Breadcrumbs total={3} currentIndex={1} />
         </div>
       </div>
-    )
+    );
   }
 
-  render () {
-    return this.props.isLoading
-      ? <LoadingScreen loadingMessage="Creating your new account" />
-      : (
-        <div className="first-view-main-wrapper">
-          <div className="first-view-main">
-            <div className="backup-phrase">
-              <Identicon address={this.props.address} diameter={70} />
-              {this.renderSecretScreen()}
-            </div>
+  render() {
+    return this.props.isLoading ? (
+      <LoadingScreen loadingMessage="Creating your new account" />
+    ) : (
+      <div className="first-view-main-wrapper">
+        <div className="first-view-main">
+          <div className="backup-phrase">
+            <Identicon address={this.props.address} diameter={70} />
+            {this.renderSecretScreen()}
           </div>
         </div>
-      )
+      </div>
+    );
   }
 }
 
 export default compose(
   withRouter,
   connect(
-    ({ metamask: { selectedAddress, seedWords }, appState: { isLoading } }) => ({
+    ({
+      metamask: { selectedAddress, seedWords },
+      appState: { isLoading }
+    }) => ({
       seedWords,
       isLoading,
-      address: selectedAddress,
+      address: selectedAddress
     })
   )
-)(BackupPhraseScreen)
+)(BackupPhraseScreen);

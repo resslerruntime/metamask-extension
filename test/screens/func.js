@@ -1,18 +1,17 @@
-require('chromedriver')
-const webdriver = require('selenium-webdriver')
+require("chromedriver");
+const webdriver = require("selenium-webdriver");
 
-exports.delay = function delay (time) {
-  return new Promise(resolve => setTimeout(resolve, time))
-}
+exports.delay = function delay(time) {
+  return new Promise(resolve => setTimeout(resolve, time));
+};
 
-
-exports.buildWebDriver = function buildWebDriver (extPath) {
+exports.buildWebDriver = function buildWebDriver(extPath) {
   return new webdriver.Builder()
     .withCapabilities({
       chromeOptions: {
-        args: [`load-extension=${extPath}`],
-      },
+        args: [`load-extension=${extPath}`]
+      }
     })
-    .forBrowser('chrome')
-    .build()
-}
+    .forBrowser("chrome")
+    .build();
+};

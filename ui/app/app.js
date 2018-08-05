@@ -1,47 +1,48 @@
-const { Component } = require('react')
-const PropTypes = require('prop-types')
-const connect = require('react-redux').connect
-const { Route, Switch, withRouter } = require('react-router-dom')
-const { compose } = require('recompose')
-const h = require('react-hyperscript')
-const actions = require('./actions')
-const classnames = require('classnames')
-const log = require('loglevel')
+const { Component } = require("react");
+const PropTypes = require("prop-types");
+const connect = require("react-redux").connect;
+const { Route, Switch, withRouter } = require("react-router-dom");
+const { compose } = require("recompose");
+const h = require("react-hyperscript");
+const actions = require("./actions");
+const classnames = require("classnames");
+const log = require("loglevel");
 
 // init
-const InitializeScreen = require('../../mascara/src/app/first-time').default
+const InitializeScreen = require("../../mascara/src/app/first-time").default;
 // accounts
-const SendTransactionScreen = require('./components/send/send.container')
-const ConfirmTransaction = require('./components/pages/confirm-transaction')
+const SendTransactionScreen = require("./components/send/send.container");
+const ConfirmTransaction = require("./components/pages/confirm-transaction");
 
 // slideout menu
-const WalletView = require('./components/wallet-view')
+const WalletView = require("./components/wallet-view");
 
 // other views
-const Home = require('./components/pages/home')
-const Authenticated = require('./components/pages/authenticated')
-const Initialized = require('./components/pages/initialized')
-const Settings = require('./components/pages/settings')
-const RestoreVaultPage = require('./components/pages/keychains/restore-vault').default
-const RevealSeedConfirmation = require('./components/pages/keychains/reveal-seed')
-const AddTokenPage = require('./components/pages/add-token')
-const ConfirmAddTokenPage = require('./components/pages/confirm-add-token')
-const CreateAccountPage = require('./components/pages/create-account')
-const NoticeScreen = require('./components/pages/notice')
+const Home = require("./components/pages/home");
+const Authenticated = require("./components/pages/authenticated");
+const Initialized = require("./components/pages/initialized");
+const Settings = require("./components/pages/settings");
+const RestoreVaultPage = require("./components/pages/keychains/restore-vault")
+  .default;
+const RevealSeedConfirmation = require("./components/pages/keychains/reveal-seed");
+const AddTokenPage = require("./components/pages/add-token");
+const ConfirmAddTokenPage = require("./components/pages/confirm-add-token");
+const CreateAccountPage = require("./components/pages/create-account");
+const NoticeScreen = require("./components/pages/notice");
 
-const Loading = require('./components/loading-screen')
-const ReactCSSTransitionGroup = require('react-addons-css-transition-group')
-const NetworkDropdown = require('./components/dropdowns/network-dropdown')
-const AccountMenu = require('./components/account-menu')
+const Loading = require("./components/loading-screen");
+const ReactCSSTransitionGroup = require("react-addons-css-transition-group");
+const NetworkDropdown = require("./components/dropdowns/network-dropdown");
+const AccountMenu = require("./components/account-menu");
 
 // Global Modals
-const Modal = require('./components/modals/index').Modal
+const Modal = require("./components/modals/index").Modal;
 // Global Alert
-const Alert = require('./components/alert')
+const Alert = require("./components/alert");
 
-const AppHeader = require('./components/app-header')
+const AppHeader = require("./components/app-header");
 
-import UnlockPage from './components/pages/unlock-page'
+import UnlockPage from "./components/pages/unlock-page";
 
 // Routes
 const {
@@ -56,43 +57,64 @@ const {
   SEND_ROUTE,
   CONFIRM_TRANSACTION_ROUTE,
   INITIALIZE_ROUTE,
-  NOTICE_ROUTE,
-} = require('./routes')
+  NOTICE_ROUTE
+} = require("./routes");
 
 class App extends Component {
-  componentWillMount () {
-    const { currentCurrency, setCurrentCurrencyToUSD } = this.props
+  componentWillMount() {
+    const { currentCurrency, setCurrentCurrencyToUSD } = this.props;
 
     if (!currentCurrency) {
-      setCurrentCurrencyToUSD()
+      setCurrentCurrencyToUSD();
     }
   }
 
-  renderRoutes () {
-    const exact = true
+  renderRoutes() {
+    const exact = true;
 
-    return (
-      h(Switch, [
-        h(Route, { path: INITIALIZE_ROUTE, component: InitializeScreen }),
-        h(Initialized, { path: UNLOCK_ROUTE, exact, component: UnlockPage }),
-        h(Initialized, { path: RESTORE_VAULT_ROUTE, exact, component: RestoreVaultPage }),
-        h(Authenticated, { path: REVEAL_SEED_ROUTE, exact, component: RevealSeedConfirmation }),
-        h(Authenticated, { path: SETTINGS_ROUTE, component: Settings }),
-        h(Authenticated, { path: NOTICE_ROUTE, exact, component: NoticeScreen }),
-        h(Authenticated, {
-          path: `${CONFIRM_TRANSACTION_ROUTE}/:id?`,
-          component: ConfirmTransaction,
-        }),
-        h(Authenticated, { path: SEND_ROUTE, exact, component: SendTransactionScreen }),
-        h(Authenticated, { path: ADD_TOKEN_ROUTE, exact, component: AddTokenPage }),
-        h(Authenticated, { path: CONFIRM_ADD_TOKEN_ROUTE, exact, component: ConfirmAddTokenPage }),
-        h(Authenticated, { path: NEW_ACCOUNT_ROUTE, component: CreateAccountPage }),
-        h(Authenticated, { path: DEFAULT_ROUTE, exact, component: Home }),
-      ])
-    )
+    return h(Switch, [
+      h(Route, { path: INITIALIZE_ROUTE, component: InitializeScreen }),
+      h(Initialized, { path: UNLOCK_ROUTE, exact, component: UnlockPage }),
+      h(Initialized, {
+        path: RESTORE_VAULT_ROUTE,
+        exact,
+        component: RestoreVaultPage
+      }),
+      h(Authenticated, {
+        path: REVEAL_SEED_ROUTE,
+        exact,
+        component: RevealSeedConfirmation
+      }),
+      h(Authenticated, { path: SETTINGS_ROUTE, component: Settings }),
+      h(Authenticated, { path: NOTICE_ROUTE, exact, component: NoticeScreen }),
+      h(Authenticated, {
+        path: `${CONFIRM_TRANSACTION_ROUTE}/:id?`,
+        component: ConfirmTransaction
+      }),
+      h(Authenticated, {
+        path: SEND_ROUTE,
+        exact,
+        component: SendTransactionScreen
+      }),
+      h(Authenticated, {
+        path: ADD_TOKEN_ROUTE,
+        exact,
+        component: AddTokenPage
+      }),
+      h(Authenticated, {
+        path: CONFIRM_ADD_TOKEN_ROUTE,
+        exact,
+        component: ConfirmAddTokenPage
+      }),
+      h(Authenticated, {
+        path: NEW_ACCOUNT_ROUTE,
+        component: CreateAccountPage
+      }),
+      h(Authenticated, { path: DEFAULT_ROUTE, exact, component: Home })
+    ]);
   }
 
-  render () {
+  render() {
     const {
       isLoading,
       alertMessage,
@@ -102,35 +124,39 @@ class App extends Component {
       provider,
       frequentRpcList,
       currentView,
-      setMouseUserState,
-    } = this.props
-    const isLoadingNetwork = network === 'loading' && currentView.name !== 'config'
-    const loadMessage = loadingMessage || isLoadingNetwork ?
-      this.getConnectingLabel(loadingMessage) : null
-    log.debug('Main ui render function')
+      setMouseUserState
+    } = this.props;
+    const isLoadingNetwork =
+      network === "loading" && currentView.name !== "config";
+    const loadMessage =
+      loadingMessage || isLoadingNetwork
+        ? this.getConnectingLabel(loadingMessage)
+        : null;
+    log.debug("Main ui render function");
 
-    return (
-      h('.flex-column.full-height', {
-        className: classnames({ 'mouse-user-styles': isMouseUser }),
+    return h(
+      ".flex-column.full-height",
+      {
+        className: classnames({ "mouse-user-styles": isMouseUser }),
         style: {
-          overflowX: 'hidden',
-          position: 'relative',
-          alignItems: 'center',
+          overflowX: "hidden",
+          position: "relative",
+          alignItems: "center"
         },
-        tabIndex: '0',
+        tabIndex: "0",
         onClick: () => setMouseUserState(true),
-        onKeyDown: (e) => {
+        onKeyDown: e => {
           if (e.keyCode === 9) {
-            setMouseUserState(false)
+            setMouseUserState(false);
           }
-        },
-      }, [
-
+        }
+      },
+      [
         // global modal
         h(Modal, {}, []),
 
         // global alert
-        h(Alert, {visible: this.props.alertOpen, msg: alertMessage}),
+        h(Alert, { visible: this.props.alertOpen, msg: alertMessage }),
 
         h(AppHeader),
 
@@ -138,26 +164,33 @@ class App extends Component {
         this.renderSidebar(),
 
         // network dropdown
-        h(NetworkDropdown, {
-          provider,
-          frequentRpcList,
-        }, []),
+        h(
+          NetworkDropdown,
+          {
+            provider,
+            frequentRpcList
+          },
+          []
+        ),
 
         h(AccountMenu),
 
-        (isLoading || isLoadingNetwork) && h(Loading, {
-          loadingMessage: loadMessage,
-        }),
+        (isLoading || isLoadingNetwork) &&
+          h(Loading, {
+            loadingMessage: loadMessage
+          }),
 
         // content
-        this.renderRoutes(),
-      ])
-    )
+        this.renderRoutes()
+      ]
+    );
   }
 
-  renderSidebar () {
-    return h('div', [
-      h('style', `
+  renderSidebar() {
+    return h("div", [
+      h(
+        "style",
+        `
         .sidebar-enter {
           transition: transform 300ms ease-in-out;
           transform: translateX(-100%);
@@ -174,87 +207,99 @@ class App extends Component {
           transition: transform 200ms ease-out;
           transform: translateX(-100%);
         }
-      `),
+      `
+      ),
 
-      h(ReactCSSTransitionGroup, {
-        transitionName: 'sidebar',
-        transitionEnterTimeout: 300,
-        transitionLeaveTimeout: 200,
-      }, [
-        // A second instance of Walletview is used for non-mobile viewports
-        this.props.sidebarOpen ? h(WalletView, {
-          responsiveDisplayClassname: '.sidebar',
-          style: {},
-        }) : undefined,
-
-      ]),
+      h(
+        ReactCSSTransitionGroup,
+        {
+          transitionName: "sidebar",
+          transitionEnterTimeout: 300,
+          transitionLeaveTimeout: 200
+        },
+        [
+          // A second instance of Walletview is used for non-mobile viewports
+          this.props.sidebarOpen
+            ? h(WalletView, {
+                responsiveDisplayClassname: ".sidebar",
+                style: {}
+              })
+            : undefined
+        ]
+      ),
 
       // overlay
       // TODO: add onClick for overlay to close sidebar
-      this.props.sidebarOpen ? h('div.sidebar-overlay', {
-        style: {},
-        onClick: () => {
-          this.props.hideSidebar()
-        },
-      }, []) : undefined,
-    ])
+      this.props.sidebarOpen
+        ? h(
+            "div.sidebar-overlay",
+            {
+              style: {},
+              onClick: () => {
+                this.props.hideSidebar();
+              }
+            },
+            []
+          )
+        : undefined
+    ]);
   }
 
-  toggleMetamaskActive () {
+  toggleMetamaskActive() {
     if (!this.props.isUnlocked) {
       // currently inactive: redirect to password box
-      var passwordBox = document.querySelector('input[type=password]')
-      if (!passwordBox) return
-      passwordBox.focus()
+      var passwordBox = document.querySelector("input[type=password]");
+      if (!passwordBox) return;
+      passwordBox.focus();
     } else {
       // currently active: deactivate
-      this.props.dispatch(actions.lockMetamask(false))
+      this.props.dispatch(actions.lockMetamask(false));
     }
   }
 
-  getConnectingLabel = function (loadingMessage) {
+  getConnectingLabel = function(loadingMessage) {
     if (loadingMessage) {
-      return loadingMessage
+      return loadingMessage;
     }
-    const { provider } = this.props
-    const providerName = provider.type
+    const { provider } = this.props;
+    const providerName = provider.type;
 
-    let name
+    let name;
 
-    if (providerName === 'mainnet') {
-      name = this.context.t('connectingToMainnet')
-    } else if (providerName === 'ropsten') {
-      name = this.context.t('connectingToRopsten')
-    } else if (providerName === 'kovan') {
-      name = this.context.t('connectingToRopsten')
-    } else if (providerName === 'rinkeby') {
-      name = this.context.t('connectingToRinkeby')
+    if (providerName === "mainnet") {
+      name = this.context.t("connectingToMainnet");
+    } else if (providerName === "ropsten") {
+      name = this.context.t("connectingToRopsten");
+    } else if (providerName === "kovan") {
+      name = this.context.t("connectingToRopsten");
+    } else if (providerName === "rinkeby") {
+      name = this.context.t("connectingToRinkeby");
     } else {
-      name = this.context.t('connectingToUnknown')
+      name = this.context.t("connectingToUnknown");
     }
 
-    return name
-  }
+    return name;
+  };
 
-  getNetworkName () {
-    const { provider } = this.props
-    const providerName = provider.type
+  getNetworkName() {
+    const { provider } = this.props;
+    const providerName = provider.type;
 
-    let name
+    let name;
 
-    if (providerName === 'mainnet') {
-      name = this.context.t('mainnet')
-    } else if (providerName === 'ropsten') {
-      name = this.context.t('ropsten')
-    } else if (providerName === 'kovan') {
-      name = this.context.t('kovan')
-    } else if (providerName === 'rinkeby') {
-      name = this.context.t('rinkeby')
+    if (providerName === "mainnet") {
+      name = this.context.t("mainnet");
+    } else if (providerName === "ropsten") {
+      name = this.context.t("ropsten");
+    } else if (providerName === "kovan") {
+      name = this.context.t("kovan");
+    } else if (providerName === "rinkeby") {
+      name = this.context.t("rinkeby");
     } else {
-      name = this.context.t('unknownNetwork')
+      name = this.context.t("unknownNetwork");
     }
 
-    return name
+    return name;
   }
 }
 
@@ -297,19 +342,19 @@ App.propTypes = {
   betaUI: PropTypes.bool,
   isMouseUser: PropTypes.bool,
   setMouseUserState: PropTypes.func,
-  t: PropTypes.func,
-}
+  t: PropTypes.func
+};
 
-function mapStateToProps (state) {
-  const { appState, metamask } = state
+function mapStateToProps(state) {
+  const { appState, metamask } = state;
   const {
     networkDropdownOpen,
     sidebarOpen,
     alertOpen,
     alertMessage,
     isLoading,
-    loadingMessage,
-  } = appState
+    loadingMessage
+  } = appState;
 
   const {
     identities,
@@ -324,9 +369,9 @@ function mapStateToProps (state) {
     lostAccounts,
     unapprovedMsgCount,
     unapprovedPersonalMsgCount,
-    unapprovedTypedMessagesCount,
-  } = metamask
-  const selected = address || Object.keys(accounts)[0]
+    unapprovedTypedMessagesCount
+  } = metamask;
+  const selected = address || Object.keys(accounts)[0];
 
   return {
     // state from plugin
@@ -369,27 +414,31 @@ function mapStateToProps (state) {
     // state needed to get account dropdown temporarily rendering from app bar
     identities,
     selected,
-    keyrings,
-  }
+    keyrings
+  };
 }
 
-function mapDispatchToProps (dispatch, ownProps) {
+function mapDispatchToProps(dispatch, ownProps) {
   return {
     dispatch,
     hideSidebar: () => dispatch(actions.hideSidebar()),
     showNetworkDropdown: () => dispatch(actions.showNetworkDropdown()),
     hideNetworkDropdown: () => dispatch(actions.hideNetworkDropdown()),
-    setCurrentCurrencyToUSD: () => dispatch(actions.setCurrentCurrency('usd')),
+    setCurrentCurrencyToUSD: () => dispatch(actions.setCurrentCurrency("usd")),
     toggleAccountMenu: () => dispatch(actions.toggleAccountMenu()),
-    setMouseUserState: (isMouseUser) => dispatch(actions.setMouseUserState(isMouseUser)),
-  }
+    setMouseUserState: isMouseUser =>
+      dispatch(actions.setMouseUserState(isMouseUser))
+  };
 }
 
 App.contextTypes = {
-  t: PropTypes.func,
-}
+  t: PropTypes.func
+};
 
 module.exports = compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps)
-)(App)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
+)(App);

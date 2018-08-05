@@ -1,8 +1,7 @@
-const BN = require('ethereumjs-util').BN
-const normalize = require('eth-sig-util').normalize
+const BN = require("ethereumjs-util").BN;
+const normalize = require("eth-sig-util").normalize;
 
 class PendingBalanceCalculator {
-
   /**
    * Used for calculating a users "pending balance": their current balance minus the total possible cost of all their
    * pending transactions.
@@ -13,9 +12,9 @@ class PendingBalanceCalculator {
    * which include value, gasPrice, and gas, all in a base=16 hex format.
    *
    */
-  constructor ({ getBalance, getPendingTransactions }) {
-    this.getPendingTransactions = getPendingTransactions
-    this.getNetworkBalance = getBalance
+  constructor({ getBalance, getPendingTransactions }) {
+    this.getPendingTransactions = getPendingTransactions;
+    this.getNetworkBalance = getBalance;
   }
 
   /**
@@ -25,20 +24,20 @@ class PendingBalanceCalculator {
    * @returns {Promise<string>} Promises a base 16 hex string that contains the user's "pending balance"
    *
    */
-  async getBalance () {
+  async getBalance() {
     const results = await Promise.all([
       this.getNetworkBalance(),
-      this.getPendingTransactions(),
-    ])
+      this.getPendingTransactions()
+    ]);
 
-    const [ balance, pending ] = results
-    if (!balance) return undefined
+    const [balance, pending] = results;
+    if (!balance) return undefined;
 
     const pendingValue = pending.reduce((total, tx) => {
-      return total.add(this.calculateMaxCost(tx))
-    }, new BN(0))
+      return total.add(this.calculateMaxCost(tx));
+    }, new BN(0));
 
-    return `0x${balance.sub(pendingValue).toString(16)}`
+    return `0x${balance.sub(pendingValue).toString(16)}`;
   }
 
   /**
@@ -50,17 +49,17 @@ class PendingBalanceCalculator {
    *
    * @returns {string} Returns a base 16 hex string that contains the maximum possible cost of the transaction.
    */
-  calculateMaxCost (tx) {
-    const txValue = tx.txParams.value
-    const value = this.hexToBn(txValue)
-    const gasPrice = this.hexToBn(tx.txParams.gasPrice)
+  calculateMaxCost(tx) {
+    const txValue = tx.txParams.value;
+    const value = this.hexToBn(txValue);
+    const gasPrice = this.hexToBn(tx.txParams.gasPrice);
 
-    const gas = tx.txParams.gas
-    const gasLimit = tx.txParams.gasLimit
-    const gasLimitBn = this.hexToBn(gas || gasLimit)
+    const gas = tx.txParams.gas;
+    const gasLimit = tx.txParams.gasLimit;
+    const gasLimitBn = this.hexToBn(gas || gasLimit);
 
-    const gasCost = gasPrice.mul(gasLimitBn)
-    return value.add(gasCost)
+    const gasCost = gasPrice.mul(gasLimitBn);
+    return value.add(gasCost);
   }
 
   /**
@@ -70,10 +69,9 @@ class PendingBalanceCalculator {
    * @returns {Object} A BN object
    *
    */
-  hexToBn (hex) {
-    return new BN(normalize(hex).substring(2), 16)
+  hexToBn(hex) {
+    return new BN(normalize(hex).substring(2), 16);
   }
-
 }
 
-module.exports = PendingBalanceCalculator
+module.exports = PendingBalanceCalculator;

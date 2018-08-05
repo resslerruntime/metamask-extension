@@ -1,7 +1,7 @@
-import { connect } from 'react-redux'
-import SendEther from './send.component'
-import { withRouter } from 'react-router-dom'
-import { compose } from 'recompose'
+import { connect } from "react-redux";
+import SendEther from "./send.component";
+import { withRouter } from "react-router-dom";
+import { compose } from "recompose";
 import {
   getAmountConversionRate,
   getBlockGasLimit,
@@ -20,27 +20,25 @@ import {
   getSendEditingTransactionId,
   getSendFromObject,
   getSendTo,
-  getTokenBalance,
-} from './send.selectors'
+  getTokenBalance
+} from "./send.selectors";
 import {
   updateSendTokenBalance,
   updateGasData,
-  setGasTotal,
-} from '../../actions'
-import {
-  resetSendState,
-  updateSendErrors,
-} from '../../ducks/send.duck'
-import {
-  calcGasTotal,
-} from './send.utils.js'
+  setGasTotal
+} from "../../actions";
+import { resetSendState, updateSendErrors } from "../../ducks/send.duck";
+import { calcGasTotal } from "./send.utils.js";
 
 module.exports = compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps)
-)(SendEther)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
+)(SendEther);
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     amount: getSendAmount(state),
     amountConversionRate: getAmountConversionRate(state),
@@ -59,11 +57,11 @@ function mapStateToProps (state) {
     to: getSendTo(state),
     tokenBalance: getTokenBalance(state),
     tokenContract: getSelectedTokenContract(state),
-    tokenToFiatRate: getSelectedTokenToFiatRate(state),
-  }
+    tokenToFiatRate: getSelectedTokenToFiatRate(state)
+  };
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
     updateAndSetGasTotal: ({
       blockGasLimit,
@@ -74,20 +72,31 @@ function mapDispatchToProps (dispatch) {
       selectedAddress,
       selectedToken,
       to,
-      value,
+      value
     }) => {
       !editingTransactionId
-        ? dispatch(updateGasData({ recentBlocks, selectedAddress, selectedToken, blockGasLimit, to, value }))
-        : dispatch(setGasTotal(calcGasTotal(gasLimit, gasPrice)))
+        ? dispatch(
+            updateGasData({
+              recentBlocks,
+              selectedAddress,
+              selectedToken,
+              blockGasLimit,
+              to,
+              value
+            })
+          )
+        : dispatch(setGasTotal(calcGasTotal(gasLimit, gasPrice)));
     },
     updateSendTokenBalance: ({ selectedToken, tokenContract, address }) => {
-      dispatch(updateSendTokenBalance({
-        selectedToken,
-        tokenContract,
-        address,
-      }))
+      dispatch(
+        updateSendTokenBalance({
+          selectedToken,
+          tokenContract,
+          address
+        })
+      );
     },
     updateSendErrors: newError => dispatch(updateSendErrors(newError)),
-    resetSendState: () => dispatch(resetSendState()),
-  }
+    resetSendState: () => dispatch(resetSendState())
+  };
 }

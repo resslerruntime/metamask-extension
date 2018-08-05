@@ -1,5 +1,5 @@
-const Modal = require('./modal')
+const Modal = require("./modal");
 
 module.exports = {
-  Modal,
-}
+  Modal
+};

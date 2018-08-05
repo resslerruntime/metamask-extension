@@ -1,14 +1,14 @@
 const selectors = {
   gasFeeIsInError,
-  getGasLoadingError,
+  getGasLoadingError
+};
+
+module.exports = selectors;
+
+function getGasLoadingError(state) {
+  return state.send.errors.gasLoading;
 }
 
-module.exports = selectors
-
-function getGasLoadingError (state) {
-  return state.send.errors.gasLoading
-}
-
-function gasFeeIsInError (state) {
-  return Boolean(state.send.errors.gasFee)
+function gasFeeIsInError(state) {
+  return Boolean(state.send.errors.gasFee);
 }

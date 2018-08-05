@@ -31,7 +31,6 @@ An object that provides two simple methods, which can encrypt in any format you 
 - encrypt(password, object) - returns a Promise of a string that is ready for storage.
 - decrypt(password, encryptedString) - Accepts the encrypted output of `encrypt` and returns a Promise of a restored `object` as it was encrypted.
 
-
 ##### Platform Options
 
 The `platform` object has a variety of options:
@@ -62,17 +61,19 @@ In that file, there's a lot going on, so it's maybe worth focusing on our MetaMa
 
 ```javascript
 const controller = new MetamaskController({
-    // User confirmation callbacks:
-    showUnconfirmedMessage: triggerUi,
-    unlockAccountMessage: triggerUi,
-    showUnapprovedTx: triggerUi,
-    // initial state
-    initState,
-    // platform specific api
-    platform,
-})
+  // User confirmation callbacks:
+  showUnconfirmedMessage: triggerUi,
+  unlockAccountMessage: triggerUi,
+  showUnapprovedTx: triggerUi,
+  // initial state
+  initState,
+  // platform specific api
+  platform
+});
 ```
+
 Since `background.js` is essentially the Extension setup file, we can see it doing all the things specific to the extension platform:
+
 - Defining how to open the UI for new messages, transactions, and even requests to unlock (reveal to the site) their account.
 - Provide the instance's initial state, leaving MetaMask persistence to the platform.
 - Providing a `platform` object. This is becoming our catch-all adapter for platforms to define a few other platform-variant features we require, like opening a web link. (Soon we will be moving encryption out here too, since our browser-encryption isn't portable enough!)
@@ -82,6 +83,7 @@ Since `background.js` is essentially the Extension setup file, we can see it doi
 Everything so far has been enough to create a MetaMask wallet on virtually any platform that runs JS, but MetaMask's most unique feature isn't being a wallet, it's providing an Ethereum-enabled JavaScript context to websites.
 
 MetaMask has two kinds of [duplex stream APIs](https://github.com/substack/stream-handbook#duplex) that it exposes:
+
 - [metamask.setupTrustedCommunication(connectionStream, originDomain)](https://github.com/MetaMask/metamask-extension/blob/master/app/scripts/metamask-controller.js#L352) - This stream is used to connect the user interface over a remote port, and may not be necessary for contexts where the interface and the metamask-controller share a process.
 - [metamask.setupUntrustedCommunication(connectionStream, originDomain)](https://github.com/MetaMask/metamask-extension/blob/master/app/scripts/metamask-controller.js#L337) - This method is used to connect a new web site's web3 API to MetaMask's blockchain connection. Additionally, the `originDomain` is used to block detected phishing sites.
 
@@ -100,4 +102,3 @@ If streams seem new and confusing to you, that's ok, they can seem strange at fi
 ## Conclusion
 
 I hope this has been helpful to you! If you have any other questionsm, or points you think need clarification in this guide, please [open an issue on our GitHub](https://github.com/MetaMask/metamask-plugin/issues/new)!
-

@@ -1,33 +1,36 @@
-const Component = require('react').Component
-const h = require('react-hyperscript')
-const inherits = require('util').inherits
+const Component = require("react").Component;
+const h = require("react-hyperscript");
+const inherits = require("util").inherits;
 // Main Views
-const TxView = require('./components/tx-view')
-const WalletView = require('./components/wallet-view')
+const TxView = require("./components/tx-view");
+const WalletView = require("./components/wallet-view");
 
-module.exports = AccountAndTransactionDetails
+module.exports = AccountAndTransactionDetails;
 
-inherits(AccountAndTransactionDetails, Component)
-function AccountAndTransactionDetails () {
-  Component.call(this)
+inherits(AccountAndTransactionDetails, Component);
+function AccountAndTransactionDetails() {
+  Component.call(this);
 }
 
-AccountAndTransactionDetails.prototype.render = function () {
-  return h('div.account-and-transaction-details', [
+AccountAndTransactionDetails.prototype.render = function() {
+  return h("div.account-and-transaction-details", [
     // wallet
-    h(WalletView, {
-      style: {
+    h(
+      WalletView,
+      {
+        style: {},
+        responsiveDisplayClassname: ".lap-visible"
       },
-      responsiveDisplayClassname: '.lap-visible',
-    }, [
-    ]),
+      []
+    ),
 
     // transaction
-    h(TxView, {
-      style: {
+    h(
+      TxView,
+      {
+        style: {}
       },
-    }, [
-    ]),
-  ])
-}
-
+      []
+    )
+  ]);
+};

@@ -29,5 +29,3 @@ This will increment the version in the `app/manifest.json` and `CHANGELOG.md` fi
 The script that is executed lives [here](../development/run-version-bump.js).
 The main functions all live [here](../development/version-bump.js).
 The test for this behavior is at `test/unit/development/version-bump-test.js`.
-
-

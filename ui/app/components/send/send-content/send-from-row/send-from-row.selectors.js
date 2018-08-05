@@ -1,9 +1,9 @@
 const selectors = {
-  getFromDropdownOpen,
-}
+  getFromDropdownOpen
+};
 
-module.exports = selectors
+module.exports = selectors;
 
-function getFromDropdownOpen (state) {
-  return state.send.fromDropdownOpen
+function getFromDropdownOpen(state) {
+  return state.send.fromDropdownOpen;
 }

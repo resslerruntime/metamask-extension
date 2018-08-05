@@ -1,7 +1,7 @@
-const EventEmitter = require('events')
-const ObservableStore = require('obs-store')
-const ethUtil = require('ethereumjs-util')
-const createId = require('./random-id')
+const EventEmitter = require("events");
+const ObservableStore = require("obs-store");
+const ethUtil = require("ethereumjs-util");
+const createId = require("./random-id");
 
 /**
  * Represents, and contains data about, an 'eth_sign' type signature request. These are created when a signature for
@@ -22,7 +22,6 @@ const createId = require('./random-id')
  */
 
 module.exports = class MessageManager extends EventEmitter {
-
   /**
    * Controller in charge of managing - storing, adding, removing, updating - Messages.
    *
@@ -34,13 +33,13 @@ module.exports = class MessageManager extends EventEmitter {
    * @property {array} messages Holds all messages that have been created by this MessageManager
    *
    */
-  constructor (opts) {
-    super()
+  constructor(opts) {
+    super();
     this.memStore = new ObservableStore({
       unapprovedMsgs: {},
-      unapprovedMsgCount: 0,
-    })
-    this.messages = []
+      unapprovedMsgCount: 0
+    });
+    this.messages = [];
   }
 
   /**
@@ -49,8 +48,8 @@ module.exports = class MessageManager extends EventEmitter {
    * @returns {number} The number of 'unapproved' Messages in this.messages
    *
    */
-  get unapprovedMsgCount () {
-    return Object.keys(this.getUnapprovedMsgs()).length
+  get unapprovedMsgCount() {
+    return Object.keys(this.getUnapprovedMsgs()).length;
   }
 
   /**
@@ -59,9 +58,13 @@ module.exports = class MessageManager extends EventEmitter {
    * @returns {Object} An index of Message ids to Messages, for all 'unapproved' Messages in this.messages
    *
    */
-  getUnapprovedMsgs () {
-    return this.messages.filter(msg => msg.status === 'unapproved')
-    .reduce((result, msg) => { result[msg.id] = msg; return result }, {})
+  getUnapprovedMsgs() {
+    return this.messages
+      .filter(msg => msg.status === "unapproved")
+      .reduce((result, msg) => {
+        result[msg.id] = msg;
+        return result;
+      }, {});
   }
 
   /**
@@ -72,23 +75,23 @@ module.exports = class MessageManager extends EventEmitter {
    * @returns {number} The id of the newly created message.
    *
    */
-  addUnapprovedMessage (msgParams) {
-    msgParams.data = normalizeMsgData(msgParams.data)
+  addUnapprovedMessage(msgParams) {
+    msgParams.data = normalizeMsgData(msgParams.data);
     // create txData obj with parameters and meta data
-    var time = (new Date()).getTime()
-    var msgId = createId()
+    var time = new Date().getTime();
+    var msgId = createId();
     var msgData = {
       id: msgId,
       msgParams: msgParams,
       time: time,
-      status: 'unapproved',
-      type: 'eth_sign',
-    }
-    this.addMsg(msgData)
+      status: "unapproved",
+      type: "eth_sign"
+    };
+    this.addMsg(msgData);
 
     // signal update
-    this.emit('update')
-    return msgId
+    this.emit("update");
+    return msgId;
   }
 
   /**
@@ -98,9 +101,9 @@ module.exports = class MessageManager extends EventEmitter {
    * @param {Message} msg The Message to add to this.messages
    *
    */
-  addMsg (msg) {
-    this.messages.push(msg)
-    this._saveMsgList()
+  addMsg(msg) {
+    this.messages.push(msg);
+    this._saveMsgList();
   }
 
   /**
@@ -110,8 +113,8 @@ module.exports = class MessageManager extends EventEmitter {
    * @returns {Message|undefined} The Message with the id that matches the passed msgId, or undefined if no Message has that id.
    *
    */
-  getMsg (msgId) {
-    return this.messages.find(msg => msg.id === msgId)
+  getMsg(msgId) {
+    return this.messages.find(msg => msg.id === msgId);
   }
 
   /**
@@ -123,9 +126,9 @@ module.exports = class MessageManager extends EventEmitter {
    * @returns {Promise<object>} Promises the msgParams object with metamaskId removed.
    *
    */
-  approveMessage (msgParams) {
-    this.setMsgStatusApproved(msgParams.metamaskId)
-    return this.prepMsgForSigning(msgParams)
+  approveMessage(msgParams) {
+    this.setMsgStatusApproved(msgParams.metamaskId);
+    return this.prepMsgForSigning(msgParams);
   }
 
   /**
@@ -134,8 +137,8 @@ module.exports = class MessageManager extends EventEmitter {
    * @param {number} msgId The id of the Message to approve.
    *
    */
-  setMsgStatusApproved (msgId) {
-    this._setMsgStatus(msgId, 'approved')
+  setMsgStatusApproved(msgId) {
+    this._setMsgStatus(msgId, "approved");
   }
 
   /**
@@ -146,11 +149,11 @@ module.exports = class MessageManager extends EventEmitter {
    * @param {buffer} rawSig The raw data of the signature request
    *
    */
-  setMsgStatusSigned (msgId, rawSig) {
-    const msg = this.getMsg(msgId)
-    msg.rawSig = rawSig
-    this._updateMsg(msg)
-    this._setMsgStatus(msgId, 'signed')
+  setMsgStatusSigned(msgId, rawSig) {
+    const msg = this.getMsg(msgId);
+    msg.rawSig = rawSig;
+    this._updateMsg(msg);
+    this._setMsgStatus(msgId, "signed");
   }
 
   /**
@@ -160,9 +163,9 @@ module.exports = class MessageManager extends EventEmitter {
    * @returns {Promise<object>} Promises the msgParams with the metamaskId property removed
    *
    */
-  prepMsgForSigning (msgParams) {
-    delete msgParams.metamaskId
-    return Promise.resolve(msgParams)
+  prepMsgForSigning(msgParams) {
+    delete msgParams.metamaskId;
+    return Promise.resolve(msgParams);
   }
 
   /**
@@ -171,8 +174,8 @@ module.exports = class MessageManager extends EventEmitter {
    * @param {number} msgId The id of the Message to reject.
    *
    */
-  rejectMsg (msgId) {
-    this._setMsgStatus(msgId, 'rejected')
+  rejectMsg(msgId) {
+    this._setMsgStatus(msgId, "rejected");
   }
 
   /**
@@ -187,14 +190,15 @@ module.exports = class MessageManager extends EventEmitter {
    * @fires If status is 'rejected' or 'signed', an event with a name equal to `${msgId}:finished` is fired along with the message
    *
    */
-  _setMsgStatus (msgId, status) {
-    const msg = this.getMsg(msgId)
-    if (!msg) throw new Error('MessageManager - Message not found for id: "${msgId}".')
-    msg.status = status
-    this._updateMsg(msg)
-    this.emit(`${msgId}:${status}`, msg)
-    if (status === 'rejected' || status === 'signed') {
-      this.emit(`${msgId}:finished`, msg)
+  _setMsgStatus(msgId, status) {
+    const msg = this.getMsg(msgId);
+    if (!msg)
+      throw new Error('MessageManager - Message not found for id: "${msgId}".');
+    msg.status = status;
+    this._updateMsg(msg);
+    this.emit(`${msgId}:${status}`, msg);
+    if (status === "rejected" || status === "signed") {
+      this.emit(`${msgId}:finished`, msg);
     }
   }
 
@@ -206,12 +210,12 @@ module.exports = class MessageManager extends EventEmitter {
    * @param {msg} Message A Message that will replace an existing Message (with the same id) in this.messages
    *
    */
-  _updateMsg (msg) {
-    const index = this.messages.findIndex((message) => message.id === msg.id)
+  _updateMsg(msg) {
+    const index = this.messages.findIndex(message => message.id === msg.id);
     if (index !== -1) {
-      this.messages[index] = msg
+      this.messages[index] = msg;
     }
-    this._saveMsgList()
+    this._saveMsgList();
   }
 
   /**
@@ -221,14 +225,13 @@ module.exports = class MessageManager extends EventEmitter {
    * @fires 'updateBadge'
    *
    */
-  _saveMsgList () {
-    const unapprovedMsgs = this.getUnapprovedMsgs()
-    const unapprovedMsgCount = Object.keys(unapprovedMsgs).length
-    this.memStore.updateState({ unapprovedMsgs, unapprovedMsgCount })
-    this.emit('updateBadge')
+  _saveMsgList() {
+    const unapprovedMsgs = this.getUnapprovedMsgs();
+    const unapprovedMsgCount = Object.keys(unapprovedMsgs).length;
+    this.memStore.updateState({ unapprovedMsgs, unapprovedMsgCount });
+    this.emit("updateBadge");
   }
-
-}
+};
 
 /**
  * A helper function that converts raw buffer data to a hex, or just returns the data if it is already formatted as a hex.
@@ -237,12 +240,12 @@ module.exports = class MessageManager extends EventEmitter {
  * @returns {string} A hex string conversion of the buffer data
  *
  */
-function normalizeMsgData (data) {
-  if (data.slice(0, 2) === '0x') {
+function normalizeMsgData(data) {
+  if (data.slice(0, 2) === "0x") {
     // data is already hex
-    return data
+    return data;
   } else {
     // data is unicode, convert to hex
-    return ethUtil.bufferToHex(new Buffer(data, 'utf8'))
+    return ethUtil.bufferToHex(new Buffer(data, "utf8"));
   }
 }

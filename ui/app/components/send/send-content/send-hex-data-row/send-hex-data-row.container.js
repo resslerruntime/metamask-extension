@@ -1,21 +1,22 @@
-import { connect } from 'react-redux'
-import {
-  updateSendHexData,
-} from '../../../../actions'
-import SendHexDataRow from './send-hex-data-row.component'
+import { connect } from "react-redux";
+import { updateSendHexData } from "../../../../actions";
+import SendHexDataRow from "./send-hex-data-row.component";
 
-export default connect(mapStateToProps, mapDispatchToProps)(SendHexDataRow)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SendHexDataRow);
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
-    data: state.metamask.send.data,
-  }
+    data: state.metamask.send.data
+  };
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-    updateSendHexData (data) {
-      return dispatch(updateSendHexData(data))
-    },
-  }
+    updateSendHexData(data) {
+      return dispatch(updateSendHexData(data));
+    }
+  };
 }

@@ -44,7 +44,8 @@
     },
     "transactions": [],
     "network": "2",
-    "seedWords": "debris dizzy just program just float decrease vacant alarm reduce speak stadium",
+    "seedWords":
+      "debris dizzy just program just float decrease vacant alarm reduce speak stadium",
     "unconfMsgs": {},
     "messages": [],
     "provider": {
@@ -55,7 +56,8 @@
     "menuOpen": false,
     "currentView": {
       "name": "createVaultComplete",
-      "seedWords": "debris dizzy just program just float decrease vacant alarm reduce speak stadium"
+      "seedWords":
+        "debris dizzy just program just float decrease vacant alarm reduce speak stadium"
     },
     "accountDetail": {
       "subview": "transactions"

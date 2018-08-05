@@ -1,27 +1,27 @@
-const jsonDiffer = require('fast-json-patch')
-const clone = require('clone')
+const jsonDiffer = require("fast-json-patch");
+const clone = require("clone");
 /** @module*/
 module.exports = {
   generateHistoryEntry,
   replayHistory,
   snapshotFromTxMeta,
-  migrateFromSnapshotsToDiffs,
-}
+  migrateFromSnapshotsToDiffs
+};
 
 /**
   converts non-initial history entries into diffs
   @param longHistory {array}
   @returns {array}
 */
-function migrateFromSnapshotsToDiffs (longHistory) {
+function migrateFromSnapshotsToDiffs(longHistory) {
   return (
     longHistory
-    // convert non-initial history entries into diffs
-    .map((entry, index) => {
-      if (index === 0) return entry
-      return generateHistoryEntry(longHistory[index - 1], entry)
-    })
-  )
+      // convert non-initial history entries into diffs
+      .map((entry, index) => {
+        if (index === 0) return entry;
+        return generateHistoryEntry(longHistory[index - 1], entry);
+      })
+  );
 }
 
 /**
@@ -36,34 +36,36 @@ function migrateFromSnapshotsToDiffs (longHistory) {
   @param note {string} - a optional note for the state change
   @returns {array}
 */
-function generateHistoryEntry (previousState, newState, note) {
-  const entry = jsonDiffer.compare(previousState, newState)
+function generateHistoryEntry(previousState, newState, note) {
+  const entry = jsonDiffer.compare(previousState, newState);
   // Add a note to the first op, since it breaks if we append it to the entry
   if (entry[0]) {
-    if (note) entry[0].note = note
+    if (note) entry[0].note = note;
 
-    entry[0].timestamp = Date.now()
+    entry[0].timestamp = Date.now();
   }
-  return entry
+  return entry;
 }
 
 /**
   Recovers previous txMeta state obj
   @returns {object}
 */
-function replayHistory (_shortHistory) {
-  const shortHistory = clone(_shortHistory)
-  return shortHistory.reduce((val, entry) => jsonDiffer.applyPatch(val, entry).newDocument)
+function replayHistory(_shortHistory) {
+  const shortHistory = clone(_shortHistory);
+  return shortHistory.reduce(
+    (val, entry) => jsonDiffer.applyPatch(val, entry).newDocument
+  );
 }
 
 /**
   @param txMeta {Object}
   @returns {object} a clone object of the txMeta with out history
 */
-function snapshotFromTxMeta (txMeta) {
+function snapshotFromTxMeta(txMeta) {
   // create txMeta snapshot for history
-  const snapshot = clone(txMeta)
+  const snapshot = clone(txMeta);
   // dont include previous history in this snapshot
-  delete snapshot.history
-  return snapshot
+  delete snapshot.history;
+  return snapshot;
 }

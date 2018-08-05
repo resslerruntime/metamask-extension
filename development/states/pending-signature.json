@@ -51,7 +51,8 @@
         "txParams": {
           "from": "0xfdea65c8e26263f6d9a1b5de9555d2931a33b825",
           "to": "0x48ff0cbac0acefedf152281ee80e9a0a01d5da63",
-          "data": "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb000000000000000000000000000000000000000000000000000000000000000a",
+          "data":
+            "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb000000000000000000000000000000000000000000000000000000000000000a",
           "origin": "localhost",
           "metamaskId": 1471975421223082,
           "metamaskNetworkId": "1471904489432"
@@ -60,14 +61,16 @@
         "status": "confirmed",
         "containsDelegateCall": true,
         "estimatedGas": "0x89ef",
-        "hash": "0xd0fe393e2586ebded866c9f13b90494e902bc49047fbf25ba2ac96c805a2f5d3"
+        "hash":
+          "0xd0fe393e2586ebded866c9f13b90494e902bc49047fbf25ba2ac96c805a2f5d3"
       },
       {
         "id": 1471975427199819,
         "txParams": {
           "from": "0xfdea65c8e26263f6d9a1b5de9555d2931a33b825",
           "to": "0x48ff0cbac0acefedf152281ee80e9a0a01d5da63",
-          "data": "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb000000000000000000000000000000000000000000000000000000000000000a",
+          "data":
+            "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb000000000000000000000000000000000000000000000000000000000000000a",
           "origin": "localhost",
           "metamaskId": 1471975427199819,
           "metamaskNetworkId": "1471904489432"
@@ -76,14 +79,16 @@
         "status": "rejected",
         "containsDelegateCall": true,
         "estimatedGas": "0x89ef",
-        "hash": "0xb1f2f63f3e265f05d7c353ab38dd8b73fce8e7214489037311ee1f58a994dae3"
+        "hash":
+          "0xb1f2f63f3e265f05d7c353ab38dd8b73fce8e7214489037311ee1f58a994dae3"
       },
       {
         "id": 1471975806981442,
         "txParams": {
           "from": "0xfdea65c8e26263f6d9a1b5de9555d2931a33b825",
           "to": "0x48ff0cbac0acefedf152281ee80e9a0a01d5da63",
-          "data": "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb000000000000000000000000000000000000000000000000000000000000000a",
+          "data":
+            "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb000000000000000000000000000000000000000000000000000000000000000a",
           "origin": "localhost",
           "metamaskId": 1471975806981442,
           "metamaskNetworkId": "1471904489432"
@@ -92,14 +97,16 @@
         "status": "confirmed",
         "containsDelegateCall": true,
         "estimatedGas": "0x89ef",
-        "hash": "0xeeb89e91aaeea14c4950016c45d60df8ee8874daa6f414de5cf267ea2c17bc6e"
+        "hash":
+          "0xeeb89e91aaeea14c4950016c45d60df8ee8874daa6f414de5cf267ea2c17bc6e"
       },
       {
         "id": 1471975810133789,
         "txParams": {
           "from": "0xfdea65c8e26263f6d9a1b5de9555d2931a33b825",
           "to": "0x48ff0cbac0acefedf152281ee80e9a0a01d5da63",
-          "data": "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb000000000000000000000000000000000000000000000000000000000000000a",
+          "data":
+            "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb000000000000000000000000000000000000000000000000000000000000000a",
           "origin": "localhost",
           "metamaskId": 1471975810133789,
           "metamaskNetworkId": "1471904489432"
@@ -108,14 +115,16 @@
         "status": "confirmed",
         "containsDelegateCall": true,
         "estimatedGas": "0x89ef",
-        "hash": "0xe54cab2e54b8495691b6d8315ca24a190cba546a9fcb056642479ce5770cec8b"
+        "hash":
+          "0xe54cab2e54b8495691b6d8315ca24a190cba546a9fcb056642479ce5770cec8b"
       },
       {
         "id": 1471976546865348,
         "txParams": {
           "from": "0xfdea65c8e26263f6d9a1b5de9555d2931a33b825",
           "to": "0x48ff0cbac0acefedf152281ee80e9a0a01d5da63",
-          "data": "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb000000000000000000000000000000000000000000000000000000000000000a",
+          "data":
+            "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb000000000000000000000000000000000000000000000000000000000000000a",
           "origin": "localhost",
           "metamaskId": 1471976546865348,
           "metamaskNetworkId": "1471904489432"
@@ -124,14 +133,16 @@
         "status": "confirmed",
         "containsDelegateCall": true,
         "estimatedGas": "0x89ef",
-        "hash": "0x54e10f77e17f28f4d12751749a2ca22f9b528592d1140ef53c6430a68e731542"
+        "hash":
+          "0x54e10f77e17f28f4d12751749a2ca22f9b528592d1140ef53c6430a68e731542"
       },
       {
         "id": 1471976930101889,
         "txParams": {
           "from": "0xfdea65c8e26263f6d9a1b5de9555d2931a33b825",
           "to": "0x48ff0cbac0acefedf152281ee80e9a0a01d5da63",
-          "data": "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb0000000000000000000000000000000000000000000000000000000000000005",
+          "data":
+            "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb0000000000000000000000000000000000000000000000000000000000000005",
           "origin": "localhost",
           "metamaskId": 1471976930101889,
           "metamaskNetworkId": "1471904489432"
@@ -140,14 +151,16 @@
         "status": "confirmed",
         "containsDelegateCall": true,
         "estimatedGas": "0x89ef",
-        "hash": "0x60b5af26fad18c5549949064b67c8f965c9f20cd3e890c69512ca3acad10ed8b"
+        "hash":
+          "0x60b5af26fad18c5549949064b67c8f965c9f20cd3e890c69512ca3acad10ed8b"
       },
       {
         "id": 1471977268048169,
         "txParams": {
           "from": "0xfdea65c8e26263f6d9a1b5de9555d2931a33b825",
           "to": "0x48ff0cbac0acefedf152281ee80e9a0a01d5da63",
-          "data": "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb0000000000000000000000000000000000000000000000000000000000000002",
+          "data":
+            "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb0000000000000000000000000000000000000000000000000000000000000002",
           "origin": "localhost",
           "metamaskId": 1471977268048169,
           "metamaskNetworkId": "1471904489432"
@@ -156,14 +169,16 @@
         "status": "confirmed",
         "containsDelegateCall": true,
         "estimatedGas": "0x89ef",
-        "hash": "0x1f96e29305ef11a9c993302c29e5419d87017e8222d4034daea0d86e155dc3aa"
+        "hash":
+          "0x1f96e29305ef11a9c993302c29e5419d87017e8222d4034daea0d86e155dc3aa"
       },
       {
         "id": 1471977310778630,
         "txParams": {
           "from": "0xfdea65c8e26263f6d9a1b5de9555d2931a33b825",
           "to": "0x48ff0cbac0acefedf152281ee80e9a0a01d5da63",
-          "data": "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb0000000000000000000000000000000000000000000000000000000000000005",
+          "data":
+            "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb0000000000000000000000000000000000000000000000000000000000000005",
           "origin": "localhost",
           "metamaskId": 1471977310778630,
           "metamaskNetworkId": "1471904489432"
@@ -178,7 +193,8 @@
         "txParams": {
           "from": "0xfdea65c8e26263f6d9a1b5de9555d2931a33b825",
           "to": "0x48ff0cbac0acefedf152281ee80e9a0a01d5da63",
-          "data": "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb0000000000000000000000000000000000000000000000000000000000000005",
+          "data":
+            "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb0000000000000000000000000000000000000000000000000000000000000005",
           "origin": "localhost",
           "metamaskId": 1471977316241561,
           "metamaskNetworkId": "1471904489432"
@@ -187,14 +203,16 @@
         "status": "confirmed",
         "containsDelegateCall": true,
         "estimatedGas": "0x89ef",
-        "hash": "0xdbd610c92d77a07c76b82e14e32674d382c45c4780dd2a550888b5cc40d54bcc"
+        "hash":
+          "0xdbd610c92d77a07c76b82e14e32674d382c45c4780dd2a550888b5cc40d54bcc"
       },
       {
         "id": 1471977344018510,
         "txParams": {
           "from": "0xfdea65c8e26263f6d9a1b5de9555d2931a33b825",
           "to": "0x48ff0cbac0acefedf152281ee80e9a0a01d5da63",
-          "data": "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb0000000000000000000000000000000000000000000000000000000000000004",
+          "data":
+            "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb0000000000000000000000000000000000000000000000000000000000000004",
           "origin": "localhost",
           "metamaskId": 1471977344018510,
           "metamaskNetworkId": "1471904489432"
@@ -203,14 +221,16 @@
         "status": "confirmed",
         "containsDelegateCall": true,
         "estimatedGas": "0x89ef",
-        "hash": "0x709d871d9ded0108de9f7718a7490b19d45e5e7562b1ba6c5bf6cce56e767d48"
+        "hash":
+          "0x709d871d9ded0108de9f7718a7490b19d45e5e7562b1ba6c5bf6cce56e767d48"
       },
       {
         "id": 1471977403830380,
         "txParams": {
           "from": "0xfdea65c8e26263f6d9a1b5de9555d2931a33b825",
           "to": "0x48ff0cbac0acefedf152281ee80e9a0a01d5da63",
-          "data": "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb0000000000000000000000000000000000000000000000000000000000000001",
+          "data":
+            "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb0000000000000000000000000000000000000000000000000000000000000001",
           "origin": "localhost",
           "metamaskId": 1471977403830380,
           "metamaskNetworkId": "1471904489432"
@@ -219,14 +239,16 @@
         "status": "confirmed",
         "containsDelegateCall": true,
         "estimatedGas": "0x89ef",
-        "hash": "0x94f5088a127bba181b303d6427ae93cbfa9867997bea1326f30da311e36c6aca"
+        "hash":
+          "0x94f5088a127bba181b303d6427ae93cbfa9867997bea1326f30da311e36c6aca"
       },
       {
         "id": 1471977431563703,
         "txParams": {
           "from": "0xfdea65c8e26263f6d9a1b5de9555d2931a33b825",
           "to": "0x48ff0cbac0acefedf152281ee80e9a0a01d5da63",
-          "data": "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb0000000000000000000000000000000000000000000000000000000000000001",
+          "data":
+            "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb0000000000000000000000000000000000000000000000000000000000000001",
           "origin": "localhost",
           "metamaskId": 1471977431563703,
           "metamaskNetworkId": "1471904489432"
@@ -241,7 +263,8 @@
         "txParams": {
           "from": "0xfdea65c8e26263f6d9a1b5de9555d2931a33b825",
           "to": "0x48ff0cbac0acefedf152281ee80e9a0a01d5da63",
-          "data": "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb0000000000000000000000000000000000000000000000000000000000000001",
+          "data":
+            "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb0000000000000000000000000000000000000000000000000000000000000001",
           "origin": "localhost",
           "metamaskId": 1471977436074587,
           "metamaskNetworkId": "1471904489432"
@@ -250,14 +273,16 @@
         "status": "confirmed",
         "containsDelegateCall": true,
         "estimatedGas": "0x89ef",
-        "hash": "0x5f514dfe3bd48f6f301c809a7a75f73f0fc93bc3a0e469368b84dce032aff9ec"
+        "hash":
+          "0x5f514dfe3bd48f6f301c809a7a75f73f0fc93bc3a0e469368b84dce032aff9ec"
       },
       {
         "id": 1471991826717707,
         "txParams": {
           "from": "0xfdea65c8e26263f6d9a1b5de9555d2931a33b825",
           "to": "0x48ff0cbac0acefedf152281ee80e9a0a01d5da63",
-          "data": "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb0000000000000000000000000000000000000000000000000000000000000004",
+          "data":
+            "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb0000000000000000000000000000000000000000000000000000000000000004",
           "origin": "localhost",
           "metamaskId": 1471991826717707,
           "metamaskNetworkId": "1471904489432"
@@ -266,14 +291,16 @@
         "status": "confirmed",
         "containsDelegateCall": true,
         "estimatedGas": "0x89ef",
-        "hash": "0xab1e706f8981680a6c921f9f57f8ce573392bbb4f0fe85cf45e5cbf858fa5f3e"
+        "hash":
+          "0xab1e706f8981680a6c921f9f57f8ce573392bbb4f0fe85cf45e5cbf858fa5f3e"
       },
       {
         "id": 1471991851917592,
         "txParams": {
           "from": "0xfdea65c8e26263f6d9a1b5de9555d2931a33b825",
           "to": "0x48ff0cbac0acefedf152281ee80e9a0a01d5da63",
-          "data": "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb0000000000000000000000000000000000000000000000000000000000000004",
+          "data":
+            "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb0000000000000000000000000000000000000000000000000000000000000004",
           "origin": "localhost",
           "metamaskId": 1471991851917592,
           "metamaskNetworkId": "1471904489432"
@@ -282,14 +309,16 @@
         "status": "confirmed",
         "containsDelegateCall": true,
         "estimatedGas": "0x89ef",
-        "hash": "0xdea144f7a6f06969739f676d8702a9a11efc689e032f1981fe67afc9261dd4de"
+        "hash":
+          "0xdea144f7a6f06969739f676d8702a9a11efc689e032f1981fe67afc9261dd4de"
       },
       {
         "id": 1471992032999543,
         "txParams": {
           "from": "0xfdea65c8e26263f6d9a1b5de9555d2931a33b825",
           "to": "0x48ff0cbac0acefedf152281ee80e9a0a01d5da63",
-          "data": "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb0000000000000000000000000000000000000000000000000000000000000005",
+          "data":
+            "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb0000000000000000000000000000000000000000000000000000000000000005",
           "origin": "localhost",
           "metamaskId": 1471992032999543,
           "metamaskNetworkId": "1471904489432"
@@ -298,14 +327,16 @@
         "status": "confirmed",
         "containsDelegateCall": true,
         "estimatedGas": "0x89ef",
-        "hash": "0xdf31b8cc0fbd2ab6727e0b63536bd4eab51a147aa29e04691e68fae28b866fb3"
+        "hash":
+          "0xdf31b8cc0fbd2ab6727e0b63536bd4eab51a147aa29e04691e68fae28b866fb3"
       },
       {
         "id": 1471992043490878,
         "txParams": {
           "from": "0xfdea65c8e26263f6d9a1b5de9555d2931a33b825",
           "to": "0x48ff0cbac0acefedf152281ee80e9a0a01d5da63",
-          "data": "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb0000000000000000000000000000000000000000000000000000000000000005",
+          "data":
+            "0x90b98a11000000000000000000000000c5b8dbac4c1d3f152cdeb400e2313f309c410acb0000000000000000000000000000000000000000000000000000000000000005",
           "origin": "localhost",
           "metamaskId": 1471992043490878,
           "metamaskNetworkId": "1471904489432"
@@ -322,7 +353,8 @@
           "value": "0x3782dace9d90000",
           "gas": "0x493e0",
           "to": "0x18a672e11d637fffadccc99b152f4895da069601",
-          "data": "0x5b7d47a900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001",
+          "data":
+            "0x5b7d47a900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001",
           "origin": "www.rouleth.com",
           "metamaskId": 1472068030402279,
           "metamaskNetworkId": "1"
@@ -339,7 +371,8 @@
           "value": "0x16345785d8a0000",
           "gas": "0x493e0",
           "to": "0x18a672e11d637fffadccc99b152f4895da069601",
-          "data": "0x5b7d47a900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001",
+          "data":
+            "0x5b7d47a900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001",
           "origin": "www.rouleth.com",
           "metamaskId": 1472068061833258,
           "metamaskNetworkId": "1"
@@ -348,7 +381,8 @@
         "status": "confirmed",
         "containsDelegateCall": false,
         "estimatedGas": "0x24704",
-        "hash": "0xb6e6ff57e7b5f6bd7f2e6dc44c39f4e858a227c9509586634ca547179345a13e"
+        "hash":
+          "0xb6e6ff57e7b5f6bd7f2e6dc44c39f4e858a227c9509586634ca547179345a13e"
       }
     ],
     "selectedAddress": "0xfdea65c8e26263f6d9a1b5de9555d2931a33b825",

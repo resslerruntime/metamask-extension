@@ -18,8 +18,8 @@ ui/lib/explorer-link.js
 ```
 
 You will need:
-+ The network ID
-+ An RPC Endpoint url
-+ An explorer link
-+ CSS for the display icon
 
+- The network ID
+- An RPC Endpoint url
+- An explorer link
+- CSS for the display icon

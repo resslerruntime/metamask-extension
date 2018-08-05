@@ -1,53 +1,62 @@
-const Component = require('react').Component
-const PropTypes = require('prop-types')
-const h = require('react-hyperscript')
-const inherits = require('util').inherits
+const Component = require("react").Component;
+const PropTypes = require("prop-types");
+const h = require("react-hyperscript");
+const inherits = require("util").inherits;
 
-const Tooltip = require('./tooltip')
-const copyToClipboard = require('copy-to-clipboard')
-const connect = require('react-redux').connect
+const Tooltip = require("./tooltip");
+const copyToClipboard = require("copy-to-clipboard");
+const connect = require("react-redux").connect;
 
 Copyable.contextTypes = {
-  t: PropTypes.func,
-}
+  t: PropTypes.func
+};
 
-module.exports = connect()(Copyable)
+module.exports = connect()(Copyable);
 
-
-inherits(Copyable, Component)
-function Copyable () {
-  Component.call(this)
+inherits(Copyable, Component);
+function Copyable() {
+  Component.call(this);
   this.state = {
-    copied: false,
-  }
+    copied: false
+  };
 }
 
-Copyable.prototype.render = function () {
-  const props = this.props
-  const state = this.state
-  const { value, children } = props
-  const { copied } = state
+Copyable.prototype.render = function() {
+  const props = this.props;
+  const state = this.state;
+  const { value, children } = props;
+  const { copied } = state;
 
-  return h(Tooltip, {
-    title: copied ? this.context.t('copiedExclamation') : this.context.t('copy'),
-    position: 'bottom',
-  }, h('span', {
-    style: {
-      cursor: 'pointer',
+  return h(
+    Tooltip,
+    {
+      title: copied
+        ? this.context.t("copiedExclamation")
+        : this.context.t("copy"),
+      position: "bottom"
     },
-    onClick: (event) => {
-      event.preventDefault()
-      event.stopPropagation()
-      copyToClipboard(value)
-      this.debounceRestore()
-    },
-  }, children))
-}
+    h(
+      "span",
+      {
+        style: {
+          cursor: "pointer"
+        },
+        onClick: event => {
+          event.preventDefault();
+          event.stopPropagation();
+          copyToClipboard(value);
+          this.debounceRestore();
+        }
+      },
+      children
+    )
+  );
+};
 
-Copyable.prototype.debounceRestore = function () {
-  this.setState({ copied: true })
-  clearTimeout(this.timeout)
+Copyable.prototype.debounceRestore = function() {
+  this.setState({ copied: true });
+  clearTimeout(this.timeout);
   this.timeout = setTimeout(() => {
-    this.setState({ copied: false })
-  }, 850)
-}
+    this.setState({ copied: false });
+  }, 850);
+};
